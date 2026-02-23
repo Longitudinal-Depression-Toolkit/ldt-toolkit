@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it as below."
+title: "Longitudinal Depression Trajectories Toolkit: Machine Learning for Longitudinal Studies"
+type: software
+version: "0.1.0"
+year: 2026
+authors:
+  - family-names: Provost
+    given-names: Simon
+    email: simon.gilbert.provost@gmail.com
+  - family-names: Branco
+    given-names: Bianca
+    email: s2714881@sms.ed.ac.uk
+  - family-names: Kwong
+    given-names: Alex
+    email: akwong@ed.ac.uk

@@ -1,0 +1,744 @@
+{
+  "standard_machine_learning": {
+    "techniques": [
+      {
+        "id": "run_experiment",
+        "name": "Run Experiment",
+        "description": "Train and evaluate one standard (cross-sectional) estimator.",
+        "parameters": [
+          {
+            "key": "input_path",
+            "label": "Input CSV path",
+            "type": "path",
+            "required": true,
+            "hint": "Tabular dataset in wide format."
+          },
+          {
+            "key": "target_column",
+            "label": "Target column",
+            "type": "string",
+            "required": true,
+            "default": "target",
+            "hint": "Classification target column."
+          },
+          {
+            "key": "feature_columns",
+            "label": "Feature columns",
+            "type": "string",
+            "required": true,
+            "default": "auto",
+            "hint": "Comma-separated list or `auto` for all except target."
+          },
+          {
+            "key": "estimator_key",
+            "label": "Estimator key",
+            "type": "string",
+            "required": false,
+            "hint": "Optional; defaults to the first discovered estimator."
+          },
+          {
+            "key": "metric_keys",
+            "label": "Metric keys",
+            "type": "string",
+            "required": true,
+            "default": "f1_macro",
+            "hint": "Comma-separated metrics (e.g. f1_macro, auroc)."
+          },
+          {
+            "key": "cv_folds",
+            "label": "Cross-validation folds",
+            "type": "int",
+            "required": true,
+            "default": 10,
+            "min": 2
+          },
+          {
+            "key": "validation_split",
+            "label": "Validation split",
+            "type": "string",
+            "required": false,
+            "default": "auto",
+            "hint": "`auto`, ratio like 80/20, or float in (0,1)."
+          },
+          {
+            "key": "random_seed",
+            "label": "Random seed",
+            "type": "int",
+            "required": true,
+            "default": 42
+          },
+          {
+            "key": "output_dir",
+            "label": "Output directory",
+            "type": "path",
+            "required": false,
+            "hint": "Defaults to outputs/standard_ml/<estimator_key>."
+          },
+          {
+            "key": "hyperparameters_json",
+            "label": "Hyperparameters JSON",
+            "type": "json",
+            "required": false,
+            "default": {},
+            "hint": "Estimator constructor overrides as JSON object."
+          },
+          {
+            "key": "multiclass_mode",
+            "label": "Multiclass mode",
+            "type": "enum",
+            "required": true,
+            "default": "multiclass",
+            "options": [
+              {
+                "label": "Multiclass",
+                "value": "multiclass"
+              },
+              {
+                "label": "One-vs-rest",
+                "value": "one_vs_rest"
+              }
+            ]
+          },
+          {
+            "key": "silent_training_output",
+            "label": "Silent training output",
+            "type": "bool",
+            "required": true,
+            "default": true
+          },
+          {
+            "key": "generate_notebook",
+            "label": "Generate reproducibility notebook",
+            "type": "bool",
+            "required": true,
+            "default": true
+          },
+          {
+            "key": "notebook_output_path",
+            "label": "Notebook output path",
+            "type": "path",
+            "required": false,
+            "hint": "Used only when notebook generation is enabled.",
+            "when": {
+              "field": "generate_notebook",
+              "equals": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "list_estimators",
+        "name": "List Estimators",
+        "description": "List discoverable standard estimators and metadata.",
+        "parameters": []
+      },
+      {
+        "id": "list_metrics",
+        "name": "List Metrics",
+        "description": "List all supported metrics for standard experiments.",
+        "parameters": []
+      }
+    ]
+  },
+  "longitudinal_machine_learning": {
+    "techniques": [
+      {
+        "id": "run_experiment",
+        "name": "Run Experiment",
+        "description": "Train and evaluate one longitudinal estimator workflow.",
+        "parameters": [
+          {
+            "key": "input_path",
+            "label": "Input CSV path",
+            "type": "path",
+            "required": true,
+            "hint": "Wide-format longitudinal dataset."
+          },
+          {
+            "key": "target_column",
+            "label": "Target column",
+            "type": "string",
+            "required": true,
+            "default": "target"
+          },
+          {
+            "key": "feature_columns",
+            "label": "Feature columns",
+            "type": "string",
+            "required": true,
+            "default": "auto",
+            "hint": "Comma-separated list or `auto` for all except target."
+          },
+          {
+            "key": "feature_groups",
+            "label": "Feature groups",
+            "type": "string",
+            "required": true,
+            "hint": "Semicolon-separated groups; each group comma-separated."
+          },
+          {
+            "key": "non_longitudinal_features",
+            "label": "Non-longitudinal features",
+            "type": "string",
+            "required": true,
+            "default": "auto",
+            "hint": "Comma-separated, `none`, or `auto`."
+          },
+          {
+            "key": "estimator_key",
+            "label": "Estimator key",
+            "type": "string",
+            "required": false,
+            "hint": "Optional; defaults to the first discovered estimator."
+          },
+          {
+            "key": "metric_keys",
+            "label": "Metric keys",
+            "type": "string",
+            "required": true,
+            "default": "f1_macro"
+          },
+          {
+            "key": "cv_folds",
+            "label": "Cross-validation folds",
+            "type": "int",
+            "required": true,
+            "default": 10,
+            "min": 2
+          },
+          {
+            "key": "validation_split",
+            "label": "Validation split",
+            "type": "string",
+            "required": false,
+            "default": "auto"
+          },
+          {
+            "key": "random_seed",
+            "label": "Random seed",
+            "type": "int",
+            "required": true,
+            "default": 42
+          },
+          {
+            "key": "output_dir",
+            "label": "Output directory",
+            "type": "path",
+            "required": false,
+            "hint": "Defaults to outputs/longitudinal_ml/<estimator_key>."
+          },
+          {
+            "key": "silent_training_output",
+            "label": "Silent training output",
+            "type": "bool",
+            "required": true,
+            "default": true
+          }
+        ]
+      },
+      {
+        "id": "list_estimators",
+        "name": "List Estimators",
+        "description": "List discoverable longitudinal estimators and strategy families.",
+        "parameters": []
+      },
+      {
+        "id": "list_metrics",
+        "name": "List Metrics",
+        "description": "List all supported metrics for longitudinal experiments.",
+        "parameters": []
+      }
+    ]
+  },
+  "benchmark_standard_ml": {
+    "techniques": [
+      {
+        "id": "run_benchmark",
+        "name": "Run Benchmark",
+        "description": "Benchmark all selected standard estimators under one evaluation protocol.",
+        "parameters": [
+          {
+            "key": "input_path",
+            "label": "Input CSV path",
+            "type": "path",
+            "required": true
+          },
+          {
+            "key": "target_column",
+            "label": "Target column",
+            "type": "string",
+            "required": true,
+            "default": "target"
+          },
+          {
+            "key": "feature_columns",
+            "label": "Feature columns",
+            "type": "string",
+            "required": true,
+            "default": "auto"
+          },
+          {
+            "key": "excluded_estimators",
+            "label": "Excluded estimators",
+            "type": "string",
+            "required": false,
+            "default": "none",
+            "hint": "Comma-separated keys or `none`."
+          },
+          {
+            "key": "metric_keys",
+            "label": "Metric keys",
+            "type": "string",
+            "required": true,
+            "default": "f1_macro"
+          },
+          {
+            "key": "cv_folds",
+            "label": "Cross-validation folds",
+            "type": "int",
+            "required": true,
+            "default": 10,
+            "min": 2
+          },
+          {
+            "key": "validation_split",
+            "label": "Validation split",
+            "type": "string",
+            "required": false,
+            "default": "auto"
+          },
+          {
+            "key": "random_seed",
+            "label": "Random seed",
+            "type": "int",
+            "required": true,
+            "default": 42
+          },
+          {
+            "key": "output_root_dir",
+            "label": "Benchmark output root directory",
+            "type": "path",
+            "required": false,
+            "hint": "Defaults to outputs/benchmarks/standard_ml."
+          },
+          {
+            "key": "silent_training_output",
+            "label": "Silent training output",
+            "type": "bool",
+            "required": true,
+            "default": true
+          },
+          {
+            "key": "generate_notebook",
+            "label": "Generate reproducibility notebook",
+            "type": "bool",
+            "required": true,
+            "default": true
+          },
+          {
+            "key": "notebook_output_path",
+            "label": "Notebook output path",
+            "type": "path",
+            "required": false,
+            "when": {
+              "field": "generate_notebook",
+              "equals": true
+            }
+          },
+          {
+            "key": "include_pipeline_profiler_at_end",
+            "label": "Include PipelineProfiler at notebook end",
+            "type": "bool",
+            "required": true,
+            "default": false,
+            "when": {
+              "field": "generate_notebook",
+              "equals": true
+            }
+          },
+          {
+            "key": "generate_pipeline_profiler_html",
+            "label": "Generate PipelineProfiler HTML",
+            "type": "bool",
+            "required": true,
+            "default": false
+          }
+        ]
+      },
+      {
+        "id": "list_estimators",
+        "name": "List Estimators",
+        "description": "List standard estimators included in benchmark workflows.",
+        "parameters": []
+      },
+      {
+        "id": "list_metrics",
+        "name": "List Metrics",
+        "description": "List metrics supported by benchmark workflows.",
+        "parameters": []
+      }
+    ]
+  },
+  "benchmark_longitudinal_ml": {
+    "techniques": [
+      {
+        "id": "run_benchmark",
+        "name": "Run Benchmark",
+        "description": "Benchmark all selected longitudinal estimators under one evaluation protocol.",
+        "parameters": [
+          {
+            "key": "input_path",
+            "label": "Input CSV path",
+            "type": "path",
+            "required": true
+          },
+          {
+            "key": "target_column",
+            "label": "Target column",
+            "type": "string",
+            "required": true,
+            "default": "target"
+          },
+          {
+            "key": "feature_columns",
+            "label": "Feature columns",
+            "type": "string",
+            "required": true,
+            "default": "auto"
+          },
+          {
+            "key": "feature_groups",
+            "label": "Feature groups",
+            "type": "string",
+            "required": true
+          },
+          {
+            "key": "non_longitudinal_features",
+            "label": "Non-longitudinal features",
+            "type": "string",
+            "required": true,
+            "default": "auto"
+          },
+          {
+            "key": "excluded_estimators",
+            "label": "Excluded estimators",
+            "type": "string",
+            "required": false,
+            "default": "none"
+          },
+          {
+            "key": "metric_keys",
+            "label": "Metric keys",
+            "type": "string",
+            "required": true,
+            "default": "f1_macro"
+          },
+          {
+            "key": "cv_folds",
+            "label": "Cross-validation folds",
+            "type": "int",
+            "required": true,
+            "default": 10,
+            "min": 2
+          },
+          {
+            "key": "validation_split",
+            "label": "Validation split",
+            "type": "string",
+            "required": false,
+            "default": "auto"
+          },
+          {
+            "key": "random_seed",
+            "label": "Random seed",
+            "type": "int",
+            "required": true,
+            "default": 42
+          },
+          {
+            "key": "output_root_dir",
+            "label": "Benchmark output root directory",
+            "type": "path",
+            "required": false,
+            "hint": "Defaults to outputs/benchmarks/longitudinal_ml."
+          },
+          {
+            "key": "silent_training_output",
+            "label": "Silent training output",
+            "type": "bool",
+            "required": true,
+            "default": true
+          },
+          {
+            "key": "generate_notebook",
+            "label": "Generate reproducibility notebook",
+            "type": "bool",
+            "required": true,
+            "default": true
+          },
+          {
+            "key": "notebook_output_path",
+            "label": "Notebook output path",
+            "type": "path",
+            "required": false,
+            "when": {
+              "field": "generate_notebook",
+              "equals": true
+            }
+          },
+          {
+            "key": "include_pipeline_profiler_at_end",
+            "label": "Include PipelineProfiler at notebook end",
+            "type": "bool",
+            "required": true,
+            "default": false,
+            "when": {
+              "field": "generate_notebook",
+              "equals": true
+            }
+          },
+          {
+            "key": "generate_pipeline_profiler_html",
+            "label": "Generate PipelineProfiler HTML",
+            "type": "bool",
+            "required": true,
+            "default": false
+          }
+        ]
+      },
+      {
+        "id": "list_estimators",
+        "name": "List Estimators",
+        "description": "List longitudinal estimators included in benchmark workflows.",
+        "parameters": []
+      },
+      {
+        "id": "list_metrics",
+        "name": "List Metrics",
+        "description": "List metrics supported by benchmark workflows.",
+        "parameters": []
+      }
+    ]
+  },
+  "bench_standard_and_longitudinal_ml": {
+    "techniques": [
+      {
+        "id": "run_benchmark",
+        "name": "Run Benchmark",
+        "description": "Benchmark selected standard and longitudinal estimators together.",
+        "parameters": [
+          {
+            "key": "input_path",
+            "label": "Input CSV path",
+            "type": "path",
+            "required": true
+          },
+          {
+            "key": "target_column",
+            "label": "Target column",
+            "type": "string",
+            "required": true,
+            "default": "target"
+          },
+          {
+            "key": "feature_columns",
+            "label": "Feature columns",
+            "type": "string",
+            "required": true,
+            "default": "auto"
+          },
+          {
+            "key": "feature_groups",
+            "label": "Feature groups",
+            "type": "string",
+            "required": true
+          },
+          {
+            "key": "non_longitudinal_features",
+            "label": "Non-longitudinal features",
+            "type": "string",
+            "required": true,
+            "default": "auto"
+          },
+          {
+            "key": "excluded_estimators",
+            "label": "Excluded estimators",
+            "type": "string",
+            "required": false,
+            "default": "none"
+          },
+          {
+            "key": "metric_keys",
+            "label": "Metric keys",
+            "type": "string",
+            "required": true,
+            "default": "f1_macro"
+          },
+          {
+            "key": "cv_folds",
+            "label": "Cross-validation folds",
+            "type": "int",
+            "required": true,
+            "default": 10,
+            "min": 2
+          },
+          {
+            "key": "validation_split",
+            "label": "Validation split",
+            "type": "string",
+            "required": false,
+            "default": "auto"
+          },
+          {
+            "key": "random_seed",
+            "label": "Random seed",
+            "type": "int",
+            "required": true,
+            "default": 42
+          },
+          {
+            "key": "output_root_dir",
+            "label": "Benchmark output root directory",
+            "type": "path",
+            "required": false,
+            "hint": "Defaults to outputs/benchmarks/standard_and_longitudinal_ml."
+          },
+          {
+            "key": "silent_training_output",
+            "label": "Silent training output",
+            "type": "bool",
+            "required": true,
+            "default": true
+          },
+          {
+            "key": "generate_notebook",
+            "label": "Generate reproducibility notebook",
+            "type": "bool",
+            "required": true,
+            "default": true
+          },
+          {
+            "key": "notebook_output_path",
+            "label": "Notebook output path",
+            "type": "path",
+            "required": false,
+            "when": {
+              "field": "generate_notebook",
+              "equals": true
+            }
+          },
+          {
+            "key": "include_pipeline_profiler_at_end",
+            "label": "Include PipelineProfiler at notebook end",
+            "type": "bool",
+            "required": true,
+            "default": false,
+            "when": {
+              "field": "generate_notebook",
+              "equals": true
+            }
+          },
+          {
+            "key": "generate_pipeline_profiler_html",
+            "label": "Generate PipelineProfiler HTML",
+            "type": "bool",
+            "required": true,
+            "default": false
+          }
+        ]
+      },
+      {
+        "id": "list_estimators",
+        "name": "List Estimators",
+        "description": "List estimators included in mixed benchmark workflows.",
+        "parameters": []
+      },
+      {
+        "id": "list_metrics",
+        "name": "List Metrics",
+        "description": "List metrics supported by mixed benchmark workflows.",
+        "parameters": []
+      }
+    ]
+  },
+  "shap_analysis": {
+    "techniques": [
+      {
+        "id": "run_analysis",
+        "name": "Run SHAP Analysis",
+        "description": "Generate SHAP explainability figures and summary artifacts.",
+        "parameters": [
+          {
+            "key": "model_path",
+            "label": "Saved model artifact path (.pkl)",
+            "type": "path",
+            "required": true
+          },
+          {
+            "key": "input_path",
+            "label": "Input CSV path",
+            "type": "path",
+            "required": true
+          },
+          {
+            "key": "target_column",
+            "label": "Target column to exclude",
+            "type": "string",
+            "required": false,
+            "default": "none",
+            "hint": "Use `none` to keep all columns as SHAP features."
+          },
+          {
+            "key": "feature_columns",
+            "label": "Feature columns",
+            "type": "string",
+            "required": true,
+            "default": "auto",
+            "hint": "Comma-separated list or `auto`."
+          },
+          {
+            "key": "max_rows_to_explain",
+            "label": "Maximum rows to explain",
+            "type": "int",
+            "required": true,
+            "default": 200,
+            "min": 1
+          },
+          {
+            "key": "background_rows",
+            "label": "Background rows",
+            "type": "int",
+            "required": true,
+            "default": 100,
+            "min": 1
+          },
+          {
+            "key": "class_index",
+            "label": "Class index",
+            "type": "string",
+            "required": false,
+            "default": "auto",
+            "hint": "Use `auto` for binary/default class handling."
+          },
+          {
+            "key": "output_dir",
+            "label": "Output directory",
+            "type": "path",
+            "required": false,
+            "hint": "Defaults to <model_stem>_shap_analysis near the model."
+          }
+        ]
+      }
+    ]
+  },
+  "presets_reproducibility": {
+    "items": [
+      {
+        "id": "model_mcs_by_leap",
+        "name": "Model MCS by LEAP",
+        "description": "(incoming) Apply longitudinal ML reproducibility profile for MCS by LEAP.",
+        "status": "incoming"
+      }
+    ]
+  }
+}

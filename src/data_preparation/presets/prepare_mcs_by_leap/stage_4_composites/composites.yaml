@@ -1,0 +1,34 @@
+waves:
+  W1:
+    - output: APDIST9
+      operation: sum
+      inputs:
+        - p1__mcs1_parent_interview__APTIRE00
+        - p1__mcs1_parent_interview__APDEPR00
+        - p1__mcs1_parent_interview__APWORR00
+        - p1__mcs1_parent_interview__APRAGE00
+        - p1__mcs1_parent_interview__APSCAR00
+        - p1__mcs1_parent_interview__APUPSE00
+        - p1__mcs1_parent_interview__APKEYD00
+        - p1__mcs1_parent_interview__APNERV00
+        - p1__mcs1_parent_interview__APHERA00
+
+  W2: []
+
+  W3:
+    - output: ADHINC00
+      operation: coalesce
+      inputs:
+        - CHINCC00
+        - CHINCS00
+
+  W4:
+    - output: ADHINC00
+      operation: coalesce
+      inputs:
+        - DDHINCC0
+        - DDHINCS000
+
+  W5: []
+  W6: []
+  W7: []

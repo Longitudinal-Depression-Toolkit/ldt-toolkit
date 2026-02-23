@@ -1,0 +1,291 @@
+waves:
+  W1:
+    features:
+      - canonical: ADHINC00
+        source: ADHINC00
+        scope: family_derived
+      - canonical: ADROOW00
+        source: ADROOW00
+        scope: parent_interview
+      - canonical: ACADMO00
+        source: ACADMO00
+        scope: parent_cm_interview
+      - canonical: ACACCA00
+        source: ACACCA00
+        scope: parent_cm_interview
+      - canonical: ACADMA00
+        source: ACADMA00
+        scope: parent_cm_interview
+      - canonical: APFCIN00
+        source: APFCIN00
+        scope: parent_interview
+      - canonical: ADD05C00
+        source: ADD05C00
+        scope: parent_derived
+      - canonical: ADACAQ00
+        source: ADACAQ00
+        scope: parent_derived
+      - canonical: APGEHE00
+        source: APGEHE00
+        scope: parent_interview
+      - canonical: APDEAN00
+        source: APDEAN00
+        scope: parent_interview
+      - canonical: APSMMA00
+        source: APSMMA00
+        scope: parent_interview
+      - canonical: APALDR00
+        source: APALDR00
+        scope: parent_interview
+      - canonical: APWALI00
+        source: APWALI00
+        scope: parent_interview
+      - canonical: ADC06E00
+        source: ADC06E00
+        scope: cm_derived
+      - canonical: AHCSEX00
+        source: AHCSEX00
+        scope: hhgrid
+      - canonical: APILPR00
+        source: APILPR00
+        scope: parent_interview
+      - canonical: APDROF00
+        source: APDROF00
+        scope: parent_interview
+      - canonical: APLOSA00
+        source: APLOSA00
+        scope: parent_interview
+      - canonical: APDIST9
+        source: APDIST9
+        scope: composite
+
+  W2:
+    features:
+      - canonical: ADHINC00
+        source: BDHINC00
+        scope: family_derived
+      - canonical: ADROOW00
+        source: BDROOW00
+        scope: parent_interview
+      - canonical: ACADMO00
+        source: BPADMO00
+        scope: parent_cm_interview
+      - canonical: ACACCA00
+        source: BPACCA00
+        scope: parent_cm_interview
+      - canonical: ACADMA00
+        source: BPADMA00
+        scope: parent_cm_interview
+      - canonical: APFCIN00
+        source: BPFCIN00
+        scope: parent_interview
+      - canonical: ADD05C00
+        source: BDD05C00
+        scope: parent_derived
+      - canonical: ADACAQ00
+        source: BDACAQ00
+        scope: parent_derived
+      - canonical: APGEHE00
+        source: BPGEHE00
+        scope: parent_interview
+      - canonical: APDEAN00
+        source: BPDEAN00
+        scope: parent_interview
+      - canonical: APSMMA00
+        source: BPSMMA00
+        scope: parent_interview
+      - canonical: APALDR00
+        source: BPALDR00
+        scope: parent_interview
+      - canonical: APWALI00
+        source: BPWALI00
+        scope: parent_interview
+      - canonical: BEMOTION
+        source: BEMOTION
+        scope: cm_derived
+
+  W3:
+    features:
+      - canonical: ADHINC00
+        source: ADHINC00
+        scope: family_derived
+      - canonical: ADROOW00
+        source: CDROOW00
+        scope: parent_interview
+      - canonical: ACACCA00
+        source: CPACCA00
+        scope: parent_cm_interview
+      - canonical: ACADMA00
+        source: CPADMA00
+        scope: parent_cm_interview
+      - canonical: APFCIN00
+        source: CPFCIN00
+        scope: parent_interview
+      - canonical: ADD05C00
+        source: CDD05C00
+        scope: parent_derived
+      - canonical: ADACAQ00
+        source: CDACAQ00
+        scope: parent_derived
+      - canonical: APGEHE00
+        source: CPGENA00
+        scope: parent_interview
+      - canonical: APDEAN00
+        source: CPDEAN00
+        scope: parent_interview
+      - canonical: APSMMA00
+        source: CPSMMA00
+        scope: parent_interview
+      - canonical: APALDR00
+        source: CPALDR00
+        scope: parent_interview
+      - canonical: APWALI00
+        source: CPWALI00
+        scope: parent_interview
+      - canonical: BEMOTION
+        source: CEMOTION
+        scope: cm_derived
+
+  W4:
+    features:
+      - canonical: ADHINC00
+        source: ADHINC00
+        scope: family_derived
+      - canonical: ADROOW00
+        source: DPROOW00
+        scope: parent_interview
+      - canonical: ACACCA00
+        source: DPACCA00
+        scope: parent_cm_interview
+      - canonical: ACADMA00
+        source: DPADMA00
+        scope: parent_cm_interview
+      - canonical: APFCIN00
+        source: DPFCIN00
+        scope: parent_interview
+      - canonical: ADD05C00
+        source: DDD05C00
+        scope: parent_derived
+      - canonical: ADACAQ00
+        source: DDACAQ00
+        scope: parent_derived
+      - canonical: APGEHE00
+        source: DPGENA00
+        scope: parent_interview
+      - canonical: APDEAN00
+        source: DPDEAN00
+        scope: parent_interview
+      - canonical: APSMMA00
+        source: DPSMMA00
+        scope: parent_interview
+      - canonical: APALDR00
+        source: DPALDR00
+        scope: parent_interview
+      - canonical: APWALI00
+        source: DPWALI00
+        scope: parent_interview
+      - canonical: BEMOTION
+        source: DDEMOTION
+        scope: cm_derived
+
+  W5:
+    features:
+      - canonical: ADHINC00
+        source: EOEDE000
+        scope: family_derived
+      - canonical: ADROOW00
+        source: EPROOW00
+        scope: parent_interview
+      - canonical: ACACCA00
+        source: EPACCA00
+        scope: parent_cm_interview
+      - canonical: ACADMA00
+        source: EPADMA00
+        scope: parent_cm_interview
+      - canonical: APFCIN00
+        source: EPFCIN00
+        scope: parent_interview
+      - canonical: ADACAQ00
+        source: EACAQ00
+        scope: parent_derived
+      - canonical: APGEHE00
+        source: EPGENA00
+        scope: parent_interview
+      - canonical: APDEAN00
+        source: EPDEAN00
+        scope: parent_interview
+      - canonical: APSMMA00
+        source: EPSMMA00
+        scope: parent_interview
+      - canonical: APALDR00
+        source: EPALDR00
+        scope: parent_interview
+      - canonical: APWALI00
+        source: EPWALI00
+        scope: parent_interview
+      - canonical: BEMOTION
+        source: EEMOTION
+        scope: cm_derived
+
+  W6:
+    features:
+      - canonical: ADHINC00
+        source: FOEDE000
+        scope: family_derived
+      - canonical: ADROOW00
+        source: FPROOW00
+        scope: parent_interview
+      - canonical: ACACCA00
+        source: FPACCA00
+        scope: parent_cm_interview
+      - canonical: ACADMA00
+        source: FPADMA00
+        scope: parent_cm_interview
+      - canonical: APFCIN00
+        source: FPFCIN00
+        scope: parent_interview
+      - canonical: ADACAQ00
+        source: FDACAQ00
+        scope: parent_derived
+      - canonical: APGEHE00
+        source: FPGENA00
+        scope: parent_interview
+      - canonical: APDEAN00
+        source: FPDEAN00
+        scope: parent_interview
+      - canonical: APSMMA00
+        source: FPSMMA00
+        scope: parent_interview
+      - canonical: APALDR00
+        source: FPALDR00
+        scope: parent_interview
+      - canonical: APWALI00
+        source: FPSATN00
+        scope: parent_interview
+      - canonical: BEMOTION
+        source: FEMOTION
+        scope: cm_derived
+
+  W7:
+    features:
+      - canonical: ADROOW00
+        source: GPROOW00
+        scope: parent_interview
+      - canonical: ACACCA00
+        source: GCACCA00
+        scope: cm_interview
+      - canonical: ACADMA00
+        source: GCADMA00
+        scope: cm_interview
+      - canonical: APFCIN00
+        source: GPFCIN00
+        scope: parent_interview
+      - canonical: APGEHE00
+        source: GPGENA00
+        scope: parent_interview
+      - canonical: APDEAN00
+        source: GPDEAN00
+        scope: parent_interview
+      - canonical: BEMOTION
+        source: GEMOTION
+        scope: cm_derived

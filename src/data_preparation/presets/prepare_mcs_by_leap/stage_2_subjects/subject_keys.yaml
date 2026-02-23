@@ -1,0 +1,16 @@
+keys:
+  key_columns:
+    - MCSID
+    - CNUM
+  parent_key_columns:
+    - MCSID
+    - PNUM
+  link_key_columns:
+    - MCSID
+    - CNUM
+    - PNUM
+  output_fixed_columns:
+    - CHID
+    - wave
+    - MCSID
+    - CNUM
