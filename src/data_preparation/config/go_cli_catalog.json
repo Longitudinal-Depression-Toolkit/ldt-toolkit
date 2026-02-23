@@ -1,0 +1,617 @@
+{
+  "synthetic_data_generation": {
+    "title": "Synthetic Data Generation",
+    "techniques": [
+      {
+        "id": "trend_patterns",
+        "name": "Trend Patterns",
+        "description": "Generate persistently decreasing/decreasing/increasing/persistently increasing longitudinal patterns.",
+        "parameters": [
+          {
+            "key": "output_path",
+            "label": "Output CSV path",
+            "type": "path",
+            "required": true,
+            "default": "synthetic_waves.csv",
+            "hint": "Where to save the generated dataset."
+          },
+          {
+            "key": "n_samples",
+            "label": "Number of synthetic participants",
+            "type": "int",
+            "required": true,
+            "default": 500,
+            "min": 1,
+            "hint": "Recommended: 200-5000 depending on your simulation scale."
+          },
+          {
+            "key": "n_waves",
+            "label": "Number of waves",
+            "type": "int",
+            "required": true,
+            "default": 4,
+            "min": 2,
+            "hint": "Repeated measurements per participant."
+          },
+          {
+            "key": "random_state",
+            "label": "Random seed",
+            "type": "int",
+            "required": false,
+            "default": 42,
+            "hint": "Set for reproducibility."
+          },
+          {
+            "key": "feature_cols",
+            "label": "Feature columns",
+            "type": "string_list",
+            "required": true,
+            "default": [
+              "depressive_score"
+            ],
+            "hint": "Comma-separated list of output feature names."
+          },
+          {
+            "key": "spec_mode",
+            "label": "Pattern specification mode",
+            "type": "enum",
+            "required": true,
+            "default": "default",
+            "options": [
+              {
+                "label": "default",
+                "value": "default",
+                "description": "Use canonical class shapes."
+              },
+              {
+                "label": "random",
+                "value": "random",
+                "description": "Randomise class slopes/intercepts each run."
+              },
+              {
+                "label": "custom",
+                "value": "custom",
+                "description": "Provide custom class specs via JSON."
+              }
+            ]
+          },
+          {
+            "key": "custom_class_specs_json",
+            "label": "Custom class specs (JSON array)",
+            "type": "json",
+            "required": true,
+            "hint": "JSON list of objects with name, intercept_mean, slope_mean, optional intercept_sd/slope_sd.",
+            "when": {
+              "field": "spec_mode",
+              "equals": "custom"
+            }
+          }
+        ]
+      },
+      {
+        "id": "event_shock_recovery",
+        "name": "Event Shock Recovery",
+        "description": "Generate trajectories with an event shock at a selected wave and exponential recovery.",
+        "parameters": [
+          {
+            "key": "output_path",
+            "label": "Output CSV path",
+            "type": "path",
+            "required": true,
+            "default": "synthetic_event_shock.csv"
+          },
+          {
+            "key": "n_samples",
+            "label": "Number of synthetic participants",
+            "type": "int",
+            "required": true,
+            "default": 500,
+            "min": 1
+          },
+          {
+            "key": "n_waves",
+            "label": "Number of waves",
+            "type": "int",
+            "required": true,
+            "default": 6,
+            "min": 2
+          },
+          {
+            "key": "random_state",
+            "label": "Random seed",
+            "type": "int",
+            "required": false,
+            "default": 42
+          },
+          {
+            "key": "feature_cols",
+            "label": "Feature columns",
+            "type": "string_list",
+            "required": true,
+            "default": [
+              "depressive_score"
+            ]
+          },
+          {
+            "key": "shock_wave",
+            "label": "Event shock wave index",
+            "type": "int",
+            "required": true,
+            "default": 3,
+            "hint": "Must be between wave 2 and n_waves-1."
+          },
+          {
+            "key": "shock_mean",
+            "label": "Shock magnitude mean",
+            "type": "float",
+            "required": true,
+            "default": 4.0
+          },
+          {
+            "key": "recovery_rate",
+            "label": "Recovery rate",
+            "type": "float",
+            "required": true,
+            "default": 0.8,
+            "hint": "Larger values mean faster recovery."
+          },
+          {
+            "key": "noise_sd",
+            "label": "Noise SD",
+            "type": "float",
+            "required": true,
+            "default": 1.0
+          }
+        ]
+      },
+      {
+        "id": "piecewise_changepoint",
+        "name": "Piecewise Changepoint",
+        "description": "Generate trajectories with different pre/post changepoint slopes while preserving continuity.",
+        "parameters": [
+          {
+            "key": "output_path",
+            "label": "Output CSV path",
+            "type": "path",
+            "required": true,
+            "default": "synthetic_piecewise.csv"
+          },
+          {
+            "key": "n_samples",
+            "label": "Number of synthetic participants",
+            "type": "int",
+            "required": true,
+            "default": 500,
+            "min": 1
+          },
+          {
+            "key": "n_waves",
+            "label": "Number of waves",
+            "type": "int",
+            "required": true,
+            "default": 6,
+            "min": 2
+          },
+          {
+            "key": "random_state",
+            "label": "Random seed",
+            "type": "int",
+            "required": false,
+            "default": 42
+          },
+          {
+            "key": "feature_cols",
+            "label": "Feature columns",
+            "type": "string_list",
+            "required": true,
+            "default": [
+              "depressive_score"
+            ]
+          },
+          {
+            "key": "changepoint_wave",
+            "label": "Changepoint wave index",
+            "type": "int",
+            "required": true,
+            "default": 3,
+            "hint": "Must be between wave 2 and n_waves-1."
+          },
+          {
+            "key": "noise_sd",
+            "label": "Noise SD",
+            "type": "float",
+            "required": true,
+            "default": 1.0
+          },
+          {
+            "key": "pre_slope_sd",
+            "label": "Pre-changepoint slope SD",
+            "type": "float",
+            "required": true,
+            "default": 0.5
+          },
+          {
+            "key": "post_slope_sd",
+            "label": "Post-changepoint slope SD",
+            "type": "float",
+            "required": true,
+            "default": 0.5
+          }
+        ]
+      },
+      {
+        "id": "missing-data-scenarios",
+        "name": "Missing Data Scenarios",
+        "description": "Generate long-format data with MCAR, MAR, dropout, or mixed missingness patterns.",
+        "parameters": [
+          {
+            "key": "output_path",
+            "label": "Output CSV path",
+            "type": "path",
+            "required": true,
+            "default": "synthetic_missing_data_scenarios.csv"
+          },
+          {
+            "key": "n_samples",
+            "label": "Number of synthetic participants",
+            "type": "int",
+            "required": true,
+            "default": 500,
+            "min": 1
+          },
+          {
+            "key": "n_waves",
+            "label": "Number of waves",
+            "type": "int",
+            "required": true,
+            "default": 6,
+            "min": 2
+          },
+          {
+            "key": "random_state",
+            "label": "Random seed",
+            "type": "int",
+            "required": false,
+            "default": 42
+          },
+          {
+            "key": "feature_cols",
+            "label": "Feature columns",
+            "type": "string_list",
+            "required": true,
+            "default": [
+              "depressive_score",
+              "anxiety_score",
+              "sleep_score"
+            ]
+          },
+          {
+            "key": "mechanism",
+            "label": "Missingness mechanism",
+            "type": "enum",
+            "required": true,
+            "default": "mixed",
+            "options": [
+              {
+                "label": "mcar",
+                "value": "mcar"
+              },
+              {
+                "label": "mar",
+                "value": "mar"
+              },
+              {
+                "label": "dropout",
+                "value": "dropout"
+              },
+              {
+                "label": "mixed",
+                "value": "mixed"
+              }
+            ]
+          },
+          {
+            "key": "missing_rate",
+            "label": "Base missing rate",
+            "type": "float",
+            "required": true,
+            "default": 0.2,
+            "min": 0.0,
+            "max": 0.95
+          },
+          {
+            "key": "dropout_rate",
+            "label": "Subject dropout rate",
+            "type": "float",
+            "required": true,
+            "default": 0.25,
+            "min": 0.0,
+            "max": 0.95
+          },
+          {
+            "key": "mar_strength",
+            "label": "MAR strength",
+            "type": "float",
+            "required": true,
+            "default": 1.25,
+            "min": 0.0,
+            "hint": "Larger values increase value-dependent missingness."
+          }
+        ]
+      },
+      {
+        "id": "harmonisation-challenge",
+        "name": "Harmonisation Challenge",
+        "description": "Generate noisy categorical labels (typos/casing/spacing) for harmonisation workflow benchmarks.",
+        "parameters": [
+          {
+            "key": "output_path",
+            "label": "Output CSV path",
+            "type": "path",
+            "required": true,
+            "default": "synthetic_harmonisation_challenge.csv"
+          },
+          {
+            "key": "n_samples",
+            "label": "Number of synthetic participants",
+            "type": "int",
+            "required": true,
+            "default": 450,
+            "min": 1
+          },
+          {
+            "key": "n_waves",
+            "label": "Number of waves",
+            "type": "int",
+            "required": true,
+            "default": 5,
+            "min": 2
+          },
+          {
+            "key": "random_state",
+            "label": "Random seed",
+            "type": "int",
+            "required": false,
+            "default": 42
+          },
+          {
+            "key": "feature_cols",
+            "label": "Numeric feature columns",
+            "type": "string_list",
+            "required": true,
+            "default": [
+              "depressive_score",
+              "anxiety_score"
+            ]
+          },
+          {
+            "key": "noise_rate",
+            "label": "Label-noise rate",
+            "type": "float",
+            "required": true,
+            "default": 0.35,
+            "min": 0.0,
+            "max": 1.0
+          },
+          {
+            "key": "missing_label_rate",
+            "label": "Missing-label rate",
+            "type": "float",
+            "required": true,
+            "default": 0.03,
+            "min": 0.0,
+            "max": 0.5
+          },
+          {
+            "key": "include_canonical_columns",
+            "label": "Include canonical reference columns",
+            "type": "bool",
+            "required": true,
+            "default": true
+          }
+        ]
+      }
+    ]
+  },
+  "data_conversion": {
+    "title": "Data Conversion",
+    "techniques": [
+      {
+        "id": "csv_to_parquet",
+        "name": "CSV to Parquet",
+        "description": "Convert one CSV file or a folder of CSV files to Parquet.",
+        "parameters": [
+          {
+            "key": "run_mode",
+            "label": "Run mode",
+            "type": "enum",
+            "required": true,
+            "default": "single",
+            "options": [
+              {
+                "label": "single",
+                "value": "single",
+                "description": "Convert one file."
+              },
+              {
+                "label": "folder",
+                "value": "folder",
+                "description": "Convert all matching files in a folder."
+              }
+            ]
+          },
+          {
+            "key": "input_path",
+            "label": "Input file path",
+            "type": "path",
+            "required": true,
+            "when": {
+              "field": "run_mode",
+              "equals": "single"
+            }
+          },
+          {
+            "key": "output_path",
+            "label": "Output file path",
+            "type": "path",
+            "required": false,
+            "hint": "Leave empty to auto-derive from input file extension.",
+            "when": {
+              "field": "run_mode",
+              "equals": "single"
+            }
+          },
+          {
+            "key": "input_folder",
+            "label": "Input folder",
+            "type": "path",
+            "required": true,
+            "when": {
+              "field": "run_mode",
+              "equals": "folder"
+            }
+          },
+          {
+            "key": "output_folder",
+            "label": "Output folder",
+            "type": "path",
+            "required": false,
+            "hint": "Leave empty to use the input folder.",
+            "when": {
+              "field": "run_mode",
+              "equals": "folder"
+            }
+          },
+          {
+            "key": "include_subfolders",
+            "label": "Include subfolders",
+            "type": "bool",
+            "required": true,
+            "default": false,
+            "when": {
+              "field": "run_mode",
+              "equals": "folder"
+            }
+          }
+        ]
+      },
+      {
+        "id": "csv_to_stata",
+        "name": "CSV to Stata",
+        "description": "Convert one CSV file or a folder of CSV files to Stata (.dta).",
+        "parameters": "@tabular_converter"
+      },
+      {
+        "id": "parquet_to_csv",
+        "name": "Parquet to CSV",
+        "description": "Convert one Parquet file or a folder of Parquet files to CSV.",
+        "parameters": "@tabular_converter"
+      },
+      {
+        "id": "parquet_to_stata",
+        "name": "Parquet to Stata",
+        "description": "Convert one Parquet file or a folder of Parquet files to Stata (.dta).",
+        "parameters": "@tabular_converter"
+      },
+      {
+        "id": "stata_to_csv",
+        "name": "Stata to CSV",
+        "description": "Convert one Stata (.dta) file or a folder of Stata files to CSV.",
+        "parameters": "@tabular_converter"
+      },
+      {
+        "id": "stata_to_parquet",
+        "name": "Stata to Parquet",
+        "description": "Convert one Stata (.dta) file or a folder of Stata files to Parquet.",
+        "parameters": "@tabular_converter"
+      }
+    ],
+    "parameter_templates": {
+      "tabular_converter": [
+        {
+          "key": "run_mode",
+          "label": "Run mode",
+          "type": "enum",
+          "required": true,
+          "default": "single",
+          "options": [
+            {
+              "label": "single",
+              "value": "single",
+              "description": "Convert one file."
+            },
+            {
+              "label": "folder",
+              "value": "folder",
+              "description": "Convert all matching files in a folder."
+            }
+          ]
+        },
+        {
+          "key": "input_path",
+          "label": "Input file path",
+          "type": "path",
+          "required": true,
+          "when": {
+            "field": "run_mode",
+            "equals": "single"
+          }
+        },
+        {
+          "key": "output_path",
+          "label": "Output file path",
+          "type": "path",
+          "required": false,
+          "hint": "Leave empty to auto-derive from input file extension.",
+          "when": {
+            "field": "run_mode",
+            "equals": "single"
+          }
+        },
+        {
+          "key": "input_folder",
+          "label": "Input folder",
+          "type": "path",
+          "required": true,
+          "when": {
+            "field": "run_mode",
+            "equals": "folder"
+          }
+        },
+        {
+          "key": "output_folder",
+          "label": "Output folder",
+          "type": "path",
+          "required": false,
+          "hint": "Leave empty to use the input folder.",
+          "when": {
+            "field": "run_mode",
+            "equals": "folder"
+          }
+        },
+        {
+          "key": "include_subfolders",
+          "label": "Include subfolders",
+          "type": "bool",
+          "required": true,
+          "default": false,
+          "when": {
+            "field": "run_mode",
+            "equals": "folder"
+          }
+        }
+      ]
+    }
+  },
+  "presets_reproducibility": {
+    "items": [
+      {
+        "id": "prepare_MCS_by_LEAP",
+        "name": "Prepare MCS by LEAP",
+        "description": "Five-stage Millennium Cohort Study preparation preset.",
+        "available": true,
+        "status": "runnable"
+      }
+    ]
+  }
+}

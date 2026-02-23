@@ -1,0 +1,115 @@
+name: "💡 Feature Request"
+description: Suggest a new feature or enhancement for the Longitudinal Depression Trajectories Toolkit.
+title: "💡 [FEAT] - <title>"
+labels:
+  - "feature"
+assignees:
+  - "simonprovost"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        <div align="center">
+           <h1 align="center">
+              <br>
+              <img src="https://raw.githubusercontent.com/OWNER/REPO/main/public/logo/logo.png" alt="Longitudinal Depression Trajectories Toolkit" width="200">
+              <br>
+              Longitudinal Depression Trajectories Toolkit
+              <br>
+           </h1>
+           <h4 align="center">
+              Toolkit for Longitudinal Depression Trajectories Studies
+              <br>
+              Millennium Cohort Study (MCS) as Proof-of-Concept —
+              <a href="https://github.com">Documentation</a>
+           </h4>
+        </div>
+
+        <div align="center">
+        <img src="https://img.shields.io/static/v1?label=Python&message=3.10%E2%80%933.12&color=3776AB&style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10-3.12">
+        <img src="https://img.shields.io/static/v1?label=UV&message=managed&color=2196F3&style=for-the-badge&logo=UV&logoColor=white" alt="UV managed">
+        <img src="https://img.shields.io/static/v1?label=RUFF&message=compliant&color=0F172A&style=for-the-badge&logo=ruff&logoColor=white" alt="RUFF compliant">
+        <img src="https://img.shields.io/static/v1?label=pre--commit&message=enabled&color=2E7D32&style=for-the-badge&logo=pre-commit&logoColor=white" alt="pre-commit enabled">
+        <img src="https://img.shields.io/static/v1?label=beartype&message=compliant&color=8E24AA&style=for-the-badge" alt="beartype compliant">
+        </div>
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Before Submitting"
+      description: Please confirm the following to help us process your request efficiently.
+      options:
+        - label: I have checked if this feature already exists or has been requested before.
+          required: true
+        - label: This feature aligns with the goals and scope of the toolkit.
+          required: false
+        - label: I have run `uv run ldt-toolkit --help` and checked where this feature should be integrated.
+          required: false
+  - type: dropdown
+    id: feature-area
+    attributes:
+      label: "Feature Area"
+      description: Select the main area for your proposal.
+      options:
+        - "New data preparation component"
+        - "New build_trajectories technique"
+        - "New preprocessing technique"
+        - "New machine-learning estimator"
+        - "Other / cross-cutting improvement"
+    validations:
+      required: true
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: "What's the Problem?"
+      description: Help us understand the problem you're facing or the limitation you're experiencing. For instance, is there something you're always finding challenging when using the project?
+      placeholder: "Hint: ‘brevity is the soul of wit’, Hamlet — by William Shakespeare"
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: "The Dream Solution"
+      description: Describe what you'd love to see implemented. Be as specific as possible. Feel free to include code samples, mockups, or anything else that paints a clearer picture.
+      placeholder: "Explain how the feature should function."
+    validations:
+      required: true
+  - type: textarea
+    id: cli-integration
+    attributes:
+      label: "CLI/Module Integration Proposal"
+      description: Explain where this should appear in the toolkit CLI/module structure.
+      placeholder: "Example: data_preprocessing -> preprocess_MCS_by_LEAP"
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives"
+      description: Have you considered other ways to solve this problem? Share them with us!
+      placeholder: "Hint: Optional, e.g., alternative approaches."
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: "Context & Relevance"
+      description: Give us some background. How will this feature be useful in the broader context of longitudinal data analysis? Can you provide examples of use-cases or studies where this feature would shine?
+      placeholder: "Hint: Optional, e.g., use-cases."
+    validations:
+      required: false
+  - type: textarea
+    id: examples
+    attributes:
+      label: "Screenshots or Additional Material"
+      description: If you have any screenshots, sketches, or any other material that can help us understand your feature request better, please include them here.
+      placeholder: "Hint: Optional, e.g., screenshots, links to similar features in other projects, etc."
+    validations:
+      required: false
+  - type: dropdown
+    id: contribution
+    attributes:
+      label: "Willing to Contribute?"
+      description: Would you be willing to help implement this feature? If yes, review our contributing section in the README.
+      options:
+        - "Yes"
+        - "No"

@@ -1,0 +1,296 @@
+waves:
+  W1:
+    output_csv: data/processed/MCS/W1/W1_final.csv
+    datasets:
+      - file_name: mcs1_family_interview.dta
+        role: family
+      - file_name: mcs1_family_derived.dta
+        role: family
+      - file_name: mcs1_geographically_linked_data.dta
+        role: family
+      - file_name: mcs1_cm_interview.dta
+        role: child
+        cnum_source: ACNUM00
+      - file_name: mcs1_cm_derived.dta
+        role: child
+        cnum_source: ACNUM00
+      - file_name: mcs1_parent_interview.dta
+        role: parent
+        pnum_source: APNUM00
+      - file_name: mcs1_parent_derived.dta
+        role: parent
+        pnum_source: APNUM00
+      - file_name: mcs1_proxy_partner_interview.dta
+        role: parent
+        pnum_source: APNUM00
+      - file_name: mcs1_parent_cm_interview.dta
+        role: link
+        cnum_source: ACNUM00
+        pnum_source: APNUM00
+      - file_name: mcs1_hhgrid.dta
+        role: link
+        cnum_source: ACNUM00
+        pnum_source: APNUM00
+        filter_to_valid_child_cnum: true
+
+  W2:
+    output_csv: data/processed/MCS/W2/W2_final.csv
+    excluded_datasets:
+      - mcs2_older_siblings_questionnaire.dta
+    datasets:
+      - file_name: mcs2_family_interview.dta
+        role: family
+      - file_name: mcs2_family_derived.dta
+        role: family
+      - file_name: mcs2_geographically_linked_data.dta
+        role: family
+      - file_name: mcs2_neighbourhood_observations.dta
+        role: family
+      - file_name: mcs2_cm_interview.dta
+        role: child
+        cnum_source: BCNUM00
+      - file_name: mcs2_cm_derived.dta
+        role: child
+        cnum_source: BCNUM00
+      - file_name: mcs2_cm_cognitive_assessment.dta
+        role: child
+        cnum_source: BCNUM00
+      - file_name: mcs2_cm_oral_fluid.dta
+        role: child
+        cnum_source: BCNUM00
+      - file_name: mcs2_parent_interview.dta
+        role: parent
+        pnum_source: BPNUM00
+      - file_name: mcs2_parent_derived.dta
+        role: parent
+        pnum_source: BPNUM00
+      - file_name: mcs2_proxy_partner_interview.dta
+        role: parent
+        pnum_source: BPNUM00
+      - file_name: mcs2_parent_cm_interview.dta
+        role: link
+        cnum_source: BCNUM00
+        pnum_source: BPNUM00
+      - file_name: mcs2_hhgrid.dta
+        role: link
+        cnum_source: BCNUM00
+        pnum_source: BPNUM00
+        filter_to_valid_child_cnum: true
+
+  W3:
+    output_csv: data/processed/MCS/W3/W3_final.csv
+    excluded_datasets:
+      - mcs3_older_siblings_questionnaire.dta
+    datasets:
+      - file_name: mcs3_family_interview.dta
+        role: family
+      - file_name: mcs3_family_derived.dta
+        role: family
+      - file_name: mcs3_geographically_linked_data.dta
+        role: family
+      - file_name: mcs3_cm_interview.dta
+        role: child
+        cnum_source: CCNUM00
+      - file_name: mcs3_cm_derived.dta
+        role: child
+        cnum_source: CCNUM00
+      - file_name: mcs3_cm_cognitive_assessment.dta
+        role: child
+        cnum_source: CCNUM00
+      - file_name: mcs3_cm_teacher_survey.dta
+        role: child
+        cnum_source: CCNUM00
+      - file_name: mcs3_parent_interview.dta
+        role: parent
+        pnum_source: CPNUM00
+      - file_name: mcs3_parent_derived.dta
+        role: parent
+        pnum_source: CPNUM00
+      - file_name: mcs3_proxy_partner_interview.dta
+        role: parent
+        pnum_source: CPNUM00
+      - file_name: mcs3_parent_cm_interview.dta
+        role: link
+        cnum_source: CCNUM00
+        pnum_source: CPNUM00
+      - file_name: mcs3_hhgrid.dta
+        role: link
+        cnum_source: CCNUM00
+        pnum_source: CPNUM00
+        filter_to_valid_child_cnum: true
+
+  W4:
+    output_csv: data/processed/MCS/W4/W4_final.csv
+    datasets:
+      - file_name: mcs4_family_interview.dta
+        role: family
+      - file_name: mcs4_family_derived.dta
+        role: family
+      - file_name: mcs4_geographically_linked_data.dta
+        role: family
+      - file_name: mcs4_cm_interview.dta
+        role: child
+        cnum_source: DCNUM00
+      - file_name: mcs4_cm_derived.dta
+        role: child
+        cnum_source: DCNUM00
+      - file_name: mcs4_cm_cognitive_assessment.dta
+        role: child
+        cnum_source: DCNUM00
+      - file_name: mcs4_cm_teacher_survey.dta
+        role: child
+        cnum_source: DCNUM00
+      - file_name: mcs4_cm_aspirations.dta
+        role: child
+        cnum_source: DCNUM00
+      - file_name: mcs4_parent_interview.dta
+        role: parent
+        pnum_source: DPNUM00
+      - file_name: mcs4_parent_derived.dta
+        role: parent
+        pnum_source: DPNUM00
+      - file_name: mcs4_proxy_partner_interview.dta
+        role: parent
+        pnum_source: DPNUM00
+      - file_name: mcs4_parent_cm_interview.dta
+        role: link
+        cnum_source: DCNUM00
+        pnum_source: DPNUM00
+      - file_name: mcs4_hhgrid.dta
+        role: link
+        cnum_source: DCNUM00
+        pnum_source: DPNUM00
+        filter_to_valid_child_cnum: true
+
+  W5:
+    output_csv: data/processed/MCS/W5/W5_final.csv
+    datasets:
+      - file_name: mcs5_family_interview.dta
+        role: family
+      - file_name: mcs5_family_derived.dta
+        role: family
+      - file_name: mcs5_geographically_linked_data.dta
+        role: family
+      - file_name: mcs5_cm_interview.dta
+        role: child
+        cnum_source: ECNUM00
+      - file_name: mcs5_cm_derived.dta
+        role: child
+        cnum_source: ECNUM00
+      - file_name: mcs5_cm_cognitive_assessment.dta
+        role: child
+        cnum_source: ECNUM00
+      - file_name: mcs5_cm_teacher_survey.dta
+        role: child
+        cnum_source: ECNUM00
+      - file_name: mcs5_parent_interview.dta
+        role: parent
+        pnum_source: EPNUM00
+      - file_name: mcs5_parent_derived.dta
+        role: parent
+        pnum_source: EPNUM00
+      - file_name: mcs5_parent_income_brackets.dta
+        role: parent
+        pnum_source: EPNUM00
+      - file_name: mcs5_proxy_partner_interview.dta
+        role: parent
+        pnum_source: EPNUM00
+      - file_name: mcs5_proxy_partner_income_brackets.dta
+        role: parent
+        pnum_source: EPNUM00
+      - file_name: mcs5_parent_cm_interview.dta
+        role: link
+        cnum_source: ECNUM00
+        pnum_source: EPNUM00
+      - file_name: mcs5_hhgrid.dta
+        role: link
+        cnum_source: ECNUM00
+        pnum_source: EPNUM00
+        filter_to_valid_child_cnum: true
+
+  W6:
+    output_csv: data/processed/MCS/W6/W6_final.csv
+    excluded_datasets:
+      - mcs6_cm_accelerometer_derived.dta
+      - mcs6_cm_tud_harmonised.dta
+      - mcs6_tud_parsed_data_paper_calendar_format.dta
+      - mcs6_tud_parsed_data_web_calendar_format.dta
+      - mcs6_tud_parsed_data_app_episode_format.dta
+    datasets:
+      - file_name: mcs6_family_derived.dta
+        role: family
+      - file_name: mcs_sweep6_imd_e_2004.dta
+        role: family
+      - file_name: mcs_sweep6_imd_n_2004.dta
+        role: family
+      - file_name: mcs_sweep6_imd_s_2004.dta
+        role: family
+      - file_name: mcs_sweep6_imd_w_2004.dta
+        role: family
+      - file_name: mcs6_cm_interview.dta
+        role: child
+        cnum_source: FCNUM00
+      - file_name: mcs6_cm_derived.dta
+        role: child
+        cnum_source: FCNUM00
+      - file_name: mcs6_cm_cognitive_assessment.dta
+        role: child
+        cnum_source: FCNUM00
+      - file_name: mcs6_parent_interview.dta
+        role: parent
+        pnum_source: FPNUM00
+      - file_name: mcs6_parent_derived.dta
+        role: parent
+        pnum_source: FPNUM00
+      - file_name: mcs6_parent_income_brackets.dta
+        role: parent
+        pnum_source: FPNUM00
+      - file_name: mcs6_parent_assessment.dta
+        role: parent
+        pnum_source: FPNUM00
+      - file_name: mcs6_proxy_partner_interview.dta
+        role: parent
+        pnum_source: FPNUM00
+      - file_name: mcs6_parent_cm_interview.dta
+        role: link
+        cnum_source: FCNUM00
+        pnum_source: FPNUM00
+      - file_name: mcs6_hhgrid.dta
+        role: link
+        cnum_source: FCNUM00
+        pnum_source: FPNUM00
+        filter_to_valid_child_cnum: true
+
+  W7:
+    output_csv: data/processed/MCS/W7/W7_final.csv
+    excluded_datasets:
+      - mcs7_cm_qualifications.dta
+    datasets:
+      - file_name: mcs7_family_interview.dta
+        role: family
+      - file_name: mcs7_family_derived.dta
+        role: family
+      - file_name: mcs7_cm_interview.dta
+        role: child
+        cnum_source: GCNUM00
+      - file_name: mcs7_cm_derived.dta
+        role: child
+        cnum_source: GCNUM00
+      - file_name: mcs7_cm_cognitive_assessment.dta
+        role: child
+        cnum_source: GCNUM00
+      - file_name: mcs7_parent_interview.dta
+        role: parent
+        pnum_source: GPNUM00
+      - file_name: mcs7_parent_derived.dta
+        role: parent
+        pnum_source: GPNUM00
+      - file_name: mcs7_parent_cm_interview.dta
+        role: link
+        cnum_source: GCNUM00
+        pnum_source: GPNUM00
+      - file_name: mcs7_hhgrid.dta
+        role: link
+        cnum_source: GCNUM00
+        pnum_source: GPNUM00
+        filter_to_valid_child_cnum: true

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCS W1 to W7 Mapping Explorer</title>
+  <style>
+    :root {
+      --bg-1: #f5f5f7;
+      --bg-2: #ebedf2;
+      --text: #1d1d1f;
+      --muted: #6e6e73;
+      --line: #d2d2d7;
+      --card: rgba(255, 255, 255, 0.82);
+      --card-strong: rgba(255, 255, 255, 0.92);
+      --ok: #1d7f43;
+      --warn: #9e5b00;
+      --none: #8a8a8f;
+      --blue: #0071e3;
+      --blue-soft: #e9f3ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 900px at 105% -10%, #dfe8ff 0%, transparent 45%),
+        radial-gradient(900px 700px at -10% 110%, #f7eaff 0%, transparent 52%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    .page {
+      width: 100vw;
+      max-width: 100vw;
+      padding: clamp(16px, 2.2vw, 28px);
+    }
+
+    .hero {
+      margin-bottom: 14px;
+      padding: 20px 22px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.58);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+      backdrop-filter: blur(20px) saturate(120%);
+      -webkit-backdrop-filter: blur(20px) saturate(120%);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      margin: 0 0 7px;
+      font-size: clamp(1.24rem, 2.2vw, 1.86rem);
+      letter-spacing: -0.02em;
+      font-weight: 720;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 12px 0 14px;
+      align-items: center;
+    }
+
+    .segmented {
+      display: inline-flex;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.68);
+      border: 1px solid rgba(255, 255, 255, 0.62);
+      box-shadow: 0 7px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .seg-btn {
+      border: 1px solid #d7d7dd;
+      background: #f8f8fb;
+      color: #3a3a3c;
+      border-radius: 10px;
+      padding: 7px 12px;
+      font-size: 0.83rem;
+      font-weight: 640;
+      cursor: pointer;
+    }
+
+    .seg-btn.active {
+      background: var(--blue-soft);
+      color: var(--blue);
+      border-color: #b7d7ff;
+    }
+
+    .legend {
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin-left: auto;
+      padding: 0 3px;
+    }
+
+    .section-title {
+      margin: 18px 0 9px;
+      font-size: 1.02rem;
+      font-weight: 680;
+      letter-spacing: -0.01em;
+      color: #242426;
+    }
+
+    .table-shell {
+      width: 100%;
+      border-radius: 20px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      background: var(--card-strong);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      table-layout: fixed;
+      background: var(--card);
+    }
+
+    #mappingTable { min-width: 2280px; }
+    #nonLongTable { min-width: 860px; }
+
+    #mappingTable col:nth-child(1) { width: 9%; }
+    #mappingTable col:nth-child(2) { width: 9%; }
+    #mappingTable col:nth-child(3) { width: 9%; }
+    #mappingTable col:nth-child(4) { width: 9%; }
+    #mappingTable col:nth-child(5) { width: 9%; }
+    #mappingTable col:nth-child(6) { width: 9%; }
+    #mappingTable col:nth-child(7) { width: 9%; }
+    #mappingTable col:nth-child(8) { width: 13%; }
+    #mappingTable col:nth-child(9) { width: 24%; }
+    #nonLongTable col:nth-child(1) { width: 38%; }
+    #nonLongTable col:nth-child(2) { width: 62%; }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      text-align: left;
+      font-size: 0.78rem;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: #4a4a4d;
+      padding: 13px 12px;
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid #e8e8ed;
+      background: rgba(247, 247, 250, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    thead th:last-child { border-right: 0; }
+
+    tbody td {
+      vertical-align: top;
+      padding: 12px;
+      border-bottom: 1px solid #e5e5ea;
+      border-right: 1px solid #efeff4;
+      font-size: 0.885rem;
+      line-height: 1.35;
+      color: #1f1f22;
+      background: rgba(255, 255, 255, 0.52);
+    }
+
+    tbody tr:nth-child(even) td { background: rgba(249, 249, 252, 0.75); }
+
+    tbody tr:hover td {
+      background: rgba(236, 243, 255, 0.74);
+      transition: background 120ms ease;
+    }
+
+    tbody td:last-child { border-right: 0; }
+
+    .none { color: var(--none); font-weight: 540; }
+
+    code {
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, "Cascadia Mono", "Roboto Mono", "Courier New", monospace;
+      font-size: 0.815rem;
+      border: 1px solid #d8d8dd;
+      background: #f6f6fa;
+      border-radius: 7px;
+      padding: 0.09rem 0.4rem;
+      color: #1f1f22;
+      white-space: nowrap;
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 0.12rem 0.45rem;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 650;
+      margin-right: 0.3rem;
+      margin-bottom: 0.24rem;
+      border: 1px solid transparent;
+    }
+
+    .chip-ok { color: var(--ok); border-color: #b8e4c8; background: #edf9f1; }
+    .chip-warn { color: var(--warn); border-color: #f1d0a6; background: #fff4e8; }
+    .chip-none { color: var(--none); border-color: #dadadf; background: #f4f4f6; }
+    .chip-proxy {
+      color: #7a2bc2;
+      border-color: #dcc1f7;
+      background: linear-gradient(180deg, #faefff, #f3e6ff);
+    }
+
+    .notes-list {
+      margin: 0;
+      padding-left: 1rem;
+    }
+
+    .notes-list li { margin: 0.14rem 0; }
+
+    .cell-scope {
+      display: block;
+      margin-top: 0.2rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.25;
+      font-weight: 560;
+    }
+
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>MCS Variable Mapping (W1 → W2/W3/W4/W5/W6/W7)</h1>
+      <p class="subtitle">Apple-style, full-width explorer with group filter. Longitudinal and non-longitudinal features are shown in separate tables for easier reading.</p>
+    </section>
+
+    <div class="controls">
+      <div class="segmented" role="tablist" aria-label="Filter feature groups">
+        <button class="seg-btn active" data-filter="all" role="tab" aria-selected="true">All Features</button>
+        <button class="seg-btn" data-filter="longitudinal" role="tab" aria-selected="false">Longitudinal</button>
+        <button class="seg-btn" data-filter="non-longitudinal" role="tab" aria-selected="false">Non-Longitudinal</button>
+      </div>
+      <div class="legend" id="visibleCount">Showing all rows</div>
+    </div>
+
+    <section id="longSection">
+      <h2 class="section-title">Longitudinal Features</h2>
+      <section class="table-shell">
+        <table id="mappingTable" aria-label="MCS longitudinal mapping table">
+          <colgroup>
+            <col><col><col><col><col><col><col><col><col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>W1</th>
+              <th>W2</th>
+              <th>W3</th>
+              <th>W4</th>
+              <th>W5</th>
+              <th>W6</th>
+              <th>W7</th>
+              <th>Meaning</th>
+              <th>Proxy Harmonisation in preprocessing stage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-group="longitudinal">
+              <td><code>ADHINC00</code><span class="cell-scope">[family_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BDHINC00</code><span class="cell-scope">[family_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>ADHINC00</code><span class="cell-scope">[family_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>ADHINC00</code><span class="cell-scope">[family_derived]</span></td>
+              <td><span class="chip chip-proxy">Proxy</span><code>EOEDE000</code><span class="cell-scope">[family_derived]</span></td>
+              <td><span class="chip chip-proxy">Proxy</span><code>FOEDE000</code><span class="cell-scope">[family_derived]</span></td>
+              <td><span class="chip chip-none">Not found</span></td>
+              <td>DV Family Income (banded)</td>
+              <td>
+                <ul class="notes-list">
+                  <li>W3/W4 use direct <code>ADHINC00</code> in <code>family_derived</code>.</li>
+                  <li>Convert W5/W6 weekly income to annual using <code>x * 52</code>.</li>
+                  <li>Convert missing / not applicable / refusal / don't know codes to <code>NaN</code>.</li>
+                  <li>Apply shared annual bins (for example: &lt;&pound;5k, middle bands, &gt;&pound;50k).</li>
+                </ul>
+              </td>
+            </tr>
+
+            <tr data-group="longitudinal">
+              <td><code>ADROOW00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BDROOW00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>CDROOW00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>DPROOW00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>EPROOW00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>FPROOW00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>GPROOW00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td>Tenure of current home (owns/rents)</td>
+              <td>—</td>
+            </tr>
+
+            <tr data-group="longitudinal">
+              <td><code>ACADMO00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BPADMO00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-none">Not found</span></td>
+              <td><span class="chip chip-none">Not found</span></td>
+              <td><span class="chip chip-none">Not found</span></td>
+              <td><span class="chip chip-none">Not found</span></td>
+              <td><span class="chip chip-none">Not found</span></td>
+              <td>Number of health problems</td>
+              <td>—</td>
+            </tr>
+
+            <tr data-group="longitudinal">
+              <td><code>ACACCA00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BPACCA00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>CPACCA00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>DPACCA00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>EPACCA00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>FPACCA00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>GCACCA00</code><span class="cell-scope">[cm_interview]</span></td>
+              <td>Number of accidents or injuries</td>
+              <td>Scope moves to CM interview at W7.</td>
+            </tr>
+
+            <tr data-group="longitudinal">
+              <td><code>ACADMA00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BPADMA00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>CPADMA00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>DPADMA00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>EPADMA00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>FPADMA00</code><span class="cell-scope">[parent_cm_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>GCADMA00</code><span class="cell-scope">[cm_interview]</span></td>
+              <td>Number of hospital admissions</td>
+              <td>Scope moves to CM interview at W7.</td>
+            </tr>
+
+            <tr data-group="longitudinal">
+              <td><code>APFCIN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BPFCIN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>CPFCIN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>DPFCIN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>EPFCIN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>FPFCIN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>GPFCIN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td>Current legal marital status</td>
+              <td>—</td>
+            </tr>
+
+            <tr data-group="longitudinal">
+              <td><code>ADD05C00</code><span class="cell-scope">[parent_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BDD05C00</code><span class="cell-scope">[parent_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>CDD05C00</code><span class="cell-scope">[parent_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>DDD05C00</code><span class="cell-scope">[parent_derived]</span></td>
+              <td><span class="chip chip-none">Not found</span></td>
+              <td><span class="chip chip-none">Not found</span></td>
+              <td><span class="chip chip-none">Not found</span></td>
+              <td>DV NS-SEC 5 classes (last known job)</td>
+              <td>—</td>
+            </tr>
+
+            <tr data-group="longitudinal">
+              <td><code>ADACAQ00</code><span class="cell-scope">[parent_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BDACAQ00</code><span class="cell-scope">[parent_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>CDACAQ00</code><span class="cell-scope">[parent_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>DDACAQ00</code><span class="cell-scope">[parent_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>EACAQ00</code><span class="cell-scope">[parent_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>FDACAQ00</code><span class="cell-scope">[parent_derived]</span></td>
+              <td><span class="chip chip-none">Not found</span></td>
+              <td>NVQ equivalent of highest Academic qualification</td>
+              <td>—</td>
+            </tr>
+
+            <tr data-group="longitudinal">
+              <td><code>APGEHE00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BPGEHE00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>CPGENA00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>DPGENA00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>EPGENA00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>FPGENA00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>GPGENA00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td>Respondent general health</td>
+              <td>GEHE -> GENA naming change from W3+.</td>
+            </tr>
+
+            <tr data-group="longitudinal">
+              <td><code>APDEAN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BPDEAN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>CPDEAN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>DPDEAN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>EPDEAN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>FPDEAN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>GPDEAN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td>Ever diagnosed depression/serious anxiety</td>
+              <td>—</td>
+            </tr>
+
+            <tr data-group="longitudinal">
+              <td><code>APSMMA00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BPSMMA00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>CPSMMA00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>DPSMMA00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>EPSMMA00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>FPSMMA00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-none">Not found</span></td>
+              <td>How many cigarettes per day</td>
+              <td>—</td>
+            </tr>
+
+            <tr data-group="longitudinal">
+              <td><code>APALDR00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BPALDR00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>CPALDR00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>DPALDR00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>EPALDR00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>FPALDR00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-none">Not found</span></td>
+              <td>Frequency of alcohol consumption</td>
+              <td>—</td>
+            </tr>
+
+            <tr data-group="longitudinal">
+              <td><code>APWALI00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BPWALI00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>CPWALI00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>DPWALI00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>EPWALI00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-proxy">Proxy</span><code>FPSATN00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td><span class="chip chip-none">Not found</span></td>
+              <td>Life satisfaction</td>
+              <td>
+                <ul class="notes-list">
+                  <li>Convert missing / not applicable / refusal / don't know codes to <code>NaN</code>.</li>
+                  <li>Rescale to common 0-1: W1 <code>(x-1)/9</code>, W6 <code>x/10</code>.</li>
+                  <li>Optionally rebucket into aligned low/medium/high wellbeing classes.</li>
+                </ul>
+              </td>
+            </tr>
+
+            <tr data-group="longitudinal">
+              <td><span class="chip chip-none">Not found</span></td>
+              <td><span class="chip chip-ok">Found</span><code>BEMOTION</code><span class="cell-scope">[cm_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>CEMOTION</code><span class="cell-scope">[cm_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>DDEMOTION</code><span class="cell-scope">[cm_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>EEMOTION</code><span class="cell-scope">[cm_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>FEMOTION</code><span class="cell-scope">[cm_derived]</span></td>
+              <td><span class="chip chip-ok">Found</span><code>GEMOTION</code><span class="cell-scope">[cm_derived]</span></td>
+              <td>DV SDQ Emotional Symptoms (parent-reported path)</td>
+              <td>
+                <ul class="notes-list">
+                  <li>No W1 equivalent in current sweep files.</li>
+                  <li>Convert missing / not applicable / refusal / don't know codes to <code>NaN</code>.</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+
+    <section id="nonSection">
+      <h2 class="section-title">Non-Longitudinal Features (W1 only)</h2>
+      <section class="table-shell">
+        <table id="nonLongTable" aria-label="MCS non-longitudinal features table">
+          <colgroup>
+            <col><col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>W1</th>
+              <th>Meaning / Harmonisation during preprocessing</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ADC06E00</code><span class="cell-scope">[cm_derived]</span></td>
+              <td>DV Cohort Member Ethnic Group - 6 category Census class</td>
+            </tr>
+            <tr>
+              <td><code>AHCSEX00</code><span class="cell-scope">[hhgrid]</span></td>
+              <td>Cohort Member Sex</td>
+            </tr>
+            <tr>
+              <td><code>APILPR00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td>Any illnesses or problems during pregnancy</td>
+            </tr>
+            <tr>
+              <td><code>APDROF00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td>Frequency of alcohol consumption during pregnancy?</td>
+            </tr>
+            <tr>
+              <td><code>APLOSA00</code><span class="cell-scope">[parent_interview]</span></td>
+              <td>Felt low or sad since most recent child was born</td>
+            </tr>
+            <tr>
+              <td><code>APDIST9</code><span class="cell-scope">[composite]</span></td>
+              <td>
+                W1 parent psychological distress composite from
+                <code>APTIRE00</code>, <code>APDEPR00</code>, <code>APWORR00</code>, <code>APRAGE00</code>,
+                <code>APSCAR00</code>, <code>APUPSE00</code>, <code>APKEYD00</code>, <code>APNERV00</code>, <code>APHERA00</code>.
+                Recode <code>Yes=1</code>, <code>No=0</code>, convert <code>-1/-8/-9</code> to <code>NaN</code>, then compute
+                <code>APDIST9 = sum(items)</code> (range 0-9).
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+
+  </main>
+
+  <script>
+    (function () {
+      const buttons = Array.from(document.querySelectorAll('.seg-btn'));
+      const longSection = document.getElementById('longSection');
+      const nonSection = document.getElementById('nonSection');
+      const longRows = Array.from(document.querySelectorAll('#mappingTable tbody tr'));
+      const nonRows = Array.from(document.querySelectorAll('#nonLongTable tbody tr'));
+      const countEl = document.getElementById('visibleCount');
+
+      function applyFilter(filter) {
+        if (filter === 'all') {
+          longSection.style.display = '';
+          nonSection.style.display = '';
+          countEl.textContent = `Showing all ${longRows.length + nonRows.length} features`;
+        } else if (filter === 'longitudinal') {
+          longSection.style.display = '';
+          nonSection.style.display = 'none';
+          countEl.textContent = `Showing ${longRows.length} longitudinal features`;
+        } else {
+          longSection.style.display = 'none';
+          nonSection.style.display = '';
+          countEl.textContent = `Showing ${nonRows.length} non-longitudinal features`;
+        }
+
+        buttons.forEach((btn) => {
+          const active = btn.dataset.filter === filter;
+          btn.classList.toggle('active', active);
+          btn.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+      });
+
+      applyFilter('all');
+    })();
+  </script>
+</body>
+</html>

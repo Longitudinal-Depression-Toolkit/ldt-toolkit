@@ -1,0 +1,99 @@
+name: "❓ Ask a Question"
+description: Ask a question about the Longitudinal Depression Trajectories Toolkit.
+title: "❓ [QUESTION] - <title>"
+labels:
+  - "question"
+assignees:
+  - "simonprovost"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        <div align="center">
+           <h1 align="center">
+              <br>
+              <img src="https://raw.githubusercontent.com/OWNER/REPO/main/public/logo/logo.png" alt="Longitudinal Depression Trajectories Toolkit" width="200">
+              <br>
+              Longitudinal Depression Trajectories Toolkit
+              <br>
+           </h1>
+           <h4 align="center">
+              Toolkit for Longitudinal Depression Trajectories Studies
+              <br>
+              Millennium Cohort Study (MCS) as Proof-of-Concept —
+              <a href="https://github.com">Documentation</a>
+           </h4>
+        </div>
+
+        <div align="center">
+        <img src="https://img.shields.io/static/v1?label=Python&message=3.10%E2%80%933.12&color=3776AB&style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10-3.12">
+        <img src="https://img.shields.io/static/v1?label=UV&message=managed&color=2196F3&style=for-the-badge&logo=UV&logoColor=white" alt="UV managed">
+        <img src="https://img.shields.io/static/v1?label=RUFF&message=compliant&color=0F172A&style=for-the-badge&logo=ruff&logoColor=white" alt="RUFF compliant">
+        <img src="https://img.shields.io/static/v1?label=pre--commit&message=enabled&color=2E7D32&style=for-the-badge&logo=pre-commit&logoColor=white" alt="pre-commit enabled">
+        <img src="https://img.shields.io/static/v1?label=beartype&message=compliant&color=8E24AA&style=for-the-badge" alt="beartype compliant">
+        </div>
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Before Submitting"
+      description: Please confirm the following to help us answer your question efficiently.
+      options:
+        - label: I have read the project's README.md and run `uv run ldt-toolkit --help`.
+          required: true
+        - label: I have run `uv run ldt-toolkit --help` and reviewed the CLI namespaces.
+          required: true
+        - label: I have searched through the existing GitHub issues to check if my question has been asked before.
+          required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: "Question"
+      description: Please be as specific as possible. The more detailed you are, the easier it will be for us to provide a precise answer.
+      placeholder: "Hint: ‘brevity is the soul of wit’, Hamlet — by William Shakespeare"
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: "Context"
+      description: Why are you asking this question? Are you facing any challenges or limitations? Understanding your context helps us give a more relevant answer.
+      placeholder: "Hint: Optional, e.g., code snippets, error messages, etc."
+    validations:
+      required: false
+  - type: textarea
+    id: examples
+    attributes:
+      label: "Screenshots or Additional Material"
+      description: If applicable, add screenshots, code snippets, or any other material that might help us understand your question better.
+      placeholder: "Hint: Optional, e.g., screenshots, links, etc."
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: "### Environment Information"
+  - type: dropdown
+    id: os
+    attributes:
+      label: "Operating System"
+      description: What operating system are you using?
+      options:
+        - "MacOS"
+        - "Linux"
+        - "Windows"
+        - "Other"
+  - type: input
+    id: other-os
+    attributes:
+      label: "Other Operating System"
+      description: "Only fill this if you selected 'Other' in the Operating System dropdown."
+      placeholder: "e.g., Ubuntu 20.04"
+    validations:
+      required: false
+  - type: input
+    id: python-version
+    attributes:
+      label: "Python Version"
+      description: What version of Python are you using?
+      placeholder: "e.g., 3.10.14"
+    validations:
+      required: true

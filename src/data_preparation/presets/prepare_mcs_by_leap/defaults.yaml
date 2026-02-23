@@ -1,0 +1,9 @@
+general:
+  show_summary_logs: true
+  run_parallel_when_possible: true
+
+output:
+  default_long_output_csv: data/processed/MCS/mcs_longitudinal_long.csv
+  default_wide_output_csv: data/processed/MCS/mcs_longitudinal_wide.csv
+  default_wave_output_dir: data/processed/MCS/wave_outputs
+  default_wide_suffix_prefix: "_w"
