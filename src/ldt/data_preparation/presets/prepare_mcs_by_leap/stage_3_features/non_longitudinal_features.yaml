@@ -1,0 +1,20 @@
+waves:
+  W1:
+    - source: ADC06E00
+      scope: cm_derived
+    - source: AHCSEX00
+      scope: hhgrid
+    - source: APILPR00
+      scope: parent_interview
+    - source: APDROF00
+      scope: parent_interview
+    - source: APLOSA00
+      scope: parent_interview
+    - source: APDIST9
+      scope: composite
+  W2: []
+  W3: []
+  W4: []
+  W5: []
+  W6: []
+  W7: []

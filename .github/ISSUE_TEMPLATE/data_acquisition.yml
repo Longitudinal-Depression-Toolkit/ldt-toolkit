@@ -1,0 +1,94 @@
+name: "📥 Data Acquisition Request"
+description: Request onboarding of a study/dataset and provide contact/access details for follow-up.
+title: "📥 [DATA_ACQUISITION] - <study or dataset>"
+labels:
+  - "data-acquisition"
+  - "stage:data_acquisition"
+assignees:
+  - "simonprovost"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to request support for finding, accessing, or onboarding study data.
+        Include enough contact and access detail so maintainers can follow up effectively.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Before Submitting"
+      options:
+        - label: I am not sharing restricted participant-level data in this issue.
+          required: true
+        - label: I included at least one concrete contact point or official access route.
+          required: true
+  - type: dropdown
+    id: request-purpose
+    attributes:
+      label: "Request Purpose"
+      options:
+        - "New study onboarding"
+        - "Refresh/extend an existing study source"
+        - "Help identifying candidate datasets"
+    validations:
+      required: true
+  - type: input
+    id: study-name
+    attributes:
+      label: "Study or Dataset Name"
+      placeholder: "Example: Millennium Cohort Study (MCS)"
+    validations:
+      required: true
+  - type: input
+    id: owning-organisation
+    attributes:
+      label: "Owning Organisation"
+      placeholder: "Example: Centre for Longitudinal Studies (CLS), UCL"
+    validations:
+      required: true
+  - type: input
+    id: study-scope
+    attributes:
+      label: "Scope (Country, Years, Waves)"
+      placeholder: "Example: UK, 2000-2023, sweeps 1-7"
+    validations:
+      required: true
+  - type: textarea
+    id: best-contact
+    attributes:
+      label: "Best Point of Contact"
+      description: Provide name/team, email or contact form URL, and any communication notes.
+      placeholder: "Who should we contact first, and how?"
+    validations:
+      required: true
+  - type: textarea
+    id: access-route
+    attributes:
+      label: "Data Access Route"
+      description: Explain application portal, approvals, licenses, and expected timelines.
+      placeholder: "Include URLs and procedural steps if known."
+    validations:
+      required: true
+  - type: textarea
+    id: reference-materials
+    attributes:
+      label: "Reference Materials"
+      description: Share links to codebooks, data dictionaries, variable maps, or technical guides.
+      placeholder: "Point us to where we should look first for presets/data mapping."
+    validations:
+      required: true
+  - type: textarea
+    id: preset-target
+    attributes:
+      label: "Preset/Workflow Target"
+      description: Which preset or stage should this data support first?
+      placeholder: "Example: `data_preparation.presets.prepare_<study>_by_<team>`"
+    validations:
+      required: true
+  - type: textarea
+    id: additional-notes
+    attributes:
+      label: "Additional Notes"
+      description: Any legal, ethical, or operational constraints we should know.
+      placeholder: "Optional."
+    validations:
+      required: false

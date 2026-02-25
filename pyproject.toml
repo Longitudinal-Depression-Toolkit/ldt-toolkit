@@ -1,0 +1,93 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ldt-toolkit"
+version = "0.0.1"
+description = "Python library for longitudinal depression trajectories workflows."
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Simon Provost", email = "simon.gilbert.provost@gmail.com" },
+  { name = "Bianca Branco", email = "s2714881@sms.ed.ac.uk" },
+  { name = "Alex Kwong", email = "akwong@ed.ac.uk" },
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "beartype>=0.18.5",
+  "rich>=13.7.1",
+  "rich-pyfiglet>=1.0.0",
+  "numpy>=1.26.4",
+  "pandas>=2.2.2",
+  "PyYAML>=6.0.2",
+  "plotly>=5.24.1",
+  "scikit-learn>=1.4.2,<1.6",
+  "scikit-longitudinal>=0.1.7",
+  "tslearn>=0.7.0",
+  "terminaltexteffects>=0.14.2",
+  "skrub==0.6.2",
+  "miceforest>=6.0.5",
+  "notebook>=7.5.3",
+  "shap>=0.49.1",
+  "pipelineprofiler>=0.1.18",
+]
+
+[project.scripts]
+ldt-bridge = "ldt.bridge.runner:main"
+
+[tool.uv]
+dev-dependencies = [
+  "black>=24.4.2",
+  "flake8>=7.1.0",
+  "pre-commit>=3.7.1",
+  "ruff>=0.5.0",
+]
+default-groups = []
+override-dependencies = [
+    "scikit-learn ; sys_platform == 'never'",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["ldt", "ldt.*"]
+
+[tool.setuptools.package-data]
+"ldt.data_preprocessing.tools.build_trajectories.trajectories.lcga" = ["*.R"]
+"ldt.data_preprocessing.tools.build_trajectories.trajectories.gmm" = ["*.R"]
+"ldt.data_preparation.config" = ["*.json"]
+"ldt.data_preparation.presets.prepare_mcs_by_leap" = [
+  "defaults.yaml",
+  "stage_1_wave_paths/*.yaml",
+  "stage_2_subjects/*.yaml",
+  "stage_3_features/*.yaml",
+  "stage_4_composites/*.yaml",
+]
+"ldt.data_preprocessing.config" = ["*.json"]
+"ldt.machine_learning.config" = ["*.json"]
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP", "W"]
+ignore = ["E501"]
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E501"]
