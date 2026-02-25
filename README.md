@@ -1,172 +1,318 @@
-<!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
-   <br>
-   <picture>
-      <source media="(prefers-color-scheme: light)" srcset="public/logo/readme_title_ldtt_light.svg">
-      <source media="(prefers-color-scheme: dark)" srcset="public/logo/readme_title_ldtt.svg">
-      <img src="public/logo/readme_title_ldtt.svg" alt="Longitudinal Depression Trajectories Toolkit" width="1300">
-   </picture>
-   <img src="public/logo/logo.png" alt="Longitudinal Depression Trajectories Toolkit">
-   <br>
-   <a href="https://github.com">Documentation</a> — <a href="https://life-epi-psych.github.io">LEAP group</a>
+  <img src="public/logo/logo.gif" alt="Longitudinal Depression Trajectories Toolkit" width="820">
 </div>
 
----
+<p align="center"><big><big><strong>L</strong>ongitudinal <strong>D</strong>epression <strong>T</strong>rajectories <em>Toolkit</em></big></big></p>
 
 <div align="center">
-
-<img src="https://img.shields.io/static/v1?label=Python&message=3.10%E2%80%933.12&color=3776AB&style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10-3.12">
-<img src="https://img.shields.io/static/v1?label=UV&message=managed&color=2196F3&style=for-the-badge&logo=UV&logoColor=white" alt="UV managed">
-<img src="https://img.shields.io/static/v1?label=RUFF&message=compliant&color=0F172A&style=for-the-badge&logo=ruff&logoColor=white" alt="RUFF compliant">
-<img src="https://img.shields.io/static/v1?label=pre--commit&message=enabled&color=2E7D32&style=for-the-badge&logo=pre-commit&logoColor=white" alt="pre-commit enabled">
-<img src="https://img.shields.io/static/v1?label=beartype&message=compliant&color=8E24AA&style=for-the-badge" alt="beartype compliant">
-
+  <img src="https://img.shields.io/static/v1?label=Python&message=3.10%E2%80%933.12&color=3776AB&style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10-3.12">
+  <img src="https://img.shields.io/static/v1?label=UV&message=managed&color=2196F3&style=for-the-badge&logo=uv&logoColor=white" alt="UV managed">
+  <img src="https://img.shields.io/static/v1?label=Ruff&message=compliant&color=0F172A&style=for-the-badge&logo=ruff&logoColor=white" alt="Ruff compliant">
+  <img src="https://img.shields.io/static/v1?label=Beartype&message=verified&color=8E24AA&style=for-the-badge" alt="Beartype verified">
+  <img src="https://img.shields.io/static/v1?label=Go%20CLI&message=supported&color=00ADD8&style=for-the-badge&logo=go&logoColor=white" alt="Go CLI supported">
+  <img src="https://img.shields.io/static/v1?label=R&message=required%20for%20LGMMs&color=276DC3&style=for-the-badge&logo=r&logoColor=white" alt="R required for LGMMs">
 </div>
 
-## <a id="about-the-project"></a>💡 About The Project
+<div align="center">
+  <a href="https://github.com/OWNER/ldt-toolkit">Documentation (placeholder)</a> -
+  <a href="https://life-epi-psych.github.io">LEAP Group</a>
+</div>
 
-The `Longitudinal Depression Trajectories Toolkit (LDT-Toolkit)` is a command-line toolkit that enables researchers to move
-from raw cohort data to trajectory-based datasets, then to machine-learning-ready data for downstream modeling.
+## <img src="public/icons/lucide/github.svg" width="32" alt="" /> About The Project
 
-`LDT-Toolkit` is designed as a general toolkit for longitudinal depression trajectory studies. This repository currently uses
-the [Millennium Cohort Study (MCS) from the Centre for Longitudinal Studies (CLS), UCL](https://cls.ucl.ac.uk/cls-studies/millennium-cohort-study/)
-as a proof-of-concept case study.
+The `Longitudinal Depression Trajectories Toolkit (LDT-Toolkit)` initiative is designed for *social, medical, and clinical researchers* who work with repeated-measure data and require a *stepping-stone path* from raw cohort files to *downstream modelling*.
 
-**Wait, what is _Longitudinal_ Data in layman's terms?**
+`LDT-Toolkit` is intended as a general toolkit for *longitudinal depression trajectory exploration*. It is currently using the [Millennium Cohort Study (MCS) from CLS/UCL](https://cls.ucl.ac.uk/cls-studies/millennium-cohort-study/) as a *proof-of-concept* case study.
 
-_Longitudinal_ data is a "time-lapse" of the same subject measured repeatedly across time. Instead of one snapshot,
-you observe evolution: how depressive symptoms change from _wave_ to _wave_, who follows _stable_ patterns, and who
-_diverges_. That temporal signal is often more informative than a single cross-sectional snapshot when the objective
-is prediction and trajectory discovery.
+The initiative delivers *two interconnected components*. First, `ldt-toolkit` (this repository) is the *Python engine* of tools and reproducible pipelines to accelerate exploration of longitudinal studies toward downstream modelling, while remaining fully usable in Python scripts or notebooks. Second, `ldt` is a *fully interactive* Go CLI with a *no-code* terminal interface for running and orchestrating the toolkit from start to finish.
 
-**`LDT-Toolkit`'s workflow, in a nutshell:**
+The toolset supports *two broad lines of exploration*. `Playground` methods allow researchers to quickly iterate on their own datasets by running operations across *data preparation*, *data preprocessing*, and *machine learning* phases. With `Presets`, researchers can run *stage-level reproducible pipelines* for a given longitudinal study, and *community contributions* are encouraged so this can grow into a reusable collection of presets for preparing, preprocessing, and modelling longitudinal datasets.
 
-1. (i) Prepare cohort data (e.g., convert source files) or generate synthetic _longitudinal_ data.
-2. (ii) Build depressive symptom trajectories (e.g., via `LCGA`/`GMM`).
-3. (iii) Preprocess datasets to become machine-learning-ready (e.g., combine, EDA, long-to-wide pivot).
-4. (iv) Apply trajectory-based machine learning (longitudinal and standard estimators, currently placeholder).
+And last, within the *data preprocessing* stage, we offer a *brand-new and novel* `Trajectories Builder Playground`: apply existing trajectory-building algorithms to your longitudinal datasets, or design and submit your own builders to help shape a community consensus around reproducible depression-trajectory construction.
 
-### CLI Layout: `Playground` and `Presets — Reproducibility`
+## <img src="public/icons/lucide/terminal.svg" width="32" alt="" /> Setup And Launch
 
-Each stage in `LDT-Toolkit` is split into two complementary interfaces:
-
-- `Playground`: interactive commands for exploratory work and rapid iteration (e.g., try different preprocessing or modeling choices quickly).
-- `Presets — Reproducibility`: a stage-level catalogue of predefined, study-oriented pipelines to reproduce paper-aligned workflows with fewer manual steps.
-
-In practice, this means you can prototype in `Playground`, then switch to the stage presets catalogue when you need more reproducible, shareable runs.
-
-[See more in the documentation.](https://github.com)
-
-## <a id="installation"></a>🛠️ Installation
-
-### Run directly from GitHub with `uv`
-
-```bash
-uvx --from git+https://github.com/OWNER/REPO.git ldt-toolkit --help
-```
-
-### Alternatively, clone and set up locally
-
-```bash
-git clone https://github.com/OWNER/REPO.git
-cd REPO
-uv python pin 3.10
-uv sync
-uv run ldt-toolkit --help
-```
-
-### Optional: Go + Charm interactive CLI
-
-An optional Go interactive CLI is available in `cli`.
-
-On Apple Silicon `macOS`, install Go with:
-
-```bash
-arch -arm64 brew install go
-```
-
-Then run (interactive entrypoint only):
-
-```bash
-cd cli
-go run .
-```
-
-This opens the interactive Charm navigator (`Home`, `data_preparation`, `data_preprocessing`, `machine_learning`).
+> [!IMPORTANT]
+> Use both components: `ldt-toolkit` (Python toolkit) and `ldt` (Go CLI). The CLI is the primary no-code interface and is highly recommended.
 
 <details>
-<summary><strong>R requirement for ``LCGA'' and ``GMM''</strong></summary>
+<summary><strong>Machine Requirements</strong> (<a href="https://www.r-project.org/">R</a>, <a href="https://www.python.org/downloads/">Python</a>, <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a>, <a href="https://go.dev/dl/">Go</a>)</summary>
 
-For latent growth modeling approaches (`LCGA`, `GMM`) relying on R (`lcmm`), `Rscript` must be available.
+Install the following first:
+- Python `3.10` to `3.12`
+- [`uv`](https://docs.astral.sh/uv/)
+- Go (for `ldt` CLI)
+- R + `Rscript` (required only when running `LCGA`/`GMM` tools through `lcmm`)
 
-Via `macOS` (Homebrew):
+Quick checks:
 
 ```bash
+python --version || python3 --version
+uv --version
+go version
+Rscript --version
+```
+
+Example installs by OS:
+
+```bash
+# macOS (Homebrew)
 brew update
-brew install r
-Rscript --version
+brew install python@3.12 uv go r
+
+# Windows (PowerShell + winget)
+winget install -e --id Python.Python.3.12
+winget install -e --id astral-sh.uv
+winget install -e --id GoLang.Go
+winget install -e --id RProject.R
+
+# Linux (Ubuntu/Debian)
+sudo apt-get update
+sudo apt-get install -y python3 python3-pip golang r-base
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-Via `Linux/Unix`:
+</details>
+
+### 1) Install `ldt-toolkit` (Python)
 
 ```bash
-sudo apt-get update && sudo apt-get install -y r-base
-Rscript --version
+git clone https://github.com/OWNER/ldt-toolkit.git
+cd ldt-toolkit
+uv python pin 3.10
+uv sync
 ```
 
-Via `Windows`: install R from [CRAN](https://cran.r-project.org/) and ensure `Rscript.exe` is available on your `PATH`.
+Validate the install:
 
-Then install required R dependencies for `LDT-Toolkit`:
+```bash
+uv run python -c "import ldt; print(ldt.__file__)"
+```
+
+If you plan to run `LCGA`/`GMM`, install R-side dependencies:
 
 ```bash
 Rscript --vanilla setup_R/install_requirements.R
 ```
 
-</details>
-
-## <a id="getting-started"></a>🚀 Getting Started
-
-The following is one possible workflow to explore longitudinal depression trajectories with `LDT-Toolkit`, directly from your
-terminal:
+### 2) Install `ldt` (Go CLI, essential no-code interface)
 
 ```bash
-# Step 1) Generate synthetic longitudinal data (interactive)
-uv run ldt-toolkit data_preparation synthetic_data_generation
-
-# Step 2) Build trajectories (interactive)
-uv run ldt-toolkit data_preprocessing build-trajectories
-
-# Step 3) Pivot long-format data to wide-format data (interactive)
-uv run ldt-toolkit data_preprocessing long_to_wide_pivot
-
-# Step 4a) Longitudinal machine learning namespace (coming soon)
-uv run ldt-toolkit machine_learning longitudinal-machine-learning
-
-# Step 4b) Standard machine learning namespace (coming soon)
-uv run ldt-toolkit machine_learning standard-machine-learning
-
-# Step 4c) Standard ML benchmark suite
-# (includes reproducibility notebook generation; profiler-at-end default = yes)
-uv run ldt-toolkit machine_learning benchmark-standard-ml
-
-# Step 4d) Generate benchmark pipeline profile notebook (inline PipelineProfiler)
-uv run ldt-toolkit machine_learning pipeline-profile-benchmark
+git clone https://github.com/OWNER/ldt.git
+cd ldt
+make build
 ```
 
-## <a id="citation"></a>📝 How to Cite
+Install it for your shell:
+
+```bash
+# bash/zsh users
+make install-bash
+
+# fish users
+make install-fish
+```
+
+If your CLI repo uses short aliases, `make bash` / `make fish` are equivalent.
+
+Reload your shell config, then run:
+
+```bash
+ldt
+```
+
+> [!TIP]
+> The `ldt` CLI is the fastest way to explore the toolkit with no code. Use Python directly when you want low-level control.
+
+### <img src="public/icons/lucide/square-code.svg" width="32" alt="" /> Getting Started W/ the Toolset
+
+<details>
+<summary><strong>(1) Generate Synthetic Data (Multi-Technique)</strong></summary>
+
+```python
+from pathlib import Path
+
+from ldt.data_preparation import EventShockRecovery, MissingDataScenarios, TrendPatterns
+
+out = Path("/path/to/your/project/data")
+out.mkdir(parents=True, exist_ok=True)
+
+TrendPatterns(n_samples=400, n_waves=5, random_state=7).prepare().to_csv(
+    out / "synthetic_trend_patterns.csv", index=False
+)
+
+EventShockRecovery().prepare(
+    n_samples=400,
+    n_waves=5,
+    random_state=7,
+    feature_cols=["depressive_score"],
+    shock_wave=3,
+    shock_mean=3.5,
+    recovery_rate=0.9,
+    noise_sd=0.8,
+).to_csv(out / "synthetic_event_shock.csv", index=False)
+
+MissingDataScenarios().prepare(
+    n_samples=400,
+    n_waves=5,
+    random_state=7,
+    feature_cols=["depressive_score", "sleep_score"],
+    mechanism="mixed",
+    missing_rate=0.20,
+    dropout_rate=0.10,
+    mar_strength=1.0,
+).to_csv(out / "synthetic_with_missing.csv", index=False)
+```
+
+</details>
+
+<details>
+<summary><strong>(2) Build Trajectories (Two Techniques) + ShowTable</strong></summary>
+
+```python
+from pathlib import Path
+
+from ldt.data_preprocessing import BuildTrajectories, ShowTable
+
+input_long = Path("/path/to/your/project/data/synthetic_trend_patterns.csv")
+out = Path("/path/to/your/project/outputs")
+out.mkdir(parents=True, exist_ok=True)
+
+BuildTrajectories().fit_preprocess(
+    mode="from_scratch",
+    input_path=input_long,
+    output_path=out / "trajectories_dtw_kmeans.csv",
+    id_col="subject_id",
+    time_col="wave",
+    value_cols=["depressive_score"],
+    builder="dtw_kmeans",
+    n_trajectories=4,
+)
+BuildTrajectories().fit_preprocess(
+    mode="from_scratch",
+    input_path=input_long,
+    output_path=out / "trajectories_clusterMLD.csv",
+    id_col="subject_id",
+    time_col="wave",
+    value_cols=["depressive_score"],
+    builder="clusterMLD",
+    n_trajectories=4,
+)
+
+ShowTable().fit_preprocess(
+    input_path=out / "trajectories_clusterMLD.csv",
+    output_html=out / "trajectories_clusterMLD_report.html",
+    open_browser=False,
+)
+```
+
+</details>
+
+<details>
+<summary><strong>(3) End-to-End: Synthetic Data to Standard ML</strong></summary>
+
+```python
+from pathlib import Path
+
+from ldt.data_preparation import MissingDataScenarios
+from ldt.data_preprocessing import (
+    AggregateLongToCrossSectional,
+    BuildTrajectories,
+    CleanDataset,
+    CombineDatasetWithTrajectories,
+    MissingImputation,
+)
+from ldt.machine_learning import StandardMachineLearning
+
+root = Path("/path/to/your/project")
+raw_long = root / "data/synthetic_long_with_missing.csv"
+clean_long = root / "outputs/long_clean.csv"
+imputed_long = root / "outputs/long_imputed.csv"
+trajectories = root / "outputs/trajectories.csv"
+cross_sectional = root / "outputs/cross_sectional.csv"
+model_ready = root / "outputs/model_ready.csv"
+
+long_df = MissingDataScenarios().prepare(
+    n_samples=1200,
+    n_waves=6,
+    random_state=42,
+    feature_cols=["depressive_score", "sleep_score", "anxiety_score"],
+    mechanism="mixed",
+    missing_rate=0.20,
+    dropout_rate=0.15,
+    mar_strength=1.10,
+)
+raw_long.parent.mkdir(parents=True, exist_ok=True)
+long_df.to_csv(raw_long, index=False)
+
+CleanDataset().fit_preprocess(input_path=raw_long, output_path=clean_long)
+MissingImputation().fit_preprocess(
+    technique="mice_imputation",
+    input_path=clean_long,
+    output_path=imputed_long,
+    random_state=42,
+)
+BuildTrajectories().fit_preprocess(
+    mode="from_scratch",
+    input_path=imputed_long,
+    output_path=trajectories,
+    id_col="subject_id",
+    time_col="wave",
+    value_cols=["depressive_score"],
+    builder="clusterMLD",
+    n_trajectories=4,
+)
+AggregateLongToCrossSectional().fit_preprocess(
+    input_path=imputed_long,
+    output_path=cross_sectional,
+    subject_id_col="subject_id",
+    numeric_columns=["depressive_score", "sleep_score", "anxiety_score", "age_baseline"],
+    numeric_agg="mean",
+)
+CombineDatasetWithTrajectories().fit_preprocess(
+    input_original_data_path=cross_sectional,
+    input_trajectories_data_path=trajectories,
+    output_path=model_ready,
+    original_id_col="subject_id",
+    trajectory_id_col="subject_id",
+    merge_type="left",
+    trajectory_columns=["trajectory_id", "trajectory_name"],
+)
+
+ml_result = StandardMachineLearning().fit_predict(
+    technique="run_experiment",
+    input_path=model_ready,
+    target_column="trajectory_id",
+    feature_columns="depressive_score,sleep_score,anxiety_score,age_baseline",
+    estimator_key="random_forest",
+    metric_keys="accuracy,f1_macro",
+    cv_folds=5,
+    validation_split="none",
+    multiclass_mode="multiclass",
+    random_seed=42,
+    output_dir=str(root / "outputs/standard_ml"),
+)
+print(ml_result["mean_score"], ml_result["report_path"])
+```
+
+</details>
+
+*But there is more: explore the full [documentation](https://github.com/OWNER/ldt-toolkit) for the complete tool and presets catalogue.*
+
+## <img src="public/icons/lucide/graduation-cap.svg" width="32" alt="" /> Citation
 
 ```bibtex
 @software{Provost_Longitudinal_Depression_Trajectories_Toolkit,
     author = {Provost, Simon and Branco, Bianca and Kwong, Alex},
     title = {{Longitudinal Depression Trajectories Toolkit: Machine Learning for Longitudinal Studies}},
-    version = {0.1.0}
+    version = {0.0.1}
 }
 ```
 
-Or use the **Cite this repository** option in the GitHub repository metadata.
+Use GitHub's "Cite this repository" for citation metadata updates.
 
-## <a id="license"></a>🔐 License, Data & Security
+## <img src="public/icons/lucide/fingerprint-pattern.svg" width="32" alt="" /> License, Data, Security
 
-* Access to [Millennium Cohort Study data is governed by CLS/UCL data access rules](https://cls.ucl.ac.uk/cls-studies/millennium-cohort-study/).
-* Please review [SECURITY.md](./SECURITY.md) for handling expectations in this repository.
-* This project is licensed under the [MIT License](./LICENSE).
+- Access to [Millennium Cohort Study data is governed by CLS/UCL data access rules](https://cls.ucl.ac.uk/cls-studies/millennium-cohort-study/).
+- Review [SECURITY.md](./SECURITY.md) for handling expectations.
+- Licensed under the [MIT License](./LICENSE).
