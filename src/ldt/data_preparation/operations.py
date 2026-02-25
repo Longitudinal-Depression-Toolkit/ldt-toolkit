@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib
 from collections.abc import Mapping
 from typing import Any
 
@@ -11,12 +12,6 @@ from .catalog import (
     list_data_preparation_presets,
     list_synthetic_techniques,
 )
-from .presets.prepare_mcs_by_leap.run import (
-    prepare_mcs_by_leap_profile,
-    run_prepare_mcs_by_leap,
-)
-from .tools.data_conversion.run import run_data_conversion
-from .tools.synthetic_data_generation.run import run_synthetic_generation
 
 
 def register_operations(registry: OperationRegistry) -> None:
@@ -68,7 +63,10 @@ def _op_synthetic_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
 
 def _op_synthetic_run(params: Mapping[str, Any]) -> dict[str, Any]:
     technique, raw_params = _extract_technique_and_params(params)
-    return run_synthetic_generation(technique=technique, params=raw_params)
+    return _resolve_runner(
+        "ldt.data_preparation.tools.synthetic_data_generation.run",
+        "run_synthetic_generation",
+    )(technique=technique, params=raw_params)
 
 
 def _op_conversion_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
@@ -77,7 +75,10 @@ def _op_conversion_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
 
 def _op_conversion_run(params: Mapping[str, Any]) -> dict[str, Any]:
     technique, raw_params = _extract_technique_and_params(params)
-    return run_data_conversion(technique=technique, params=raw_params)
+    return _resolve_runner(
+        "ldt.data_preparation.tools.data_conversion.run",
+        "run_data_conversion",
+    )(technique=technique, params=raw_params)
 
 
 def _op_presets_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
@@ -85,12 +86,23 @@ def _op_presets_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _op_prepare_mcs_profile(_: Mapping[str, Any]) -> dict[str, Any]:
-    return prepare_mcs_by_leap_profile()
+    return _resolve_runner(
+        "ldt.data_preparation.presets.prepare_mcs_by_leap.run",
+        "prepare_mcs_by_leap_profile",
+    )()
 
 
 def _op_prepare_mcs_run(params: Mapping[str, Any]) -> dict[str, Any]:
     raw_params = _as_object(params, "params")
-    return run_prepare_mcs_by_leap(params=raw_params)
+    return _resolve_runner(
+        "ldt.data_preparation.presets.prepare_mcs_by_leap.run",
+        "run_prepare_mcs_by_leap",
+    )(params=raw_params)
+
+
+def _resolve_runner(module_path: str, function_name: str) -> Any:
+    module = importlib.import_module(module_path)
+    return getattr(module, function_name)
 
 
 def _extract_technique_and_params(

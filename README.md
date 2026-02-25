@@ -74,12 +74,12 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ```bash
 uv add ldt-toolkit
 # 👆 We recommend using `uv` as a state-of-the-art Python Package Manager
-# But if preferred, use `pip`.
+# 👆 Make sure to have `uv`'s utilising the right Python version. `uv ptyhon pin 3.10` for example, do the trick.
 ```
 
-_If you plan to run `LCGA`/`GMM`, install R-side dependencies from [`setup_R/requirements.R`](https://github.com/Longitudinal-Depression-Toolkit/ldt-toolkit/blob/main/setup_R/requirements.R):_
+_If you plan to run `LCGA`/`GMM`, install R-side dependencies:_
 ```bash
-Rscript --vanilla -e "source('https://raw.githubusercontent.com/Longitudinal-Depression-Toolkit/ldt-toolkit/main/setup_R/requirements.R'); repos <- 'https://cloud.r-project.org'; missing <- setdiff(required_packages, rownames(installed.packages())); if (length(missing)) install.packages(missing, repos = repos) else message('All required R packages are already installed.')"
+Rscript --vanilla -e "repos <- 'https://cloud.r-project.org'; required_packages <- c('lcmm'); missing <- setdiff(required_packages, rownames(installed.packages())); if (length(missing)) install.packages(missing, repos = repos) else message('All required R packages are already installed.')"
 # 👇 If you have cloned the repo, you can also run:
 Rscript --vanilla setup_R/install_requirements.R
 ```

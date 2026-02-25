@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib
 from collections.abc import Mapping
 from typing import Any
 
@@ -14,18 +15,6 @@ from .catalog import (
     list_machine_learning_presets,
     list_shap_analysis_techniques,
     list_standard_machine_learning_techniques,
-)
-from .tools.bench_standard_and_longitudinal_ml.run import (
-    run_bench_standard_and_longitudinal_ml_tool,
-)
-from .tools.benchmark_longitudinal_ml.run import run_benchmark_longitudinal_ml_tool
-from .tools.benchmark_standard_ml.run import run_benchmark_standard_ml_tool
-from .tools.explainability.shap_analysis.run import run_shap_analysis_tool
-from .tools.longitudinal_machine_learning.run import (
-    run_longitudinal_machine_learning_tool,
-)
-from .tools.standard_machine_learning.run import (
-    run_standard_machine_learning_tool,
 )
 
 
@@ -107,7 +96,13 @@ def _op_standard_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _op_standard_run(params: Mapping[str, Any]) -> dict[str, Any]:
-    return _run_tool_operation(params=params, runner=run_standard_machine_learning_tool)
+    return _run_tool_operation(
+        params=params,
+        runner=_resolve_runner(
+            "ldt.machine_learning.tools.standard_machine_learning.run",
+            "run_standard_machine_learning_tool",
+        ),
+    )
 
 
 def _op_longitudinal_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
@@ -116,7 +111,11 @@ def _op_longitudinal_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
 
 def _op_longitudinal_run(params: Mapping[str, Any]) -> dict[str, Any]:
     return _run_tool_operation(
-        params=params, runner=run_longitudinal_machine_learning_tool
+        params=params,
+        runner=_resolve_runner(
+            "ldt.machine_learning.tools.longitudinal_machine_learning.run",
+            "run_longitudinal_machine_learning_tool",
+        ),
     )
 
 
@@ -125,7 +124,13 @@ def _op_benchmark_standard_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _op_benchmark_standard_run(params: Mapping[str, Any]) -> dict[str, Any]:
-    return _run_tool_operation(params=params, runner=run_benchmark_standard_ml_tool)
+    return _run_tool_operation(
+        params=params,
+        runner=_resolve_runner(
+            "ldt.machine_learning.tools.benchmark_standard_ml.run",
+            "run_benchmark_standard_ml_tool",
+        ),
+    )
 
 
 def _op_benchmark_longitudinal_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
@@ -133,7 +138,13 @@ def _op_benchmark_longitudinal_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _op_benchmark_longitudinal_run(params: Mapping[str, Any]) -> dict[str, Any]:
-    return _run_tool_operation(params=params, runner=run_benchmark_longitudinal_ml_tool)
+    return _run_tool_operation(
+        params=params,
+        runner=_resolve_runner(
+            "ldt.machine_learning.tools.benchmark_longitudinal_ml.run",
+            "run_benchmark_longitudinal_ml_tool",
+        ),
+    )
 
 
 def _op_benchmark_mixed_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
@@ -142,7 +153,11 @@ def _op_benchmark_mixed_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
 
 def _op_benchmark_mixed_run(params: Mapping[str, Any]) -> dict[str, Any]:
     return _run_tool_operation(
-        params=params, runner=run_bench_standard_and_longitudinal_ml_tool
+        params=params,
+        runner=_resolve_runner(
+            "ldt.machine_learning.tools.bench_standard_and_longitudinal_ml.run",
+            "run_bench_standard_and_longitudinal_ml_tool",
+        ),
     )
 
 
@@ -151,7 +166,13 @@ def _op_shap_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _op_shap_run(params: Mapping[str, Any]) -> dict[str, Any]:
-    return _run_tool_operation(params=params, runner=run_shap_analysis_tool)
+    return _run_tool_operation(
+        params=params,
+        runner=_resolve_runner(
+            "ldt.machine_learning.tools.explainability.shap_analysis.run",
+            "run_shap_analysis_tool",
+        ),
+    )
 
 
 def _op_presets_catalog(_: Mapping[str, Any]) -> dict[str, Any]:
@@ -162,6 +183,11 @@ def _run_tool_operation(*, params: Mapping[str, Any], runner: Any) -> dict[str, 
     technique = _as_required_string(params, "technique")
     raw_params = _as_object(params, "params")
     return runner(technique=technique, params=raw_params)
+
+
+def _resolve_runner(module_path: str, function_name: str) -> Any:
+    module = importlib.import_module(module_path)
+    return getattr(module, function_name)
 
 
 def _as_required_string(params: Mapping[str, Any], key: str) -> str:

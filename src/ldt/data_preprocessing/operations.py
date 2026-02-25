@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib
 from collections.abc import Mapping
 from typing import Any
 
@@ -19,21 +20,6 @@ from .catalog import (
     list_show_table_techniques,
     list_trajectories_viz_techniques,
 )
-from .tools.aggregate_long_to_cross_sectional.run import (
-    run_aggregate_long_to_cross_sectional,
-)
-from .tools.build_trajectories.run import run_build_trajectories
-from .tools.clean_dataset.run import run_clean_dataset
-from .tools.combine_dataset_with_trajectories.run import (
-    run_combine_dataset_with_trajectories,
-)
-from .tools.harmonise_categories.run import run_harmonise_categories
-from .tools.missing_imputation.run import run_missing_imputation
-from .tools.pivot_long_to_wide.run import run_pivot_long_to_wide
-from .tools.remove_columns.run import run_remove_columns
-from .tools.rename_feature.run import run_rename_feature
-from .tools.show_table.run import run_show_table
-from .tools.trajectories_viz.run import run_trajectories_viz
 
 
 def register_operations(registry: OperationRegistry) -> None:
@@ -51,7 +37,11 @@ def register_operations(registry: OperationRegistry) -> None:
     )
     registry.register(
         "data_preprocessing.remove_columns.run",
-        lambda params: _run_tool_operation(params=params, runner=run_remove_columns),
+        lambda params: _run_tool_operation_by_path(
+            params=params,
+            module_path="ldt.data_preprocessing.tools.remove_columns.run",
+            function_name="run_remove_columns",
+        ),
         description="Run one remove-columns technique.",
     )
 
@@ -62,8 +52,10 @@ def register_operations(registry: OperationRegistry) -> None:
     )
     registry.register(
         "data_preprocessing.build_trajectories.run",
-        lambda params: _run_tool_operation(
-            params=params, runner=run_build_trajectories
+        lambda params: _run_tool_operation_by_path(
+            params=params,
+            module_path="ldt.data_preprocessing.tools.build_trajectories.run",
+            function_name="run_build_trajectories",
         ),
         description="Run one build-trajectories action.",
     )
@@ -75,9 +67,10 @@ def register_operations(registry: OperationRegistry) -> None:
     )
     registry.register(
         "data_preprocessing.combine_dataset_with_trajectories.run",
-        lambda params: _run_tool_operation(
+        lambda params: _run_tool_operation_by_path(
             params=params,
-            runner=run_combine_dataset_with_trajectories,
+            module_path="ldt.data_preprocessing.tools.combine_dataset_with_trajectories.run",
+            function_name="run_combine_dataset_with_trajectories",
         ),
         description="Run one dataset-combination action.",
     )
@@ -89,7 +82,11 @@ def register_operations(registry: OperationRegistry) -> None:
     )
     registry.register(
         "data_preprocessing.clean_dataset.run",
-        lambda params: _run_tool_operation(params=params, runner=run_clean_dataset),
+        lambda params: _run_tool_operation_by_path(
+            params=params,
+            module_path="ldt.data_preprocessing.tools.clean_dataset.run",
+            function_name="run_clean_dataset",
+        ),
         description="Run one clean-dataset action.",
     )
 
@@ -100,8 +97,10 @@ def register_operations(registry: OperationRegistry) -> None:
     )
     registry.register(
         "data_preprocessing.missing_imputation.run",
-        lambda params: _run_tool_operation(
-            params=params, runner=run_missing_imputation
+        lambda params: _run_tool_operation_by_path(
+            params=params,
+            module_path="ldt.data_preprocessing.tools.missing_imputation.run",
+            function_name="run_missing_imputation",
         ),
         description="Run one missing-imputation action.",
     )
@@ -113,8 +112,10 @@ def register_operations(registry: OperationRegistry) -> None:
     )
     registry.register(
         "data_preprocessing.harmonise_categories.run",
-        lambda params: _run_tool_operation(
-            params=params, runner=run_harmonise_categories
+        lambda params: _run_tool_operation_by_path(
+            params=params,
+            module_path="ldt.data_preprocessing.tools.harmonise_categories.run",
+            function_name="run_harmonise_categories",
         ),
         description="Run one harmonise-categories action.",
     )
@@ -126,7 +127,11 @@ def register_operations(registry: OperationRegistry) -> None:
     )
     registry.register(
         "data_preprocessing.show_table.run",
-        lambda params: _run_tool_operation(params=params, runner=run_show_table),
+        lambda params: _run_tool_operation_by_path(
+            params=params,
+            module_path="ldt.data_preprocessing.tools.show_table.run",
+            function_name="run_show_table",
+        ),
         description="Run one show-table action.",
     )
 
@@ -137,9 +142,10 @@ def register_operations(registry: OperationRegistry) -> None:
     )
     registry.register(
         "data_preprocessing.aggregate_long_to_cross_sectional.run",
-        lambda params: _run_tool_operation(
+        lambda params: _run_tool_operation_by_path(
             params=params,
-            runner=run_aggregate_long_to_cross_sectional,
+            module_path="ldt.data_preprocessing.tools.aggregate_long_to_cross_sectional.run",
+            function_name="run_aggregate_long_to_cross_sectional",
         ),
         description="Run one aggregate-long-to-cross-sectional action.",
     )
@@ -151,7 +157,11 @@ def register_operations(registry: OperationRegistry) -> None:
     )
     registry.register(
         "data_preprocessing.rename_feature.run",
-        lambda params: _run_tool_operation(params=params, runner=run_rename_feature),
+        lambda params: _run_tool_operation_by_path(
+            params=params,
+            module_path="ldt.data_preprocessing.tools.rename_feature.run",
+            function_name="run_rename_feature",
+        ),
         description="Run one rename-feature action.",
     )
 
@@ -162,8 +172,10 @@ def register_operations(registry: OperationRegistry) -> None:
     )
     registry.register(
         "data_preprocessing.pivot_long_to_wide.run",
-        lambda params: _run_tool_operation(
-            params=params, runner=run_pivot_long_to_wide
+        lambda params: _run_tool_operation_by_path(
+            params=params,
+            module_path="ldt.data_preprocessing.tools.pivot_long_to_wide.run",
+            function_name="run_pivot_long_to_wide",
         ),
         description="Run one pivot-long-to-wide action.",
     )
@@ -175,7 +187,11 @@ def register_operations(registry: OperationRegistry) -> None:
     )
     registry.register(
         "data_preprocessing.trajectories_viz.run",
-        lambda params: _run_tool_operation(params=params, runner=run_trajectories_viz),
+        lambda params: _run_tool_operation_by_path(
+            params=params,
+            module_path="ldt.data_preprocessing.tools.trajectories_viz.run",
+            function_name="run_trajectories_viz",
+        ),
         description="Run one trajectories-viz action.",
     )
 
@@ -183,12 +199,30 @@ def register_operations(registry: OperationRegistry) -> None:
 def _op_remove_columns(params: Mapping[str, Any]) -> dict[str, Any]:
     """Run the default remove-columns technique directly."""
 
-    return run_remove_columns(technique="remove_columns", params=dict(params))
+    return _resolve_runner(
+        "ldt.data_preprocessing.tools.remove_columns.run",
+        "run_remove_columns",
+    )(technique="remove_columns", params=dict(params))
+
+
+def _run_tool_operation_by_path(
+    *,
+    params: Mapping[str, Any],
+    module_path: str,
+    function_name: str,
+) -> dict[str, Any]:
+    runner = _resolve_runner(module_path, function_name)
+    return _run_tool_operation(params=params, runner=runner)
 
 
 def _run_tool_operation(*, params: Mapping[str, Any], runner: Any) -> dict[str, Any]:
     technique, raw_params = _extract_technique_and_params(params)
     return runner(technique=technique, params=raw_params)
+
+
+def _resolve_runner(module_path: str, function_name: str) -> Any:
+    module = importlib.import_module(module_path)
+    return getattr(module, function_name)
 
 
 def _extract_technique_and_params(

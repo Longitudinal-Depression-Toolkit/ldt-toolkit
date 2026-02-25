@@ -4,18 +4,19 @@ from collections.abc import Mapping
 from typing import Any
 
 from ldt.bridge.operation_registry import OperationRegistry
-from ldt.data_preparation.operations import (
-    register_operations as register_data_preparation_operations,
-)
-from ldt.data_preprocessing.operations import (
-    register_operations as register_data_preprocessing_operations,
-)
-from ldt.machine_learning.operations import (
-    register_operations as register_machine_learning_operations,
-)
 
 
 def _build_registry() -> OperationRegistry:
+    from ldt.data_preparation.operations import (
+        register_operations as register_data_preparation_operations,
+    )
+    from ldt.data_preprocessing.operations import (
+        register_operations as register_data_preprocessing_operations,
+    )
+    from ldt.machine_learning.operations import (
+        register_operations as register_machine_learning_operations,
+    )
+
     registry = OperationRegistry()
     register_data_preprocessing_operations(registry)
     register_data_preparation_operations(registry)
