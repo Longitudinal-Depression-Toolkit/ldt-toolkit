@@ -3,16 +3,16 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
-from src.data_preparation.operations import (
+from ldt.bridge.operation_registry import OperationRegistry
+from ldt.data_preparation.operations import (
     register_operations as register_data_preparation_operations,
 )
-from src.data_preprocessing.operations import (
+from ldt.data_preprocessing.operations import (
     register_operations as register_data_preprocessing_operations,
 )
-from src.machine_learning.operations import (
+from ldt.machine_learning.operations import (
     register_operations as register_machine_learning_operations,
 )
-from src.utils.operation_registry import OperationRegistry
 
 
 def _build_registry() -> OperationRegistry:
