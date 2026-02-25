@@ -5,14 +5,13 @@ from pathlib import Path
 import pandas as pd
 from beartype import beartype
 
-from src.utils.metadata import ComponentMetadata
+from ldt.utils.metadata import ComponentMetadata
 
-from ..data_conversion import Conversion
-from ._tabular_converter import TabularFileConverterMixin
+from ._tabular_converter import TabularConverterTool
 
 
 @beartype
-class CsvToStata(TabularFileConverterMixin, Conversion):
+class CsvToStata(TabularConverterTool):
     """Convert CSV files (`.csv`) to Stata (`.dta`)."""
 
     metadata = ComponentMetadata(
