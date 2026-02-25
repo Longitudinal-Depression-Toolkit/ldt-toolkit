@@ -7,7 +7,7 @@ from collections.abc import Mapping
 from contextlib import redirect_stderr, redirect_stdout
 from typing import Any
 
-from ldt.operations import execute_operation
+import ldt.bridge.runtime_warning_filters as _runtime_warning_filters  # noqa: F401
 from ldt.utils.errors import LibraryError
 
 
@@ -33,8 +33,29 @@ def _read_payload() -> Mapping[str, Any]:
     return payload
 
 
+def _is_ping_request() -> bool:
+    if len(sys.argv) <= 1:
+        return False
+    return sys.argv[1].strip().lower() in {"--ping", "ping", "--health"}
+
+
+def _emit_ping() -> int:
+    payload = {
+        "ok": True,
+        "result": {
+            "bridge": "ldt-bridge",
+            "status": "ok",
+        },
+    }
+    print(json.dumps(payload), file=sys.stdout)
+    return 0
+
+
 def main() -> int:
     """Run one bridge operation and print JSON result."""
+
+    if _is_ping_request():
+        return _emit_ping()
 
     try:
         payload = _read_payload()
@@ -56,6 +77,15 @@ def main() -> int:
             code=2,
             error_type="payload_error",
             message="`params` must be an object.",
+        )
+
+    try:
+        from ldt.bridge.operations import execute_operation
+    except Exception as exc:  # pragma: no cover - defensive import boundary
+        return _fail(
+            code=3,
+            error_type="library_error",
+            message=f"Failed to import bridge operations: {exc}",
         )
 
     try:

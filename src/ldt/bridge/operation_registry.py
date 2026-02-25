@@ -4,7 +4,7 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from typing import Any
 
-from src.utils.errors import OperationNotFoundError
+from ldt.utils.errors import OperationNotFoundError
 
 OperationHandler = Callable[[Mapping[str, Any]], dict[str, Any]]
 

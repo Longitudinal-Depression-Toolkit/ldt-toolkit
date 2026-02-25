@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from src.utils.errors import InputValidationError
+from ldt.utils.errors import InputValidationError
 
 
 def load_catalog_file(path: Path) -> dict[str, Any]:
