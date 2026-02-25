@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "longitudinal-depression-trajectories-toolkit"
+name = "ldt-toolkit"
 version = "0.0.1"
-description = "Toolkit for longitudinal depression trajectories studies with machine-learning workflows."
+description = "Python library for longitudinal depression trajectories workflows."
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
 license = { file = "LICENSE" }
@@ -43,6 +43,9 @@ dependencies = [
   "pipelineprofiler>=0.1.18",
 ]
 
+[project.scripts]
+ldt-bridge = "ldt.bridge.runner:main"
+
 [tool.uv]
 dev-dependencies = [
   "black>=24.4.2",
@@ -56,22 +59,22 @@ override-dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-where = ["."]
-include = ["ldt", "ldt.*", "src", "src.*"]
+where = ["src"]
+include = ["ldt", "ldt.*"]
 
 [tool.setuptools.package-data]
-"src.data_preprocessing.tools.build_trajectories.trajectories.lcga" = ["*.R"]
-"src.data_preprocessing.tools.build_trajectories.trajectories.gmm" = ["*.R"]
-"src.data_preparation.config" = ["*.json"]
-"src.data_preparation.presets.prepare_mcs_by_leap" = [
+"ldt.data_preprocessing.tools.build_trajectories.trajectories.lcga" = ["*.R"]
+"ldt.data_preprocessing.tools.build_trajectories.trajectories.gmm" = ["*.R"]
+"ldt.data_preparation.config" = ["*.json"]
+"ldt.data_preparation.presets.prepare_mcs_by_leap" = [
   "defaults.yaml",
   "stage_1_wave_paths/*.yaml",
   "stage_2_subjects/*.yaml",
   "stage_3_features/*.yaml",
   "stage_4_composites/*.yaml",
 ]
-"src.data_preprocessing.config" = ["*.json"]
-"src.machine_learning.config" = ["*.json"]
+"ldt.data_preprocessing.config" = ["*.json"]
+"ldt.machine_learning.config" = ["*.json"]
 
 [tool.black]
 line-length = 88
