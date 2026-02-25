@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this repository, please cite it as below."
 title: "Longitudinal Depression Trajectories Toolkit: Machine Learning for Longitudinal Studies"
 type: software
-version: "0.0.1"
+version: "0.0.2"
 year: 2026
 authors:
   - family-names: Provost
