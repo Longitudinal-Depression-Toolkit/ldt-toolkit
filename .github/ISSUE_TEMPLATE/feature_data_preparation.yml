@@ -1,0 +1,95 @@
+name: "💡 Feature Request: Data Preparation"
+description: Propose a feature for cohort ingestion, conversion, synthetic generation, or preparation presets.
+title: "💡 [FEAT][DATA_PREPARATION] - <title>"
+labels:
+  - "feature"
+  - "stage:data_preparation"
+assignees:
+  - "simonprovost"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for **raw-data preparation** work:
+        source conversion, synthetic longitudinal generation, and preparation presets.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Before Submitting"
+      description: Confirm these checks so we can scope the request quickly.
+      options:
+        - label: I have checked existing `data_preparation.*` operations/catalog entries.
+          required: true
+        - label: I have identified whether this belongs to Playground (tool) or Presets (reproducible workflow).
+          required: true
+  - type: dropdown
+    id: requester-role
+    attributes:
+      label: "Requester Role"
+      description: Select the profile that best matches your use case.
+      options:
+        - "Data steward / data manager"
+        - "Research analyst / epidemiologist"
+        - "Method developer"
+        - "Other"
+    validations:
+      required: true
+  - type: dropdown
+    id: request-type
+    attributes:
+      label: "Data Preparation Request Type"
+      options:
+        - "New data conversion pathway"
+        - "New synthetic data generation mode"
+        - "New/updated preparation preset"
+        - "Data quality or validation gate"
+    validations:
+      required: true
+  - type: textarea
+    id: study-context
+    attributes:
+      label: "Study Context"
+      description: Which study/cohort and which waves or collection years are involved?
+      placeholder: "Example: MCS, sweeps 2-7, depressive symptoms + demographics."
+    validations:
+      required: true
+  - type: textarea
+    id: raw-input-contract
+    attributes:
+      label: "Current Input Contract"
+      description: Describe current input files, expected columns, encodings, and known quirks.
+      placeholder: "Example: SPSS `.sav` files, one file per sweep, participant key = `MCSID`."
+    validations:
+      required: true
+  - type: textarea
+    id: target-output-contract
+    attributes:
+      label: "Target Output Contract"
+      description: Describe the expected output artifact and schema.
+      placeholder: "Example: one harmonised long CSV with standard wave/value columns."
+    validations:
+      required: true
+  - type: textarea
+    id: cli-surface
+    attributes:
+      label: "Proposed Operation Surface"
+      description: Suggest where this should live in CLI/module naming.
+      placeholder: "Example: `data_preparation.data_conversion.run` with technique `stata_panel_v1`."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: "Acceptance Criteria"
+      description: What would make this feature complete and ready to use?
+      placeholder: "List concrete checks (shape, columns, invariants, reproducibility expectations)."
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: "Constraints or Risks"
+      description: Licensing, compute, format, timeline, or privacy constraints.
+      placeholder: "Optional."
+    validations:
+      required: false
