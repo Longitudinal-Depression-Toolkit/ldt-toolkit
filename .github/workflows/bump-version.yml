@@ -24,14 +24,49 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install bump-my-version
+        run: python -m pip install --upgrade bump-my-version==1.2.7
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Bump version
         id: bump
-        uses: callowayproject/bump-my-version@master
+        run: |
+          PREVIOUS_VERSION="$(python -c "import tomllib; from pathlib import Path; print(tomllib.loads(Path('pyproject.toml').read_text(encoding='utf-8'))['project']['version'])")"
+          LATEST_TAG_VERSION="$(git tag -l 'v*' --sort=-v:refname | head -n1 | sed 's/^v//')"
+          BASE_VERSION="$(python -c "import sys; p=lambda v: tuple(int(x) for x in v.split('.')); py_v=sys.argv[1]; tag_v=sys.argv[2].strip(); print(py_v if (not tag_v or p(py_v) >= p(tag_v)) else tag_v)" "${PREVIOUS_VERSION}" "${LATEST_TAG_VERSION}")"
+          IFS='.' read -r MAJOR MINOR PATCH <<< "${BASE_VERSION}"
+          case "${BUMP_TYPE}" in
+            major) TARGET_VERSION="$((MAJOR + 1)).0.0" ;;
+            minor) TARGET_VERSION="${MAJOR}.$((MINOR + 1)).0" ;;
+            patch) TARGET_VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))" ;;
+            *) echo "::error::Unsupported bump type: ${BUMP_TYPE}"; exit 1 ;;
+          esac
+          echo "Previous version (pyproject): ${PREVIOUS_VERSION}"
+          echo "Latest release tag version: ${LATEST_TAG_VERSION:-<none>}"
+          echo "Base version for bump: ${BASE_VERSION}"
+          echo "Target version: ${TARGET_VERSION}"
+          bump-my-version bump \
+            --config-file .bumpversion.toml \
+            --current-version "${PREVIOUS_VERSION}" \
+            --new-version "${TARGET_VERSION}"
+          CURRENT_VERSION="$(python -c "import tomllib; from pathlib import Path; print(tomllib.loads(Path('pyproject.toml').read_text(encoding='utf-8'))['project']['version'])")"
+          echo "bumped=true" >> "$GITHUB_OUTPUT"
+          echo "previous-version=${PREVIOUS_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "current-version=${CURRENT_VERSION}" >> "$GITHUB_OUTPUT"
         env:
-          BUMPVERSION_TAG: "true"
-        with:
-          args: ${{ inputs.bump-type }} --config-file .bumpversion.toml
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          BUMP_TYPE: ${{ inputs.bump-type }}
+
+      - name: Push commit and tags
+        run: git push origin HEAD --follow-tags
 
       - name: Check
         if: steps.bump.outputs.bumped == 'true'
