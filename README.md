@@ -14,7 +14,7 @@
 </div>
 
 <div align="center">
-  <a href="https://github.com/OWNER/ldt-toolkit">Documentation (placeholder)</a> -
+  <a href="https://github.com/OWNER/ldt-toolkit">Documentation</a> -
   <a href="https://life-epi-psych.github.io">LEAP Group</a>
 </div>
 
@@ -40,30 +40,29 @@ And last, within the *data preprocessing* stage, we offer a *brand-new and novel
 <summary><strong>Machine Requirements</strong> (<a href="https://www.r-project.org/">R</a>, <a href="https://www.python.org/downloads/">Python</a>, <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a>, <a href="https://go.dev/dl/">Go</a>)</summary>
 
 Install the following first:
-- Python `3.10` to `3.12`
-- [`uv`](https://docs.astral.sh/uv/)
+- Python `3.10` to `3.12` _AND OR_ [`uv`](https://docs.astral.sh/uv/)
 - Go (for `ldt` CLI)
 - R + `Rscript` (required only when running `LCGA`/`GMM` tools through `lcmm`)
 
 Quick checks:
 
 ```bash
-python --version || python3 --version
+python --version || python3 --version # Not necessary if you use `uv`
 uv --version
 go version
 Rscript --version
 ```
 
-Example installs by OS:
+Example installs by OS for `uv` `go` and `R`:
 
 ```bash
 # macOS (Homebrew)
 brew update
-brew install python@3.12 uv go r
+brew install uv go r
 
 # Linux (Ubuntu/Debian)
 sudo apt-get update
-sudo apt-get install -y python3 python3-pip golang r-base
+sudo apt-get install -y golang r-base
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
@@ -74,15 +73,19 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ```bash
 uv add ldt-toolkit
 # 👆 We recommend using `uv` as a state-of-the-art Python Package Manager
-# 👆 Make sure to have `uv`'s utilising the right Python version. `uv ptyhon pin 3.10` for example, do the trick.
 ```
 
+<details>
+<summary><strong>R dependencies for LCGA/GMM (lcmm)</strong></summary>
+
 _If you plan to run `LCGA`/`GMM`, install R-side dependencies:_
+
 ```bash
 Rscript --vanilla -e "repos <- 'https://cloud.r-project.org'; required_packages <- c('lcmm'); missing <- setdiff(required_packages, rownames(installed.packages())); if (length(missing)) install.packages(missing, repos = repos) else message('All required R packages are already installed.')"
 # 👇 If you have cloned the repo, you can also run:
 Rscript --vanilla setup_R/install_requirements.R
 ```
+</details>
 
 ### <img src="public/icons/lucide/tally-2.svg" width="28" alt="" /> Install the `ldt` GO CLI (No-code Terminal Interface)
 
