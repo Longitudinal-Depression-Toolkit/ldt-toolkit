@@ -6,7 +6,7 @@ from typing import Literal
 import pandas as pd
 from beartype import beartype
 
-from src.utils.errors import InputValidationError
+from ldt.utils.errors import InputValidationError
 
 from ..stage_3_features import LONGITUDINAL_TEMP_PREFIX
 

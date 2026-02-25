@@ -7,7 +7,7 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.tree import Tree
 
-from src.utils.errors import InputValidationError
+from ldt.utils.errors import InputValidationError
 
 from ..stage_1_wave_paths import (
     available_waves as stage_1_available_waves,

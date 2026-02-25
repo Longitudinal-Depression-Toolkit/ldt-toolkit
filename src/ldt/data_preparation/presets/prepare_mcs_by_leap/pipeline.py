@@ -23,7 +23,7 @@ from rich.progress import (
 )
 from rich.table import Table
 
-from src.utils.errors import InputValidationError
+from ldt.utils.errors import InputValidationError
 
 from .stage_1_wave_paths import (
     available_waves as stage_1_available_waves,
@@ -176,7 +176,8 @@ def available_waves() -> tuple[str, ...]:
     """Return supported wave labels in numeric order.
 
     Returns:
-        tuple[str, ...]: Tuple of resolved values.
+        tuple[str, ...]: Supported wave labels ordered by wave number,
+            for example `(\"W1\", \"W2\", \"W3\")`.
     """
 
     return stage_1_available_waves()
@@ -240,14 +241,12 @@ def general_defaults() -> GeneralDefaults:
 def parse_wave_list(*, raw: str, available: tuple[str, ...]) -> tuple[str, ...]:
     """Parse and validate a comma-separated list of waves (`W1,W2` or `ALL`).
 
-    This helper is used by higher-level workflows and keeps input/output handling consistent.
-
     Args:
-        raw (str): Raw value to parse.
-        available (tuple[str, ...]): Number of available items.
+        raw (str): Raw wave selection string from the caller.
+        available (tuple[str, ...]): Allowed wave labels that can be selected.
 
     Returns:
-        tuple[str, ...]: Tuple of resolved values.
+        tuple[str, ...]: Deduplicated, validated wave labels in caller order.
     """
 
     tokens = [token.strip().upper() for token in raw.split(",") if token.strip()]
@@ -477,7 +476,7 @@ def _prepare_single_wave(
     wave_input: WaveInputSpec,
     protected_columns: tuple[str, ...],
 ) -> WaveProcessingResult:
-    """Run stages 1-4 for one wave and return all artifacts."""
+    """Run stages 1-4 for one wave and return all artefacts."""
 
     wave = wave_input.wave.strip().upper()
     raw_dir = wave_input.raw_dir

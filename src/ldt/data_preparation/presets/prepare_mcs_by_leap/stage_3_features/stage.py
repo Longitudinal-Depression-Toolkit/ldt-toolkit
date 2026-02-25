@@ -9,7 +9,7 @@ import pandas as pd
 import yaml
 from beartype import beartype
 
-from src.utils.errors import InputValidationError
+from ldt.utils.errors import InputValidationError
 
 _STAGE_DIR = Path(__file__).resolve().parent
 _LONGITUDINAL_CONFIG = _STAGE_DIR / "longitudinal_features.yaml"
