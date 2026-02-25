@@ -1,0 +1,94 @@
+name: "💡 Feature Request: Machine Learning"
+description: Propose a machine-learning feature for modeling, validation, interpretation, or reporting.
+title: "💡 [FEAT][MACHINE_LEARNING] - <title>"
+labels:
+  - "feature"
+  - "stage:machine_learning"
+assignees:
+  - "simonprovost"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for **machine-learning stage** requests:
+        estimators, evaluation protocols, explainability, and reporting workflows.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Before Submitting"
+      options:
+        - label: I have reviewed existing `machine_learning.*` capabilities/placeholders.
+          required: true
+        - label: I can provide a clear target/outcome definition and evaluation plan.
+          required: true
+  - type: dropdown
+    id: user-persona
+    attributes:
+      label: "User Persona"
+      options:
+        - "Clinical/epidemiology researcher"
+        - "ML practitioner"
+        - "Methods developer"
+        - "Other"
+    validations:
+      required: true
+  - type: dropdown
+    id: task-type
+    attributes:
+      label: "Task Type"
+      options:
+        - "Classification"
+        - "Regression"
+        - "Time-to-event / survival"
+        - "Model interpretation / explainability"
+        - "Benchmarking / model selection"
+    validations:
+      required: true
+  - type: textarea
+    id: target-definition
+    attributes:
+      label: "Target Definition"
+      description: Define prediction target, horizon, and inclusion/exclusion rules.
+      placeholder: "Example: predict elevated symptoms at next wave from prior 3 waves."
+    validations:
+      required: true
+  - type: textarea
+    id: feature-scope
+    attributes:
+      label: "Feature Scope"
+      description: Which features should be consumed (raw, engineered, trajectories, metadata)?
+      placeholder: "List key feature groups and constraints."
+    validations:
+      required: true
+  - type: textarea
+    id: model-proposal
+    attributes:
+      label: "Model/Workflow Proposal"
+      description: Describe proposed estimator(s), baseline(s), and training flow.
+      placeholder: "Include expected interfaces and outputs."
+    validations:
+      required: true
+  - type: textarea
+    id: validation-design
+    attributes:
+      label: "Validation Design"
+      description: Specify split strategy, metrics, and robustness checks.
+      placeholder: "Example: grouped CV by participant, AUROC + calibration + PR-AUC."
+    validations:
+      required: true
+  - type: textarea
+    id: interpretation-reporting
+    attributes:
+      label: "Interpretation & Reporting Needs"
+      description: What model cards, diagnostics, or explainability outputs are required?
+      placeholder: "Optional."
+    validations:
+      required: false
+  - type: textarea
+    id: compliance-fairness
+    attributes:
+      label: "Compliance/Fairness Constraints"
+      description: Any subgroup fairness, governance, or reproducibility requirements.
+      placeholder: "Optional."
+    validations:
+      required: false

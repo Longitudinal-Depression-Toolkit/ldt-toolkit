@@ -1,0 +1,84 @@
+name: "💡 Feature Request: Data Preprocessing"
+description: Propose a preprocessing feature for harmonisation, cleaning, pivoting, imputation, or dataset assembly.
+title: "💡 [FEAT][DATA_PREPROCESSING] - <title>"
+labels:
+  - "feature"
+  - "stage:data_preprocessing"
+assignees:
+  - "simonprovost"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for **preprocessing** requests:
+        cleaning, harmonisation, imputation, long/wide reshaping, and trajectory-dataset integration.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Before Submitting"
+      options:
+        - label: I checked existing `data_preprocessing.*` operations and techniques first.
+          required: true
+        - label: I can describe whether this is before or after trajectory construction.
+          required: true
+  - type: dropdown
+    id: requester-profile
+    attributes:
+      label: "Requester Profile"
+      options:
+        - "Applied researcher"
+        - "Data scientist / analyst"
+        - "Pipeline maintainer"
+        - "Other"
+    validations:
+      required: true
+  - type: dropdown
+    id: pipeline-position
+    attributes:
+      label: "Pipeline Position"
+      options:
+        - "Before trajectory building"
+        - "After trajectory building"
+        - "Both / reusable across both"
+    validations:
+      required: true
+  - type: textarea
+    id: current-data-shape
+    attributes:
+      label: "Current Data Shape"
+      description: Describe current granularity and schema (long/wide, keys, wave variables, missingness patterns).
+      placeholder: "Example: long panel, one row per person-wave, mixed categorical/numeric features."
+    validations:
+      required: true
+  - type: textarea
+    id: requested-transform
+    attributes:
+      label: "Requested Transformation"
+      description: What exact preprocessing behavior should be added or changed?
+      placeholder: "Example: robust category harmonisation across waves with a stable mapping table."
+    validations:
+      required: true
+  - type: textarea
+    id: edge-cases
+    attributes:
+      label: "Known Edge Cases"
+      description: Cases that often break current workflows and must be handled.
+      placeholder: "Example: duplicated participant-wave rows, partially missing wave indicators."
+    validations:
+      required: true
+  - type: textarea
+    id: output-requirements
+    attributes:
+      label: "Output Requirements"
+      description: Define expected output schema and quality checks.
+      placeholder: "Include required columns, ordering, and validation assertions."
+    validations:
+      required: true
+  - type: textarea
+    id: reproducibility
+    attributes:
+      label: "Reproducibility Expectations"
+      description: Should this become a preset, and if so, what deterministic behavior is required?
+      placeholder: "Optional."
+    validations:
+      required: false

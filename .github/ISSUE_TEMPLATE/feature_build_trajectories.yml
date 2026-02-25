@@ -1,0 +1,94 @@
+name: "💡 Feature Request: Build Trajectories"
+description: Propose a trajectory-building method, workflow, or output enhancement.
+title: "💡 [FEAT][BUILD_TRAJECTORIES] - <title>"
+labels:
+  - "feature"
+  - "stage:build_trajectories"
+assignees:
+  - "simonprovost"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for **trajectory-construction** requests:
+        new clustering/modeling techniques, trajectory outputs, and trajectory diagnostics.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Before Submitting"
+      description: Confirm these checks to reduce back-and-forth.
+      options:
+        - label: I checked existing `build_trajectories` techniques in the catalog.
+          required: true
+        - label: If relevant, I confirmed whether R (`lcmm`) dependency is required.
+          required: false
+  - type: dropdown
+    id: user-goal
+    attributes:
+      label: "Primary User Goal"
+      options:
+        - "Discover latent trajectory groups"
+        - "Generate trajectory features for prediction"
+        - "Benchmark multiple trajectory methods"
+        - "Visualise and communicate trajectory shapes"
+    validations:
+      required: true
+  - type: dropdown
+    id: method-family
+    attributes:
+      label: "Method Family"
+      options:
+        - "LCGA/GMM (model-based)"
+        - "Distance-based trajectory clustering"
+        - "Custom external trajectory model"
+        - "Output/diagnostic enhancement only"
+    validations:
+      required: true
+  - type: textarea
+    id: longitudinal-input
+    attributes:
+      label: "Longitudinal Input Definition"
+      description: Specify identifier, time index, outcome variable(s), and expected input shape.
+      placeholder: "Example: `participant_id`, `wave`, `smf_q_score`; long format."
+    validations:
+      required: true
+  - type: textarea
+    id: method-spec
+    attributes:
+      label: "Proposed Method Specification"
+      description: Explain the algorithm/statistical model and any references.
+      placeholder: "Include assumptions, class-count strategy, and initialization approach."
+    validations:
+      required: true
+  - type: textarea
+    id: hyperparameters
+    attributes:
+      label: "Required Hyperparameters"
+      description: Parameters users must set or tune.
+      placeholder: "Example: number of classes, random seeds, max iterations, distance metric."
+    validations:
+      required: true
+  - type: textarea
+    id: output-contract
+    attributes:
+      label: "Expected Output Contract"
+      description: Describe required outputs (labels/probabilities/fit stats/files).
+      placeholder: "Example: participant-level class labels + posterior probs + fit diagnostics."
+    validations:
+      required: true
+  - type: textarea
+    id: evaluation-plan
+    attributes:
+      label: "Evaluation Plan"
+      description: How should we assess success? Include metrics and sanity checks.
+      placeholder: "Example: BIC/AIC trends, entropy, cluster stability across seeds."
+    validations:
+      required: true
+  - type: textarea
+    id: compute-constraints
+    attributes:
+      label: "Compute/Runtime Constraints"
+      description: Any expected limits on memory/runtime or platform requirements.
+      placeholder: "Optional."
+    validations:
+      required: false
