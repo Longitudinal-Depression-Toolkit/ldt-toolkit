@@ -35,6 +35,11 @@ And last, within the *data preprocessing* stage, we offer a *brand-new and novel
 > [!IMPORTANT]
 > Use both components: `ldt-toolkit` (Python toolkit) and `ldt` (Go CLI). The CLI is the primary no-code interface and is highly recommended.
 
+> [!WARNING]
+> Windows is not supported by default yet.
+> As a workaround, run the toolkit inside a Docker Linux environment, or use a macOS-based machine.
+> Please open [an issue](https://github.com/Longitudinal-Depression-Toolkit/ldt-toolkit/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen) if you want to contribute Windows support.
+
 <details>
 <summary><strong>Machine Requirements</strong> (<a href="https://www.r-project.org/">R</a>, <a href="https://www.python.org/downloads/">Python</a>, <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a>, <a href="https://go.dev/dl/">Go</a>)</summary>
 
@@ -59,12 +64,6 @@ Example installs by OS:
 # macOS (Homebrew)
 brew update
 brew install python@3.12 uv go r
-
-# Windows (PowerShell + winget)
-winget install -e --id Python.Python.3.12
-winget install -e --id astral-sh.uv
-winget install -e --id GoLang.Go
-winget install -e --id RProject.R
 
 # Linux (Ubuntu/Debian)
 sudo apt-get update
