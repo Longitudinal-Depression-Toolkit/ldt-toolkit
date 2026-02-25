@@ -17,6 +17,7 @@ jobs:
   bump:
     runs-on: ubuntu-latest
     permissions:
+      actions: write
       contents: write
     steps:
       - name: Checkout the code
@@ -67,6 +68,15 @@ jobs:
 
       - name: Push commit and tags
         run: git push origin HEAD --follow-tags
+
+      - name: Trigger Publish to PyPI workflow
+        if: steps.bump.outputs.bumped == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run publish-pypi.yml \
+            --ref main \
+            -f release-version="${{ steps.bump.outputs.current-version }}"
 
       - name: Check
         if: steps.bump.outputs.bumped == 'true'
