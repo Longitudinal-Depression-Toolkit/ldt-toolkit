@@ -69,52 +69,32 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 </details>
 
-### 1) Install `ldt-toolkit` ([PyPi Index](https://pypi.org/project/ldt-toolkit/))
+### <img src="public/icons/lucide/tally-1.svg" width="28" alt="" /> Install `ldt-toolkit` ([PyPi Index](https://pypi.org/project/ldt-toolkit/))
 
 ```bash
 uv add ldt-toolkit
-# can also do pip install ldt-toolkit, yet we recommend using `uv` as a state of the art Python Package Manager
+# 👆 We recommend using `uv` as a state-of-the-art Python Package Manager
+# But if preferred, use `pip`.
 ```
 
-Validate the install:
+_If you plan to run `LCGA`/`GMM`, install R-side dependencies from [`setup_R/requirements.R`](https://github.com/Longitudinal-Depression-Toolkit/ldt-toolkit/blob/main/setup_R/requirements.R):_
+```bash
+Rscript --vanilla -e "source('https://raw.githubusercontent.com/Longitudinal-Depression-Toolkit/ldt-toolkit/main/setup_R/requirements.R'); repos <- 'https://cloud.r-project.org'; missing <- setdiff(required_packages, rownames(installed.packages())); if (length(missing)) install.packages(missing, repos = repos) else message('All required R packages are already installed.')"
+# 👇 If you have cloned the repo, you can also run:
+Rscript --vanilla setup_R/install_requirements.R
+```
+
+### <img src="public/icons/lucide/tally-2.svg" width="28" alt="" /> Install the `ldt` GO CLI (No-code Terminal Interface)
 
 ```bash
-uv run python -c "import ldt; print(ldt.__file__)"
+go install github.com/Longitudinal-Depression-Toolkit/CLI@latest
 ```
 
-If you plan to run `LCGA`/`GMM`, install R-side dependencies:
-
-```bash
-Rscript --vanilla -e "install.packages('lcmm', repos='https://cloud.r-project.org')"
-```
-
-### 2) Install `ldt` (Go CLI, essential no-code interface)
-
-```bash
-git clone https://github.com/OWNER/ldt.git
-cd ldt
-make build
-```
-
-Install it for your shell:
-
-```bash
-# bash/zsh users
-make install-bash
-
-# fish users
-make install-fish
-```
-
-If your CLI repo uses short aliases, `make bash` / `make fish` are equivalent.
-
-Reload your shell config, then run:
+<img src="public/icons/lucide/party-popper.svg" width="14" alt="" /> Voila! Now, you can run:
 
 ```bash
 ldt
 ```
-
-
 > [!WARNING]
 > Windows is not supported by default yet.
 > As a workaround, run the toolkit inside a Docker Linux environment, or use a macOS-based machine.
