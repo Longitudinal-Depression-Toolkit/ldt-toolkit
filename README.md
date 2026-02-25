@@ -35,10 +35,6 @@ And last, within the *data preprocessing* stage, we offer a *brand-new and novel
 > [!IMPORTANT]
 > Use both components: `ldt-toolkit` (Python toolkit) and `ldt` (Go CLI). The CLI is the primary no-code interface and is highly recommended.
 
-> [!WARNING]
-> Windows is not supported by default yet.
-> As a workaround, run the toolkit inside a Docker Linux environment, or use a macOS-based machine.
-> Please open [an issue](https://github.com/Longitudinal-Depression-Toolkit/ldt-toolkit/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen) if you want to contribute Windows support.
 
 <details>
 <summary><strong>Machine Requirements</strong> (<a href="https://www.r-project.org/">R</a>, <a href="https://www.python.org/downloads/">Python</a>, <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a>, <a href="https://go.dev/dl/">Go</a>)</summary>
@@ -73,13 +69,11 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 </details>
 
-### 1) Install `ldt-toolkit` (Python)
+### 1) Install `ldt-toolkit` ([PyPi Index](https://pypi.org/project/ldt-toolkit/))
 
 ```bash
-git clone https://github.com/OWNER/ldt-toolkit.git
-cd ldt-toolkit
-uv python pin 3.10
-uv sync
+uv add ldt-toolkit
+# can also do pip install ldt-toolkit, yet we recommend using `uv` as a state of the art Python Package Manager
 ```
 
 Validate the install:
@@ -91,7 +85,7 @@ uv run python -c "import ldt; print(ldt.__file__)"
 If you plan to run `LCGA`/`GMM`, install R-side dependencies:
 
 ```bash
-Rscript --vanilla setup_R/install_requirements.R
+Rscript --vanilla -e "install.packages('lcmm', repos='https://cloud.r-project.org')"
 ```
 
 ### 2) Install `ldt` (Go CLI, essential no-code interface)
@@ -120,8 +114,12 @@ Reload your shell config, then run:
 ldt
 ```
 
-> [!TIP]
-> The `ldt` CLI is the fastest way to explore the toolkit with no code. Use Python directly when you want low-level control.
+
+> [!WARNING]
+> Windows is not supported by default yet.
+> As a workaround, run the toolkit inside a Docker Linux environment, or use a macOS-based machine.
+> Please open [an issue](https://github.com/Longitudinal-Depression-Toolkit/ldt-toolkit/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen) if you want to contribute Windows support.
+
 
 ### <img src="public/icons/lucide/square-code.svg" width="32" alt="" /> Getting Started W/ the Toolset
 
