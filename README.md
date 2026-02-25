@@ -86,9 +86,23 @@ Rscript --vanilla setup_R/install_requirements.R
 
 ### <img src="public/icons/lucide/tally-2.svg" width="28" alt="" /> Install the `ldt` GO CLI (No-code Terminal Interface)
 
+Homebrew (macOS/Linux):
+
 ```bash
-go install github.com/Longitudinal-Depression-Toolkit/CLI@latest
+brew tap Longitudinal-Depression-Toolkit/homebrew-tap
+brew install ldt
 ```
+
+[//]: # (Scoop &#40;Windows&#41;:)
+
+[//]: # ()
+[//]: # (```powershell)
+
+[//]: # (scoop bucket add longitudinal-depression-toolkit https://github.com/Longitudinal-Depression-Toolkit/scoop-bucket)
+
+[//]: # (scoop install ldt)
+
+[//]: # (```)
 
 <img src="public/icons/lucide/party-popper.svg" width="14" alt="" /> Voila! Now, you can run:
 
@@ -96,7 +110,7 @@ go install github.com/Longitudinal-Depression-Toolkit/CLI@latest
 ldt
 ```
 > [!WARNING]
-> Windows is not supported by default yet.
+> The full `ldt-toolkit` workflow is not supported by default on Windows yet.
 > As a workaround, run the toolkit inside a Docker Linux environment, or use a macOS-based machine.
 > Please open [an issue](https://github.com/Longitudinal-Depression-Toolkit/ldt-toolkit/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen) if you want to contribute Windows support.
 
@@ -293,3 +307,6 @@ Use GitHub's "Cite this repository" for citation metadata updates.
 - Access to [Millennium Cohort Study data is governed by CLS/UCL data access rules](https://cls.ucl.ac.uk/cls-studies/millennium-cohort-study/).
 - Review [SECURITY.md](./SECURITY.md) for handling expectations.
 - Licensed under the [MIT License](./LICENSE).
+
+
+_Special thanks to [@charm.land](https://charm.land) for their amazing TUI framework!_
