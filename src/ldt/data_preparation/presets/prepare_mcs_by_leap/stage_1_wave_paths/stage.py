@@ -8,7 +8,7 @@ from typing import Any, Literal
 import yaml
 from beartype import beartype
 
-from src.utils.errors import InputValidationError
+from ldt.utils.errors import InputValidationError
 
 DatasetRole = Literal["family", "child", "parent", "link"]
 

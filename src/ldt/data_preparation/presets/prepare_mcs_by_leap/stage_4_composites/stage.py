@@ -9,7 +9,7 @@ import pandas as pd
 import yaml
 from beartype import beartype
 
-from src.utils.errors import InputValidationError
+from ldt.utils.errors import InputValidationError
 
 _STAGE_DIR = Path(__file__).resolve().parent
 _COMPOSITES_CONFIG = _STAGE_DIR / "composites.yaml"
@@ -175,8 +175,7 @@ def print_composite_summary(*, summary: CompositeFeatureSummary) -> None:
     """
 
     print(
-        "Stage 4 - Composite features: "
-        f"created={summary.created}/{summary.requested}"
+        f"Stage 4 - Composite features: created={summary.created}/{summary.requested}"
     )
 
 

@@ -9,7 +9,7 @@ import pandas as pd
 import yaml
 from beartype import beartype
 
-from src.utils.errors import InputValidationError
+from ldt.utils.errors import InputValidationError
 
 from ..stage_1_wave_paths import DatasetSpec, WaveDatasetConfig
 
