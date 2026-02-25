@@ -4,14 +4,13 @@ import numpy as np
 import pandas as pd
 from beartype import beartype
 
-from src.utils.errors import InputValidationError
-from src.utils.metadata import ComponentMetadata
-
-from ..synthetic_data_generation import Synthesis
+from ldt.utils.errors import InputValidationError
+from ldt.utils.metadata import ComponentMetadata
+from ldt.utils.templates.tools.data_preparation import DataPreparationTool
 
 
 @beartype
-class MissingDataScenarios(Synthesis):
+class MissingDataScenarios(DataPreparationTool):
     """Synthetic data generator for missingness stress-test scenarios.
 
     This generator starts from a complete longitudinal panel and injects
@@ -26,7 +25,7 @@ class MissingDataScenarios(Synthesis):
 
     Examples:
         ```python
-        from ldt.data_preparation.tools.synthetic_data_generation.generators.missing_data_scenarios import MissingDataScenarios
+        from ldt.data_preparation import MissingDataScenarios
 
         generator = MissingDataScenarios()
         # The public tool runner orchestrates panel generation + missingness injection.
@@ -41,6 +40,76 @@ class MissingDataScenarios(Synthesis):
             "missingness patterns."
         ),
     )
+
+    @beartype
+    def prepare(
+        self,
+        *,
+        n_samples: int,
+        n_waves: int,
+        random_state: int | None,
+        feature_cols: list[str],
+        mechanism: str,
+        missing_rate: float,
+        dropout_rate: float,
+        mar_strength: float,
+    ) -> pd.DataFrame:
+        """Generate long-format panel data with configurable missingness.
+
+        Args:
+            n_samples (int): Number of samples.
+            n_waves (int): Number of waves.
+            random_state (int | None): Optional random seed.
+            feature_cols (list[str]): Feature columns to synthesise.
+            mechanism (str): One of `mcar`, `mar`, `dropout`, `mixed`.
+            missing_rate (float): Base missingness rate.
+            dropout_rate (float): Subject-level dropout probability.
+            mar_strength (float): Strength of MAR dependence on observed values.
+
+        Returns:
+            pd.DataFrame: Generated long-format dataset.
+        """
+
+        if not feature_cols:
+            raise InputValidationError("At least one feature column must be provided.")
+
+        mechanism_normalised = mechanism.strip().lower()
+        if mechanism_normalised not in {"mcar", "mar", "dropout", "mixed"}:
+            raise InputValidationError(
+                "mechanism must be one of: mcar, mar, dropout, mixed."
+            )
+
+        self._validate_unit_interval(
+            value=missing_rate,
+            label="missing_rate",
+            max_value=0.95,
+        )
+        self._validate_unit_interval(
+            value=dropout_rate,
+            label="dropout_rate",
+            max_value=0.95,
+        )
+        if mar_strength < 0:
+            raise InputValidationError("mar_strength must be non-negative.")
+
+        rng = np.random.default_rng(random_state)
+        data = self._generate_complete_panel(
+            n_samples=n_samples,
+            n_waves=n_waves,
+            feature_cols=feature_cols,
+            rng=rng,
+        )
+        data = self._apply_missingness(
+            data=data,
+            feature_cols=feature_cols,
+            mechanism=mechanism_normalised,
+            missing_rate=missing_rate,
+            dropout_rate=dropout_rate,
+            mar_strength=mar_strength,
+            n_waves=n_waves,
+            rng=rng,
+        )
+        return data.drop(columns=["time", "class", "dropout_wave"], errors="ignore")
 
     @staticmethod
     @beartype

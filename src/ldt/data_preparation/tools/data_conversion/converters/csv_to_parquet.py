@@ -5,40 +5,39 @@ from pathlib import Path
 import pandas as pd
 from beartype import beartype
 
-from src.utils.metadata import ComponentMetadata
+from ldt.utils.metadata import ComponentMetadata
 
-from ..data_conversion import Conversion
-from ._tabular_converter import TabularFileConverterMixin
+from ._tabular_converter import TabularConverterTool
 
 
 @beartype
-class StataToParquet(TabularFileConverterMixin, Conversion):
-    """Convert Stata files (`.dta`) to Parquet (`.parquet`)."""
+class CsvToParquet(TabularConverterTool):
+    """Convert CSV files (`.csv`) to Parquet (`.parquet`)."""
 
     metadata = ComponentMetadata(
-        name="stata_to_parquet",
-        full_name="Stata (.dta) to Parquet",
+        name="csv_to_parquet",
+        full_name="CSV to Parquet",
         abstract_description=(
-            "Convert one Stata file or every Stata file in a folder to Parquet."
+            "Convert one CSV file or every CSV file in a folder to Parquet."
         ),
     )
-    input_extension = ".dta"
+    input_extension = ".csv"
     output_extension = ".parquet"
-    input_format_label = "Stata"
+    input_format_label = "CSV"
     output_format_label = "Parquet"
-    batch_progress_description = "Converting Stata files to Parquet..."
+    batch_progress_description = "Converting CSV files to Parquet..."
 
     @beartype
     def _read_table(self, *, input_path: Path) -> pd.DataFrame:
-        """Read Stata input data.
+        """Read CSV input data.
 
         Args:
-            input_path: Path to the source Stata file.
+            input_path: Path to the source CSV file.
 
         Returns:
             pd.DataFrame: Loaded tabular data.
         """
-        return self._read_stata(input_path)
+        return pd.read_csv(input_path)
 
     @beartype
     def _write_table(self, *, data: pd.DataFrame, output_path: Path) -> None:

@@ -4,14 +4,13 @@ import numpy as np
 import pandas as pd
 from beartype import beartype
 
-from src.utils.errors import InputValidationError
-from src.utils.metadata import ComponentMetadata
-
-from ..synthetic_data_generation import Synthesis
+from ldt.utils.errors import InputValidationError
+from ldt.utils.metadata import ComponentMetadata
+from ldt.utils.templates.tools.data_preparation import DataPreparationTool
 
 
 @beartype
-class PiecewiseChangepoint(Synthesis):
+class PiecewiseChangepoint(DataPreparationTool):
     """Synthetic data generator for piecewise changepoint trajectories.
 
     This generator creates trajectories with one structural break. Before the
@@ -23,10 +22,10 @@ class PiecewiseChangepoint(Synthesis):
 
     Examples:
         ```python
-        from ldt.data_preparation.tools.synthetic_data_generation.generators.piecewise_changepoint import PiecewiseChangepoint
+        from ldt.data_preparation import PiecewiseChangepoint
 
         generator = PiecewiseChangepoint()
-        data = generator.generate(
+        data = generator.prepare(
             n_samples=500,
             n_waves=6,
             random_state=42,
@@ -49,7 +48,7 @@ class PiecewiseChangepoint(Synthesis):
     )
 
     @beartype
-    def generate(
+    def prepare(
         self,
         *,
         n_samples: int,
@@ -84,10 +83,10 @@ class PiecewiseChangepoint(Synthesis):
 
         Examples:
             ```python
-            from ldt.data_preparation.tools.synthetic_data_generation.generators.piecewise_changepoint import PiecewiseChangepoint
+            from ldt.data_preparation import PiecewiseChangepoint
 
             generator = PiecewiseChangepoint()
-            data = generator.generate(
+            data = generator.prepare(
                 n_samples=300,
                 n_waves=7,
                 random_state=7,

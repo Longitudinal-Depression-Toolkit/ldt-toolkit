@@ -4,14 +4,13 @@ import numpy as np
 import pandas as pd
 from beartype import beartype
 
-from src.utils.errors import InputValidationError
-from src.utils.metadata import ComponentMetadata
-
-from ..synthetic_data_generation import Synthesis
+from ldt.utils.errors import InputValidationError
+from ldt.utils.metadata import ComponentMetadata
+from ldt.utils.templates.tools.data_preparation import DataPreparationTool
 
 
 @beartype
-class EventShockRecovery(Synthesis):
+class EventShockRecovery(DataPreparationTool):
     """Synthetic data generator for shock-and-recovery trajectories.
 
     This generator creates long-format trajectories where each participant
@@ -23,10 +22,10 @@ class EventShockRecovery(Synthesis):
 
     Examples:
         ```python
-        from ldt.data_preparation.tools.synthetic_data_generation.generators.event_shock_recovery import EventShockRecovery
+        from ldt.data_preparation import EventShockRecovery
 
         generator = EventShockRecovery()
-        data = generator.generate(
+        data = generator.prepare(
             n_samples=500,
             n_waves=6,
             random_state=42,
@@ -49,7 +48,7 @@ class EventShockRecovery(Synthesis):
     )
 
     @beartype
-    def generate(
+    def prepare(
         self,
         *,
         n_samples: int,
@@ -88,10 +87,10 @@ class EventShockRecovery(Synthesis):
 
         Examples:
             ```python
-            from ldt.data_preparation.tools.synthetic_data_generation.generators.event_shock_recovery import EventShockRecovery
+            from ldt.data_preparation import EventShockRecovery
 
             generator = EventShockRecovery()
-            data = generator.generate(
+            data = generator.prepare(
                 n_samples=200,
                 n_waves=5,
                 random_state=0,

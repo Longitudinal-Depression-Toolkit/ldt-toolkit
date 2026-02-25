@@ -4,18 +4,18 @@ import copy
 from pathlib import Path
 from typing import Any
 
-from src.utils.catalog import (
+from ldt.bridge.catalog import (
     expand_parameter_templates,
     load_catalog_file,
     section_dict_items,
 )
-from src.utils.errors import InputValidationError
+from ldt.utils.errors import InputValidationError
 
 _CATALOG_PATH = Path(__file__).resolve().parent / "config" / "go_cli_catalog.json"
 
 
 def load_data_preparation_catalog() -> dict[str, Any]:
-    """Load and normalise the data-preparation catalog JSON.
+    """Load and normalise the data-preparation catalogue JSON.
 
     Returns:
         dict[str, Any]: Dictionary containing tool results.

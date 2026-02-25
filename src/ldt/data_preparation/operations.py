@@ -3,18 +3,20 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
-from src.utils.errors import InputValidationError
-from src.utils.operation_registry import OperationRegistry
+from ldt.bridge.operation_registry import OperationRegistry
+from ldt.utils.errors import InputValidationError
 
-from . import (
+from .catalog import (
     list_data_conversion_techniques,
     list_data_preparation_presets,
     list_synthetic_techniques,
-    prepare_mcs_by_leap_profile,
-    run_data_conversion,
-    run_prepare_mcs_by_leap,
-    run_synthetic_generation,
 )
+from .presets.prepare_mcs_by_leap.run import (
+    prepare_mcs_by_leap_profile,
+    run_prepare_mcs_by_leap,
+)
+from .tools.data_conversion.run import run_data_conversion
+from .tools.synthetic_data_generation.run import run_synthetic_generation
 
 
 def register_operations(registry: OperationRegistry) -> None:

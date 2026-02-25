@@ -608,7 +608,7 @@
       {
         "id": "prepare_MCS_by_LEAP",
         "name": "Prepare MCS by LEAP",
-        "description": "Five-stage Millennium Cohort Study preparation preset.",
+        "description": "Run a full preparation of raw Stata datasets into per-wave or merged (wide and long) longitudinal outputs, with features of interest for LEAP depression youth trajectory analysis.",
         "available": true,
         "status": "runnable"
       }

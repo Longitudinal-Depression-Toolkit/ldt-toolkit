@@ -1,29 +1,34 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from pathlib import Path
 from typing import Any
 
-import numpy as np
 import pandas as pd
 
-from src.data_preparation.catalog import (
+from ldt.data_preparation.catalog import (
     list_synthetic_techniques,
     resolve_technique_with_defaults,
 )
-from src.data_preparation.tools.synthetic_data_generation.generators.harmonisation_challenge import (
+from ldt.data_preparation.tools.synthetic_data_generation.generators.event_shock_recovery import (
+    EventShockRecovery,
+)
+from ldt.data_preparation.tools.synthetic_data_generation.generators.harmonisation_challenge import (
     HarmonisationChallenge,
 )
-from src.data_preparation.tools.synthetic_data_generation.generators.missing_data_scenarios import (
+from ldt.data_preparation.tools.synthetic_data_generation.generators.missing_data_scenarios import (
     MissingDataScenarios,
 )
-from src.data_preparation.tools.synthetic_data_generation.generators.trend_patterns import (
-    SyntheticWaveDataset,
+from ldt.data_preparation.tools.synthetic_data_generation.generators.piecewise_changepoint import (
+    PiecewiseChangepoint,
+)
+from ldt.data_preparation.tools.synthetic_data_generation.generators.trend_patterns import (
     TrajectoryFeatureSpec,
     TrajectoryPatternSpec,
+    TrendPatterns,
 )
-from src.utils.errors import InputValidationError
+from ldt.utils.errors import InputValidationError
 
 
 def run_synthetic_generation(
@@ -33,37 +38,38 @@ def run_synthetic_generation(
 ) -> dict[str, Any]:
     """Run a synthetic-data-generation technique and write CSV output.
 
+    !!! warning
+
+        This `run_*` function is primarily for the Go CLI bridge and should not be
+        treated as the Python library API. In Python scripts or notebooks, import
+        and call generator classes directly from `ldt.data_preparation`.
+
     Supported techniques model different longitudinal patterns:
     `trend_patterns`, `event_shock_recovery`, `piecewise_changepoint`,
     `missing_data_scenarios`, and `harmonisation_challenge`.
-    The function resolves defaults from the catalog, executes the selected
+    The function resolves defaults from the catalogue, executes the selected
     generator, writes the resulting dataset to CSV, and returns output metadata.
 
     Args:
-        technique (str): Synthetic technique key from the catalog.
+        technique (str): Synthetic technique key from the catalogue.
         params (Mapping[str, Any]): Technique parameters and output settings.
+            Common keys:
+            - `output_path`, `n_samples`, `n_waves`, `random_state`,
+              `feature_cols`.
+            Technique-specific keys:
+            - `trend_patterns`: `spec_mode`, `custom_class_specs_json`.
+            - `event_shock_recovery`: `shock_wave`, `shock_mean`,
+              `recovery_rate`, `noise_sd`.
+            - `piecewise_changepoint`: `changepoint_wave`, `noise_sd`,
+              `pre_slope_sd`, `post_slope_sd`.
+            - `missing_data_scenarios`: `mechanism`, `missing_rate`,
+              `dropout_rate`, `mar_strength`.
+            - `harmonisation_challenge`: `noise_rate`, `missing_label_rate`,
+              `include_canonical_columns`.
 
     Returns:
         dict[str, Any]: Output summary including path, shape, and column names.
 
-    Examples:
-        ```python
-        from ldt.data_preparation.tools.synthetic_data_generation.run import run_synthetic_generation
-        result = run_synthetic_generation(
-            technique="event_shock_recovery",
-            params={
-                "output_path": "./synthetic_waves.csv",
-                "n_samples": 500,
-                "n_waves": 6,
-                "random_state": 42,
-                "feature_cols": "depressive_score,anxiety_score",
-                "shock_wave": 3,
-                "shock_mean": 4.0,
-                "recovery_rate": 0.8,
-                "noise_sd": 1.0,
-            },
-        )
-        ```
     """
 
     _, resolved = resolve_technique_with_defaults(
@@ -73,18 +79,10 @@ def run_synthetic_generation(
     )
 
     canonical = _normalise_key(technique)
-    if canonical == "trend_patterns":
-        data, output_path = _run_trend_patterns(resolved)
-    elif canonical == "event_shock_recovery":
-        data, output_path = _run_event_shock_recovery(resolved)
-    elif canonical == "piecewise_changepoint":
-        data, output_path = _run_piecewise_changepoint(resolved)
-    elif canonical == "missing_data_scenarios":
-        data, output_path = _run_missing_data_scenarios(resolved)
-    elif canonical == "harmonisation_challenge":
-        data, output_path = _run_harmonisation_challenge(resolved)
-    else:
+    technique_runner = _TECHNIQUE_RUNNERS.get(canonical)
+    if technique_runner is None:
         raise InputValidationError(f"Unsupported synthetic technique: {technique}")
+    data, output_path = technique_runner(resolved)
 
     destination = Path(output_path).expanduser()
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -107,7 +105,7 @@ def _run_trend_patterns(params: Mapping[str, Any]) -> tuple[pd.DataFrame, str]:
     feature_cols = _as_required_string_list(params, "feature_cols")
     spec_mode = _as_required_string(params, "spec_mode").strip().lower()
 
-    dataset = SyntheticWaveDataset(
+    dataset = TrendPatterns(
         n_samples=n_samples,
         n_waves=n_waves,
         random_state=random_state,
@@ -127,13 +125,13 @@ def _run_trend_patterns(params: Mapping[str, Any]) -> tuple[pd.DataFrame, str]:
         for feature in feature_cols
     ]
 
-    final_dataset = SyntheticWaveDataset(
+    final_dataset = TrendPatterns(
         n_samples=n_samples,
         n_waves=n_waves,
         random_state=random_state,
         feature_specs=feature_specs,
     )
-    return final_dataset.generate(), output_path
+    return final_dataset.prepare(), output_path
 
 
 def _run_event_shock_recovery(params: Mapping[str, Any]) -> tuple[pd.DataFrame, str]:
@@ -147,37 +145,18 @@ def _run_event_shock_recovery(params: Mapping[str, Any]) -> tuple[pd.DataFrame, 
     recovery_rate = _as_required_float(params, "recovery_rate")
     noise_sd = _as_required_float(params, "noise_sd", minimum=0.0)
 
-    if shock_wave <= 1 or shock_wave >= n_waves:
-        raise InputValidationError("Shock wave must be between wave 2 and n_waves-1.")
-
-    rng = np.random.default_rng(random_state)
-    times = np.arange(1, n_waves + 1, dtype=float)
-
-    records: list[dict[str, float | int]] = []
-    for subject_id in range(1, n_samples + 1):
-        baseline_intercept = rng.normal(6.0, 1.2)
-        baseline_slope = rng.normal(0.0, 0.3)
-        subject_shock = rng.normal(shock_mean, 0.8)
-
-        for wave_index, time in enumerate(times, start=1):
-            baseline = baseline_intercept + baseline_slope * time
-            if wave_index < shock_wave:
-                shock_component = 0.0
-            else:
-                elapsed = wave_index - shock_wave
-                shock_component = subject_shock * np.exp(-recovery_rate * elapsed)
-            value = float(rng.normal(baseline + shock_component, noise_sd))
-
-            record: dict[str, float | int] = {
-                "subject_id": subject_id,
-                "wave": wave_index,
-            }
-            for feature in feature_cols:
-                feature_shift = rng.normal(0.0, 0.3)
-                record[feature] = value + feature_shift
-            records.append(record)
-
-    return pd.DataFrame.from_records(records), output_path
+    generator = EventShockRecovery()
+    data = generator.prepare(
+        n_samples=n_samples,
+        n_waves=n_waves,
+        random_state=random_state,
+        feature_cols=feature_cols,
+        shock_wave=shock_wave,
+        shock_mean=shock_mean,
+        recovery_rate=recovery_rate,
+        noise_sd=noise_sd,
+    )
+    return data, output_path
 
 
 def _run_piecewise_changepoint(params: Mapping[str, Any]) -> tuple[pd.DataFrame, str]:
@@ -191,42 +170,18 @@ def _run_piecewise_changepoint(params: Mapping[str, Any]) -> tuple[pd.DataFrame,
     pre_slope_sd = _as_required_float(params, "pre_slope_sd", minimum=0.0)
     post_slope_sd = _as_required_float(params, "post_slope_sd", minimum=0.0)
 
-    if changepoint_wave <= 1 or changepoint_wave >= n_waves:
-        raise InputValidationError(
-            "Changepoint wave must be between wave 2 and n_waves-1."
-        )
-
-    rng = np.random.default_rng(random_state)
-    times = np.arange(1, n_waves + 1, dtype=float)
-
-    records: list[dict[str, float | int]] = []
-    for subject_id in range(1, n_samples + 1):
-        intercept = rng.normal(7.0, 1.5)
-        pre_slope = rng.normal(0.0, pre_slope_sd)
-        post_slope_delta = rng.normal(0.0, post_slope_sd)
-        post_slope = pre_slope + post_slope_delta
-
-        values_by_time: dict[int, float] = {}
-        cp_time = float(changepoint_wave)
-        level_at_cp = intercept + pre_slope * cp_time
-        for wave_index, time in enumerate(times, start=1):
-            if wave_index <= changepoint_wave:
-                mean_value = intercept + pre_slope * time
-            else:
-                mean_value = level_at_cp + post_slope * (time - cp_time)
-            values_by_time[wave_index] = float(rng.normal(mean_value, noise_sd))
-
-        for wave_index, _time in enumerate(times, start=1):
-            record: dict[str, float | int] = {
-                "subject_id": subject_id,
-                "wave": wave_index,
-            }
-            for feature in feature_cols:
-                feature_shift = rng.normal(0.0, 0.25)
-                record[feature] = values_by_time[wave_index] + feature_shift
-            records.append(record)
-
-    return pd.DataFrame.from_records(records), output_path
+    generator = PiecewiseChangepoint()
+    data = generator.prepare(
+        n_samples=n_samples,
+        n_waves=n_waves,
+        random_state=random_state,
+        feature_cols=feature_cols,
+        changepoint_wave=changepoint_wave,
+        noise_sd=noise_sd,
+        pre_slope_sd=pre_slope_sd,
+        post_slope_sd=post_slope_sd,
+    )
+    return data, output_path
 
 
 def _run_missing_data_scenarios(params: Mapping[str, Any]) -> tuple[pd.DataFrame, str]:
@@ -240,33 +195,16 @@ def _run_missing_data_scenarios(params: Mapping[str, Any]) -> tuple[pd.DataFrame
     dropout_rate = _as_required_float(params, "dropout_rate", minimum=0.0, maximum=0.95)
     mar_strength = _as_required_float(params, "mar_strength", minimum=0.0)
 
-    if mechanism not in {"mcar", "mar", "dropout", "mixed"}:
-        raise InputValidationError(
-            "mechanism must be one of: mcar, mar, dropout, mixed."
-        )
-
     runner = MissingDataScenarios()
-    rng = np.random.default_rng(random_state)
-
-    data = runner._generate_complete_panel(
+    data = runner.prepare(
         n_samples=n_samples,
         n_waves=n_waves,
-        feature_cols=feature_cols,
-        rng=rng,
-    )
-    data = runner._apply_missingness(
-        data=data,
+        random_state=random_state,
         feature_cols=feature_cols,
         mechanism=mechanism,
         missing_rate=missing_rate,
         dropout_rate=dropout_rate,
         mar_strength=mar_strength,
-        n_waves=n_waves,
-        rng=rng,
-    )
-    data = data.drop(
-        columns=["time", "class", "dropout_wave"],
-        errors="ignore",
     )
     return data, output_path
 
@@ -287,22 +225,15 @@ def _run_harmonisation_challenge(params: Mapping[str, Any]) -> tuple[pd.DataFram
     include_canonical_columns = _as_required_bool(params, "include_canonical_columns")
 
     runner = HarmonisationChallenge()
-    rng = np.random.default_rng(random_state)
-
-    data = runner._generate_base_panel(
+    data = runner.prepare(
         n_samples=n_samples,
         n_waves=n_waves,
+        random_state=random_state,
         feature_cols=feature_cols,
-        rng=rng,
-    )
-    data = runner._inject_harmonisation_noise(
-        data=data,
         noise_rate=noise_rate,
         missing_label_rate=missing_label_rate,
         include_canonical_columns=include_canonical_columns,
-        rng=rng,
     )
-    data = data.drop(columns=["time", "class"], errors="ignore")
     return data, output_path
 
 
@@ -492,11 +423,22 @@ def _normalise_key(raw: str) -> str:
     return raw.strip().lower().replace("-", "_")
 
 
+TechniqueRunner = Callable[[Mapping[str, Any]], tuple[pd.DataFrame, str]]
+
+_TECHNIQUE_RUNNERS: dict[str, TechniqueRunner] = {
+    "trend_patterns": _run_trend_patterns,
+    "event_shock_recovery": _run_event_shock_recovery,
+    "piecewise_changepoint": _run_piecewise_changepoint,
+    "missing_data_scenarios": _run_missing_data_scenarios,
+    "harmonisation_challenge": _run_harmonisation_challenge,
+}
+
+
 def list_synthetic_generation_catalog() -> list[dict[str, Any]]:
-    """Return synthetic generation catalog entries.
+    """Return synthetic generation catalogue entries.
 
     Returns:
-        list[dict[str, Any]]: Catalog rows describing available techniques.
+        list[dict[str, Any]]: Catalogue rows describing available techniques.
     """
 
     return list_synthetic_techniques()

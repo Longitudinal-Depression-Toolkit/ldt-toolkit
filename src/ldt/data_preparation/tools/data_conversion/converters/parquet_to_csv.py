@@ -5,28 +5,27 @@ from pathlib import Path
 import pandas as pd
 from beartype import beartype
 
-from src.utils.metadata import ComponentMetadata
+from ldt.utils.metadata import ComponentMetadata
 
-from ..data_conversion import Conversion
-from ._tabular_converter import TabularFileConverterMixin
+from ._tabular_converter import TabularConverterTool
 
 
 @beartype
-class ParquetToStata(TabularFileConverterMixin, Conversion):
-    """Convert Parquet files (`.parquet`) to Stata (`.dta`)."""
+class ParquetToCsv(TabularConverterTool):
+    """Convert Parquet files (`.parquet`) to CSV (`.csv`)."""
 
     metadata = ComponentMetadata(
-        name="parquet_to_stata",
-        full_name="Parquet to Stata (.dta)",
+        name="parquet_to_csv",
+        full_name="Parquet to CSV",
         abstract_description=(
-            "Convert one Parquet file or every Parquet file in a folder to Stata."
+            "Convert one Parquet file or every Parquet file in a folder to CSV."
         ),
     )
     input_extension = ".parquet"
-    output_extension = ".dta"
+    output_extension = ".csv"
     input_format_label = "Parquet"
-    output_format_label = "Stata"
-    batch_progress_description = "Converting Parquet files to Stata..."
+    output_format_label = "CSV"
+    batch_progress_description = "Converting Parquet files to CSV..."
 
     @beartype
     def _read_table(self, *, input_path: Path) -> pd.DataFrame:
@@ -42,13 +41,13 @@ class ParquetToStata(TabularFileConverterMixin, Conversion):
 
     @beartype
     def _write_table(self, *, data: pd.DataFrame, output_path: Path) -> None:
-        """Write dataframe as Stata (`.dta`).
+        """Write dataframe as CSV.
 
         Args:
             data: Dataframe to serialise.
-            output_path: Destination Stata file path.
+            output_path: Destination CSV file path.
 
         Returns:
             None.
         """
-        data.to_stata(output_path, write_index=False)
+        data.to_csv(output_path, index=False)

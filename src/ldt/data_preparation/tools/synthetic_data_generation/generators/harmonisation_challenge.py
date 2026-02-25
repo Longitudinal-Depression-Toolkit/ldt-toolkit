@@ -4,10 +4,9 @@ import numpy as np
 import pandas as pd
 from beartype import beartype
 
-from src.utils.errors import InputValidationError
-from src.utils.metadata import ComponentMetadata
-
-from ..synthetic_data_generation import Synthesis
+from ldt.utils.errors import InputValidationError
+from ldt.utils.metadata import ComponentMetadata
+from ldt.utils.templates.tools.data_preparation import DataPreparationTool
 
 _CATEGORY_VARIANTS: dict[str, dict[str, tuple[str, ...]]] = {
     "site_label": {
@@ -40,7 +39,7 @@ _CATEGORY_VARIANTS: dict[str, dict[str, tuple[str, ...]]] = {
 
 
 @beartype
-class HarmonisationChallenge(Synthesis):
+class HarmonisationChallenge(DataPreparationTool):
     """Synthetic data generator for categorical harmonisation benchmarks.
 
     This generator creates a panel with clean canonical category labels
@@ -53,7 +52,7 @@ class HarmonisationChallenge(Synthesis):
 
     Examples:
         ```python
-        from ldt.data_preparation.tools.synthetic_data_generation.generators.harmonisation_challenge import HarmonisationChallenge
+        from ldt.data_preparation import HarmonisationChallenge
 
         generator = HarmonisationChallenge()
         # The public tool runner orchestrates panel generation + label corruption.
@@ -68,6 +67,64 @@ class HarmonisationChallenge(Synthesis):
             "`harmonise-categories` and `clean-dataset`."
         ),
     )
+
+    @beartype
+    def prepare(
+        self,
+        *,
+        n_samples: int,
+        n_waves: int,
+        random_state: int | None,
+        feature_cols: list[str],
+        noise_rate: float,
+        missing_label_rate: float,
+        include_canonical_columns: bool,
+    ) -> pd.DataFrame:
+        """Generate a categorical harmonisation challenge dataset.
+
+        Args:
+            n_samples (int): Number of samples.
+            n_waves (int): Number of waves.
+            random_state (int | None): Optional random seed.
+            feature_cols (list[str]): Numeric longitudinal feature columns.
+            noise_rate (float): Fraction of labels receiving noisy variants.
+            missing_label_rate (float): Fraction of labels replaced with missing values.
+            include_canonical_columns (bool): Keep canonical side-by-side columns.
+
+        Returns:
+            pd.DataFrame: Generated long-format dataset with noisy categorical labels.
+        """
+
+        if not feature_cols:
+            raise InputValidationError(
+                "At least one numeric feature column is required."
+            )
+        self._validate_unit_interval(
+            value=noise_rate,
+            label="noise_rate",
+            max_value=1.0,
+        )
+        self._validate_unit_interval(
+            value=missing_label_rate,
+            label="missing_label_rate",
+            max_value=0.5,
+        )
+
+        rng = np.random.default_rng(random_state)
+        data = self._generate_base_panel(
+            n_samples=n_samples,
+            n_waves=n_waves,
+            feature_cols=feature_cols,
+            rng=rng,
+        )
+        data = self._inject_harmonisation_noise(
+            data=data,
+            noise_rate=noise_rate,
+            missing_label_rate=missing_label_rate,
+            include_canonical_columns=include_canonical_columns,
+            rng=rng,
+        )
+        return data.drop(columns=["time", "class"], errors="ignore")
 
     @staticmethod
     @beartype
