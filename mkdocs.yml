@@ -1,0 +1,143 @@
+site_name: LDT-Toolkit
+repo_name: Longitudinal-Depression-Toolkit/ldt-toolkit
+repo_url: https://github.com/Longitudinal-Depression-Toolkit/ldt-toolkit
+edit_uri: blob/main/docs/
+site_url: https://github.com/Longitudinal-Depression-Toolkit/ldt-toolkit
+site_author: Simon Provost
+copyright: Maintained by Simon Provost
+site_description: >
+  LDT-Toolkit, your open-source toolset for longitudinal studies.
+
+remote_branch: main
+
+theme:
+  name: material
+  custom_dir: docs/theme/overrides
+  palette:
+    - scheme: slate
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.indexes
+    - toc.follow
+    - content.code.copy
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - announce.dismiss
+    - content.tabs.link
+    - content.code.select
+    - content.code.annotate
+    - navigation.top
+    - search.suggest
+    - content.tooltips
+  icon:
+    repo: fontawesome/brands/github
+  logo: public/resources/ldt_logo.png
+  favicon: public/resources/ldt_logo.png
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - abbr
+  - md_in_html
+  - pymdownx.tilde
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.snippets:
+      base_path:
+        - docs
+      restrict_base_path: false
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.arithmatex:
+      generic: true
+
+plugins:
+  - search
+  - document-dates:
+      position: bottom
+      type: date
+      locale: en
+      date_format: '%Y-%m-%d'
+      time_format: '%H:%M:%S'
+      exclude:
+        - index.md
+      show_author: true
+  - mkdocstrings:
+      handlers:
+        python:
+          paths:
+            - src
+          options:
+            docstring_style: google
+            show_source: false
+            heading_level: 3
+            show_root_heading: true
+            show_category_heading: false
+            show_root_full_path: false
+  - autorefs
+  - privacy
+  - minify
+  - mermaid2
+
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/Longitudinal-Depression-Toolkit
+    - icon: fontawesome/brands/github
+      link: https://github.com/Longitudinal-Depression-Toolkit/ldt-toolkit
+
+extra_css:
+  - stylesheets/extra.css
+  - stylesheets/landing.css
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/@mux/mux-player
+  - javascripts/image-zoom.js
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Overview: getting-started/overview.md
+      - Installation: getting-started/installation.md
+  - Tutorials:
+      - Overview: tutorials/index.md
+      - CLI Tutorial: tutorials/cli.md
+      - API Tutorial: tutorials/api.md
+  - API Reference:
+      - Overview: api/index.md
+      - Data preparation: api/data-preparation.md
+      - Data preprocessing: api/data-preprocessing.md
+      - Standard machine learning: api/standard-machine-learning.md
+      - Longitudinal machine learning: api/longitudinal-machine-learning.md
+      - Benchmarks: api/benchmarks.md
+      - Explainability: api/explainability.md
+  - Community Hub:
+      - Overview: community-hub.md
+      - Contributing: CONTRIBUTING_DEV.md
+      - Branding & UX: BRANDING.md
+      - Releases: https://github.com/Longitudinal-Depression-Toolkit/ldt-toolkit/releases
+      - PyPI Index: https://pypi.org/project/ldt-toolkit/

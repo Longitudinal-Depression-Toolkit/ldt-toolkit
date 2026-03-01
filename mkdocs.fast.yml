@@ -1,0 +1,20 @@
+INHERIT: mkdocs.yml
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths:
+            - src
+          options:
+            docstring_style: google
+            show_source: false
+            heading_level: 3
+            show_root_heading: true
+            show_category_heading: false
+            show_root_full_path: false
+  - autorefs
+  - privacy
+  - minify
+  - mermaid2
