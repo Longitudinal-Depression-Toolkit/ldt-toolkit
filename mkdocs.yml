@@ -115,6 +115,7 @@ extra_css:
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/@mux/mux-player
   - javascripts/image-zoom.js
+  - javascripts/search-shortcut.js
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 
