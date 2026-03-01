@@ -1,0 +1,99 @@
+name: "📚 Study Reproducibility Request"
+description: Request or propose a new study reproducibility script set (data preparation, preprocessing, and machine learning).
+title: "📚 [STUDY_REPRODUCIBILITY] - <study name>"
+labels:
+  - "feature"
+  - "stage:study_reproducibility"
+assignees:
+  - "simonprovost"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to request or propose a **study reproducibility bundle**.
+        A complete bundle should define:
+        1) data preparation script/class
+        2) data preprocessing script/class
+        3) machine-learning script/class
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Before Submitting"
+      options:
+        - label: I am not sharing restricted participant-level data in this issue.
+          required: true
+        - label: I checked existing reproducibility presets/placeholders for duplicates.
+          required: true
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: "Request Type"
+      options:
+        - "New study reproducibility bundle"
+        - "Extend an existing study reproducibility bundle"
+        - "Improve placeholders into runnable scripts"
+    validations:
+      required: true
+  - type: input
+    id: study_name
+    attributes:
+      label: "Study Name"
+      placeholder: "Example: Millennium Cohort Study (MCS)"
+    validations:
+      required: true
+  - type: input
+    id: short_key
+    attributes:
+      label: "Proposed Short Key"
+      description: "Lowercase key used in class/preset naming (e.g., `mcs`, `alspac`)."
+      placeholder: "Example: mcs"
+    validations:
+      required: true
+  - type: textarea
+    id: paper_or_protocol
+    attributes:
+      label: "Paper or Protocol Reference"
+      description: "Provide DOI, URL, citation, or protocol details for the reproducibility target."
+      placeholder: "Add links and references that define what should be reproduced."
+    validations:
+      required: true
+  - type: textarea
+    id: stage_scope
+    attributes:
+      label: "Stage Scope (1/2/3)"
+      description: "Describe what each stage should do: (1) preparation, (2) preprocessing, (3) machine learning."
+      placeholder: "List expected input/output contracts and key operations for each stage."
+    validations:
+      required: true
+  - type: textarea
+    id: class_surface
+    attributes:
+      label: "Proposed Main Class Surface"
+      description: "Propose class names and module paths for the 3 stages."
+      placeholder: "Example: `Prepare<Study>By<Team>`, `Preprocess<Study>By<Team>`, `Model<Study>By<Team>`."
+    validations:
+      required: true
+  - type: textarea
+    id: data_access_notes
+    attributes:
+      label: "Data Access and Constraints"
+      description: "List access route, license/ethics constraints, and reproducibility limitations."
+      placeholder: "Include links to data dictionaries/codebooks where possible."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: "Acceptance Criteria"
+      description: "Define what 'done' means for this reproducibility request."
+      placeholder: "List expected outputs, validation checks, and documentation requirements."
+    validations:
+      required: true
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: "Additional Context"
+      description: "Any extra details, timelines, collaborator constraints, or implementation notes."
+      placeholder: "Optional."
+    validations:
+      required: false

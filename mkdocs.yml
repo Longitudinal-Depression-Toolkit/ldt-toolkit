@@ -75,6 +75,13 @@ markdown_extensions:
 
 plugins:
   - search
+  - copy-to-llm:
+      repo_url: https://raw.githubusercontent.com/Longitudinal-Depression-Toolkit/ldt-toolkit/refs/heads/main/docs
+      button_bg_color: "#1b1b1b"
+      button_text_color: "#f5f5f5"
+      button_hover_color: "#dea2c2"
+      toast_bg_color: "#252121"
+      toast_text_color: "#f5f5f5"
   - document-dates:
       position: bottom
       type: date
@@ -115,6 +122,8 @@ extra_css:
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/@mux/mux-player
   - javascripts/image-zoom.js
+  - javascripts/copy-to-llm-scope.js
+  - javascripts/search-shortcut.js
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 
@@ -135,6 +144,9 @@ nav:
       - Longitudinal machine learning: api/longitudinal-machine-learning.md
       - Benchmarks: api/benchmarks.md
       - Explainability: api/explainability.md
+  - Study Reproducibility:
+      - Overview: study-reproducibility/index.md
+      - MCS by LEAP: study-reproducibility/mcs-by-leap.md
   - Community Hub:
       - Overview: community-hub.md
       - Contributing: CONTRIBUTING_DEV.md

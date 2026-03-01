@@ -25,6 +25,10 @@ _LAZY_EXPORTS: dict[str, tuple[str, str]] = {
         "ldt.machine_learning.tools.longitudinal_machine_learning.run",
         "LongitudinalMachineLearning",
     ),
+    "ModelMCSByLEAP": (
+        "ldt.machine_learning.presets.model_mcs_by_leap.tool",
+        "ModelMCSByLEAP",
+    ),
     "SHAPAnalysis": (
         "ldt.machine_learning.tools.explainability.shap_analysis.run",
         "SHAPAnalysis",
@@ -42,6 +46,7 @@ __all__ = [
     "BenchmarkLongitudinalML",
     "BenchmarkStandardML",
     "LongitudinalMachineLearning",
+    "ModelMCSByLEAP",
     "SHAPAnalysis",
     "StandardMachineLearning",
 ]

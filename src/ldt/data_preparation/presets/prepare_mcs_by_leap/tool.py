@@ -17,12 +17,6 @@ from . import pipeline as preset_pipeline
 class PrepareMCSByLEAP(DataPreparationTool):
     """Library API entrypoint for the full 5-stage Prepare-MCS-by-LEAP workflow.
 
-    !!! info "Study Info"
-
-        - Title: Youth Depression Trajectories Machine Learning
-        - By: University of Edinburgh, LEAP group
-        - Status: WIP
-
     This preset allows a full preparation run from raw Stata datasets into per-wave
     outputs or merged longitudinal outputs (wide and long), with features of interest
     extracted for LEAP depression youth trajectory analysis.
@@ -34,38 +28,52 @@ class PrepareMCSByLEAP(DataPreparationTool):
     This class is the Python-facing API surface for this preset and provides a stable
     contract through `fit(...)`, `prepare(...)`, `fit_prepare(...)`, and `build_config(...)`.
 
-    Pipeline stages:
-        1. Wave input validation (`stage_1_wave_paths`)
-        : Validates expected `.dta` files for each selected wave from
-          `stage_1_wave_paths/datasets.yaml`.
-        2. Subject conceptualisation (`stage_2_subjects`)
-        : Standardises identifiers, builds child anchors from child/link keys,
-          merges role-specific datasets, and constructs one row per child per
-          wave with `CHID = <family_key>_<child_key>`.
-        3. Feature preparation (`stage_3_features`)
-        : Resolves longitudinal/non-longitudinal mappings from YAML configs,
-          handles ambiguous source matches, and tracks unresolved mappings.
-        4. Composite feature construction (`stage_4_composites`)
-        : Applies configured composite operations (`sum`, `mean`, `median`,
-          `min`, `max`, `coalesce`) from `composites.yaml`.
-        5. Final output formatting (`stage_5_output_format`)
-        : Produces long, wide, or long+wide outputs with canonical longitudinal
-          feature names and wave suffixing controlled by `wide_suffix_prefix`.
+    !!! info "Pipeline stages"
 
-    Child-level subject construction details (stage 2):
+        - `stage_1_wave_paths` (wave input validation): validates expected `.dta`
+          files for each selected wave from `stage_1_wave_paths/datasets.yaml`.
+
+        - `stage_2_subjects` (subject conceptualisation): standardises identifiers,
+          builds child anchors from child/link keys, merges role-specific datasets,
+          and constructs one row per child per wave with
+          `CHID = <family_key>_<child_key>`.
+
+        - `stage_3_features` (feature preparation): resolves longitudinal/non-
+          longitudinal mappings from YAML configs, handles ambiguous source matches,
+          and tracks unresolved mappings.
+
+        - `stage_4_composites` (composite feature construction): applies configured
+          composite operations (`sum`, `mean`, `median`, `min`, `max`, `coalesce`)
+          from `composites.yaml`.
+
+        - `stage_5_output_format` (final output formatting): produces long, wide, or
+          long+wide outputs with canonical longitudinal feature names and wave
+          suffixing controlled by `wide_suffix_prefix`.
+
+    !!! info "Child-level subject construction details (stage 2)"
+
         - Child anchor rows are built from the union of child/link key coverage.
+
         - Parent rows are linked through configured parent/link keys, then
           pivoted into stable parent slots (`p1__...`, `p2__...`, ...).
+
         - Final uniqueness is enforced on configured child keys and guarded
           against row explosion after merges.
+
         - Key semantics are controlled by `stage_2_subjects/subject_keys.yaml`.
 
-    Configuration files:
+    !!! info "Configuration files"
+
         - `defaults.yaml`: runtime defaults (parallelism, logging, output paths).
+
         - `stage_1_wave_paths/datasets.yaml`: wave dataset manifests and roles.
+
         - `stage_2_subjects/subject_keys.yaml`: child/parent/link key schema.
+
         - `stage_3_features/longitudinal_features.yaml`: canonical mappings.
+
         - `stage_3_features/non_longitudinal_features.yaml`: covariate selection.
+
         - `stage_4_composites/composites.yaml`: composite feature recipes.
 
     !!! warning
@@ -73,11 +81,6 @@ class PrepareMCSByLEAP(DataPreparationTool):
         Stage configuration loaders use `functools.cache`. If YAML files are edited
         during an active Python process, restart the interpreter to guarantee fresh
         configuration loading.
-
-    !!! warning
-
-        For Go CLI integration, use the wrapper functions in `run.py`. This class is
-        the Python library API interface.
 
     Examples:
         ```python
@@ -139,25 +142,37 @@ class PrepareMCSByLEAP(DataPreparationTool):
         Args:
             **kwargs (Any): Preparation configuration keys used to build a
                 `PrepareMCSByLEAPPipelineConfig`. Supported keys:
+
                 - `waves` (str | Sequence[str]): Wave selection, for example
                   `"ALL"` or `"W1,W2"`.
+
                 - `wave_inputs` (Mapping[str, str | Path] | Sequence[...]):
                   Raw input directory per selected wave.
+
                 - `output_format` (str): `long`, `wide`, or `long_and_wide`.
+
                 - `wide_suffix_prefix` (str | None): Prefix used for wide
                   output column suffixes.
+
                 - `show_summary_logs` (bool): Whether to print per-stage
                   summary logs.
+
                 - `save_wave_outputs` (bool): Whether to persist per-wave
                   intermediate outputs.
+
                 - `wave_output_dir` (str | Path | None): Folder for per-wave
                   outputs when saving is enabled.
+
                 - `save_final_output` (bool): Whether to persist final merged
                   outputs.
+
                 - `long_output_path` (str | Path | None): Final long CSV path.
+
                 - `wide_output_path` (str | Path | None): Final wide CSV path.
+
                 - `parallel` (bool): Whether to parallelise wave processing
                   where possible.
+
                 - `max_workers` (int | None): Optional worker cap when
                   `parallel=True`.
 
@@ -174,7 +189,9 @@ class PrepareMCSByLEAP(DataPreparationTool):
 
         Args:
             **kwargs (Any): Either:
+
                 - `config` (`PrepareMCSByLEAPPipelineConfig`), or
+
                 - the same configuration keys accepted by `fit(...)`.
                 If kwargs are omitted, the method reuses the configuration
                 previously stored by `fit(...)`.
@@ -209,18 +226,30 @@ class PrepareMCSByLEAP(DataPreparationTool):
 
         Args:
             **kwargs (Any): Configuration keys:
+
                 - `waves` (str | Sequence[str]): Wave selector.
+
                 - `wave_inputs` (Mapping[str, str | Path] | Sequence[...]):
                   Raw input root per wave.
+
                 - `output_format` (str): `long`, `wide`, or `long_and_wide`.
+
                 - `wide_suffix_prefix` (str | None): Prefix before wave suffix.
+
                 - `show_summary_logs` (bool): Toggle summary logging.
+
                 - `save_wave_outputs` (bool): Toggle per-wave file writing.
+
                 - `wave_output_dir` (str | Path | None): Per-wave output folder.
+
                 - `save_final_output` (bool): Toggle final output writing.
+
                 - `long_output_path` (str | Path | None): Long output path.
+
                 - `wide_output_path` (str | Path | None): Wide output path.
+
                 - `parallel` (bool): Toggle parallel wave execution.
+
                 - `max_workers` (int | None): Parallel worker cap.
 
         Returns:
