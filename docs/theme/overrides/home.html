@@ -710,6 +710,10 @@
         height: 100%;
     }
 
+    html.is-safari .footer-beyond-svg g[filter] {
+        filter: none !important;
+    }
+
     @media (min-width: 600px) {
         .footer-beyond-overlay {
             height: 300px;
@@ -1172,6 +1176,13 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const docEl = document.documentElement;
+        const ua = navigator.userAgent || '';
+        const isSafari = /safari/i.test(ua) && !/chrome|chromium|android|crios|fxios|edgios/i.test(ua);
+        if (isSafari) {
+            docEl.classList.add('is-safari');
+        }
+
         const heroShell = document.querySelector('.tx-landing__media-shell');
         const heroPlayer = document.querySelector('.tx-landing__media');
         let expandTimer = null;
@@ -1328,7 +1339,6 @@
         const footerBeyond = document.querySelector('[data-footer-beyond]');
 
         if (footer && footerBeyond) {
-            const docEl = document.documentElement;
             const homepage = document.querySelector('.homepage');
             const waveProgressTarget = homepage || docEl;
             const waveRange = 560;
@@ -1337,6 +1347,12 @@
             let raf = null;
             let currentScale = 0;
             let targetScale = 0;
+
+            if (isSafari) {
+                footerBeyond.querySelectorAll('g[filter]').forEach((group) => {
+                    group.removeAttribute('filter');
+                });
+            }
 
             const clamp01 = (value) => Math.min(1, Math.max(0, value));
 
