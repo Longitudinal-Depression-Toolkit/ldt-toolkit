@@ -5,16 +5,16 @@
 <p align="center"><big><big><strong>L</strong>ongitudinal <strong>D</strong>epression <strong>T</strong>rajectories <em>Toolkit</em></big></big></p>
 
 <div align="center">
-  <img src="https://img.shields.io/static/v1?label=Python&message=3.10%E2%80%933.12&color=3776AB&style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10-3.12">
-  <img src="https://img.shields.io/static/v1?label=UV&message=managed&color=2196F3&style=for-the-badge&logo=uv&logoColor=white" alt="UV managed">
-  <img src="https://img.shields.io/static/v1?label=Ruff&message=compliant&color=0F172A&style=for-the-badge&logo=ruff&logoColor=white" alt="Ruff compliant">
-  <img src="https://img.shields.io/static/v1?label=Beartype&message=verified&color=8E24AA&style=for-the-badge" alt="Beartype verified">
-  <img src="https://img.shields.io/static/v1?label=Go%20CLI&message=supported&color=00ADD8&style=for-the-badge&logo=go&logoColor=white" alt="Go CLI supported">
-  <img src="https://img.shields.io/static/v1?label=R&message=required%20for%20LGMMs&color=276DC3&style=for-the-badge&logo=r&logoColor=white" alt="R required for LGMMs">
+  <img src="https://img.shields.io/static/v1?label=Python&message=3.10%E2%80%933.12&color=DEA2C2&style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10-3.12">
+  <img src="https://img.shields.io/static/v1?label=UV&message=managed&color=DEA2C2&style=for-the-badge&logo=uv&logoColor=white" alt="UV managed">
+  <img src="https://img.shields.io/static/v1?label=Ruff&message=compliant&color=DEA2C2&style=for-the-badge&logo=ruff&logoColor=white" alt="Ruff compliant">
+  <img src="https://img.shields.io/static/v1?label=Beartype&message=verified&color=DEA2C2&style=for-the-badge" alt="Beartype verified">
+  <img src="https://img.shields.io/static/v1?label=Go%20CLI&message=supported&color=DEA2C2&style=for-the-badge&logo=go&logoColor=white" alt="Go CLI supported">
+  <img src="https://img.shields.io/static/v1?label=R&message=required%20for%20LGMMs&color=DEA2C2&style=for-the-badge&logo=r&logoColor=white" alt="R required for LGMMs">
 </div>
 
 <div align="center">
-  <a href="https://github.com/OWNER/ldt-toolkit">Documentation</a> -
+  <a href="https://ldt-toolkit.readthedocs.io/en/latest/">Documentation</a> -
   <a href="https://life-epi-psych.github.io">LEAP Group</a>
 </div>
 
@@ -291,7 +291,7 @@ print(ml_result["mean_score"], ml_result["report_path"])
 
 </details>
 
-*But there is more: explore the full [documentation](https://github.com/OWNER/ldt-toolkit) for the complete tool and presets catalogue.*
+*But there is more: explore the full [documentation](https://ldt-toolkit.readthedocs.io/en/latest/) for the complete tool and presets catalogue.*
 
 ## <img src="public/icons/lucide/graduation-cap.svg" width="32" alt="" /> Citation
 
