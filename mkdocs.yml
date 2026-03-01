@@ -135,6 +135,9 @@ nav:
       - Longitudinal machine learning: api/longitudinal-machine-learning.md
       - Benchmarks: api/benchmarks.md
       - Explainability: api/explainability.md
+  - Study Reproducibility:
+      - Overview: study-reproducibility/index.md
+      - MCS by LEAP: study-reproducibility/mcs-by-leap.md
   - Community Hub:
       - Overview: community-hub.md
       - Contributing: CONTRIBUTING_DEV.md
