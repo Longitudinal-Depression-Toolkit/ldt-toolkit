@@ -72,3 +72,13 @@ ENV/
 
 # Logs
 *.log
+
+# Local runtime/output artifacts
+outputs/
+tmp/
+site/
+.ruff_cache/
+
+# MkDocs external cache artifacts
+site/assets/external/cdn.jsdelivr.net/npm/wicked-good-xpath@*/
+site/assets/external/unpkg.com/mermaid@*/
