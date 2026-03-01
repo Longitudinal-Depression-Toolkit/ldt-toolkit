@@ -12,7 +12,10 @@ from ._tabular_converter import TabularConverterTool
 
 @beartype
 class CsvToParquet(TabularConverterTool):
-    """Convert CSV files (`.csv`) to Parquet (`.parquet`)."""
+    """Convert CSV files (`.csv`) to Parquet (`.parquet`).
+
+    Exposes `prepare(run_mode=..., ...)` for single-file and folder conversion.
+    """
 
     metadata = ComponentMetadata(
         name="csv_to_parquet",

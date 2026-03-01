@@ -38,6 +38,8 @@ class PivotLongToWide(DataPreprocessingTool):
 
     This tool reshapes repeated measurements into one row per subject by
     expanding each longitudinal variable across time points.
+    It is especially useful to prepare longitudinal features for
+    scikit-longitudinal workflows that expect wide/feature-vector inputs.
 
     Runtime parameters:
         - `input_path`: Input long-format CSV path.
@@ -84,6 +86,7 @@ class PivotLongToWide(DataPreprocessingTool):
 
         Args:
             **kwargs (Any): Configuration keys:
+
                 - `input_path` (str | Path): Input CSV path.
                 - `output_path` (str | Path): Output CSV path.
                 - `id_cols` (str | list[str]): Identifier columns.

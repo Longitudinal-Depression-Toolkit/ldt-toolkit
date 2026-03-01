@@ -38,13 +38,11 @@ class HarmoniseCategories(DataPreprocessingTool):
     clustering similar strings and replacing them with harmonised values.
 
     Initialisation parameters:
-        input_path (Path | str | None): Optional default input CSV path.
-        output_path (Path | str | None): Optional default output CSV path.
-        target_columns (Sequence[str] | None): Optional default categorical
-            columns to harmonise.
-        n_clusters (int | None): Optional fixed cluster count per column.
-        mapping_path (Path | str | None): Optional path to export original to
-            harmonised value mappings.
+        - `input_path` (Path | str | None): Optional default input CSV path.
+        - `output_path` (Path | str | None): Optional default output CSV path.
+        - `target_columns` (Sequence[str] | None): Optional default categorical columns to harmonise.
+        - `n_clusters` (int | None): Optional fixed cluster count per column.
+        - `mapping_path` (Path | str | None): Optional path to export original-to-harmonised value mappings.
 
     Examples:
         ```python
@@ -100,6 +98,7 @@ class HarmoniseCategories(DataPreprocessingTool):
 
         Args:
             **kwargs (Any): Configuration overrides:
+
                 - `input_path` (str | Path): Input CSV path.
                 - `output_path` (str | Path): Output CSV path.
                 - `target_columns` (str | Sequence[str]): Columns to harmonise.

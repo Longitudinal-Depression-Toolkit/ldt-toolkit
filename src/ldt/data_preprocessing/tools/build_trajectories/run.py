@@ -24,6 +24,10 @@ class BuildTrajectories(DataPreprocessingTool):
     This tool fits one trajectory builder (or reloads a saved one), then writes
     subject-level assignments with trajectory IDs and names.
 
+    !!! warning "Input format"
+        `input_path` must point to longitudinal **LONG** format data (multiple
+        rows per subject across time/waves).
+
     Runtime parameters:
         - `mode`: `from_scratch` or `from_saved_model`.
         - `input_path`: Input long-format CSV.
@@ -40,6 +44,17 @@ class BuildTrajectories(DataPreprocessingTool):
           kwargs.
         - `input_model_path`: Required in `from_saved_model` mode.
         - `save_model_path`: Optional model save path in `from_scratch` mode.
+
+    Available `builder` keys for `mode="from_scratch"`:
+
+    Keys are matched case-insensitively.
+
+    | Builder key | Description |
+    | --- | --- |
+    | `LCGA` | Latent Class Growth Analysis via R `lcmm::hlme`. |
+    | `GMM` | Growth Mixture Model via R `lcmm::hlme`. |
+    | `clusterMLD` | Spline-based hierarchical clustering for longitudinal data. |
+    | `dtw_kmeans` | Dynamic Time Warping k-means trajectory clustering. |
 
     Examples:
         ```python
@@ -76,6 +91,7 @@ class BuildTrajectories(DataPreprocessingTool):
 
         Args:
             **kwargs (Any): Configuration keys:
+
                 - `mode` (str): `from_scratch` or `from_saved_model`.
                 - `input_path` (str | Path): Input long-format CSV path.
                 - `output_path` (str | Path): Assignment output CSV path.

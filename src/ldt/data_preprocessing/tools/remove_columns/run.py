@@ -33,9 +33,9 @@ class RemoveColumns(DataPreprocessingTool):
     writes a new CSV, and returns output metadata.
 
     Initialisation parameters:
-        input_path (Path | str | None): Optional default input CSV path.
-        output_path (Path | str | None): Optional default output CSV path.
-        columns (Sequence[str] | None): Optional default columns to remove.
+        - `input_path` (Path | str | None): Optional default input CSV path.
+        - `output_path` (Path | str | None): Optional default output CSV path.
+        - `columns` (Sequence[str] | None): Optional default columns to remove.
 
     Examples:
         ```python
@@ -79,6 +79,7 @@ class RemoveColumns(DataPreprocessingTool):
 
         Args:
             **kwargs (Any): Configuration overrides:
+
                 - `input_path` (str | Path): Input CSV path.
                 - `output_path` (str | Path): Output CSV path.
                 - `columns` (str | Sequence[str]): Columns to remove.

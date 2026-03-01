@@ -63,6 +63,13 @@ class BenchStandardAndLongitudinalML(MachineLearningTool):
     | `standard` | Cross-sectional estimators: tree, boosting, linear, neighbour, SVM families. |
     | `longitudinal` | Longitudinal strategies: aggregated-wave, merged-wave, separated-wave, and native temporal estimators. |
 
+    Estimator reference pages:
+
+    | Group | API reference |
+    | --- | --- |
+    | `standard` | [Standard Machine Learning API page](https://longitudinal-depression-toolkit.github.io/ldt-toolkit/api/standard-machine-learning/) |
+    | `longitudinal` | [Longitudinal Machine Learning API page](https://longitudinal-depression-toolkit.github.io/ldt-toolkit/api/longitudinal-machine-learning/) |
+
     Supported techniques:
 
     | Technique | What it does |
@@ -110,6 +117,7 @@ class BenchStandardAndLongitudinalML(MachineLearningTool):
 
         Args:
             **kwargs (Any): Configuration keys:
+
                 - `technique` (str): `list_estimators`, `list_metrics`, or
                   `run_benchmark`.
                 - `params` (Mapping[str, Any] | None): Optional parameter object.

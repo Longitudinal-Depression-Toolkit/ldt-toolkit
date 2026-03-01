@@ -37,16 +37,14 @@ class CleanDataset(DataPreprocessingTool):
     columns based on nullness and cardinality heuristics.
 
     Initialisation parameters:
-        input_path (Path | str | None): Optional default input CSV path.
-        output_path (Path | str | None): Optional default output CSV path.
-        drop_null_fraction (float | None): Optional threshold in `[0, 1]` for
-            dropping high-null columns.
-        drop_if_constant (bool): Drop columns with one unique value.
-        drop_if_unique (bool): Drop ID-like columns with all unique values.
-        datetime_format (str | None): Optional datetime parsing format.
-        cast_to_str (bool): Cast textual columns to string.
-        numeric_to_float32 (bool): Request float32 numeric casting where
-            supported by installed `skrub` version.
+        - `input_path` (Path | str | None): Optional default input CSV path.
+        - `output_path` (Path | str | None): Optional default output CSV path.
+        - `drop_null_fraction` (float | None): Optional threshold in `[0, 1]` for dropping high-null columns.
+        - `drop_if_constant` (bool): Drop columns with one unique value.
+        - `drop_if_unique` (bool): Drop ID-like columns with all unique values.
+        - `datetime_format` (str | None): Optional datetime parsing format.
+        - `cast_to_str` (bool): Cast textual columns to string.
+        - `numeric_to_float32` (bool): Request float32 numeric casting where supported by installed `skrub` version.
 
     Examples:
         ```python
@@ -103,6 +101,7 @@ class CleanDataset(DataPreprocessingTool):
 
         Args:
             **kwargs (Any): Configuration overrides:
+
                 - `input_path` (str | Path): Input CSV path.
                 - `output_path` (str | Path): Output CSV path.
                 - `drop_null_fraction` (float | None): Null-threshold in

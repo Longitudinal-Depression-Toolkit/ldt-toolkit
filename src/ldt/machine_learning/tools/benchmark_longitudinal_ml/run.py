@@ -53,73 +53,9 @@ _BENCHMARK_NAME = "benchmark_longitudinal_ml"
 class BenchmarkLongitudinalML(MachineLearningTool):
     """Benchmark longitudinal machine-learning estimators on temporal features.
 
-    Available estimator families:
+    Estimator references:
 
-    | Family key | What it does |
-    | --- | --- |
-    | `aggrfunc_*` | Aggregates repeated waves (mean/median) before classification. |
-    | `merwav_time_minus_*` | Merges waves with relative-time encoding. |
-    | `sepwav_stacking_*` | Fits per-wave learners and stacks them. |
-    | `sepwav_voting_*` | Fits per-wave learners and combines by voting. |
-    | `merwav_time_plus_*` | Uses native longitudinal estimators. |
-
-    Available longitudinal estimator keys:
-
-    | Estimator key | Transformation Strategy | Base estimator |
-    | --- | --- | --- |
-    | `aggrfunc_mean__decision_tree` | `aggrfunc_mean` | `decision_tree` |
-    | `aggrfunc_mean__extra_trees` | `aggrfunc_mean` | `extra_trees` |
-    | `aggrfunc_mean__gradient_boosting` | `aggrfunc_mean` | `gradient_boosting` |
-    | `aggrfunc_mean__knn` | `aggrfunc_mean` | `knn` |
-    | `aggrfunc_mean__logistic_regression` | `aggrfunc_mean` | `logistic_regression` |
-    | `aggrfunc_mean__random_forest` | `aggrfunc_mean` | `random_forest` |
-    | `aggrfunc_mean__svm` | `aggrfunc_mean` | `svm` |
-    | `aggrfunc_median__decision_tree` | `aggrfunc_median` | `decision_tree` |
-    | `aggrfunc_median__extra_trees` | `aggrfunc_median` | `extra_trees` |
-    | `aggrfunc_median__gradient_boosting` | `aggrfunc_median` | `gradient_boosting` |
-    | `aggrfunc_median__knn` | `aggrfunc_median` | `knn` |
-    | `aggrfunc_median__logistic_regression` | `aggrfunc_median` | `logistic_regression` |
-    | `aggrfunc_median__random_forest` | `aggrfunc_median` | `random_forest` |
-    | `aggrfunc_median__svm` | `aggrfunc_median` | `svm` |
-    | `merwav_time_minus__decision_tree` | `merwav_time_minus` | `decision_tree` |
-    | `merwav_time_minus__extra_trees` | `merwav_time_minus` | `extra_trees` |
-    | `merwav_time_minus__gradient_boosting` | `merwav_time_minus` | `gradient_boosting` |
-    | `merwav_time_minus__knn` | `merwav_time_minus` | `knn` |
-    | `merwav_time_minus__logistic_regression` | `merwav_time_minus` | `logistic_regression` |
-    | `merwav_time_minus__random_forest` | `merwav_time_minus` | `random_forest` |
-    | `merwav_time_minus__svm` | `merwav_time_minus` | `svm` |
-    | `merwav_time_plus__lexico_decision_tree` | `merwav_time_plus` | `lexico_decision_tree` |
-    | `merwav_time_plus__lexico_deep_forest` | `merwav_time_plus` | `lexico_deep_forest` |
-    | `merwav_time_plus__lexico_gradient_boosting` | `merwav_time_plus` | `lexico_gradient_boosting` |
-    | `merwav_time_plus__lexico_random_forest` | `merwav_time_plus` | `lexico_random_forest` |
-    | `merwav_time_plus__nested_trees` | `merwav_time_plus` | `nested_trees` |
-    | `sepwav_stacking_dt__decision_tree` | `sepwav_stacking_dt` | `decision_tree` |
-    | `sepwav_stacking_dt__extra_trees` | `sepwav_stacking_dt` | `extra_trees` |
-    | `sepwav_stacking_dt__gradient_boosting` | `sepwav_stacking_dt` | `gradient_boosting` |
-    | `sepwav_stacking_dt__knn` | `sepwav_stacking_dt` | `knn` |
-    | `sepwav_stacking_dt__logistic_regression` | `sepwav_stacking_dt` | `logistic_regression` |
-    | `sepwav_stacking_dt__random_forest` | `sepwav_stacking_dt` | `random_forest` |
-    | `sepwav_stacking_dt__svm` | `sepwav_stacking_dt` | `svm` |
-    | `sepwav_stacking_lr__decision_tree` | `sepwav_stacking_lr` | `decision_tree` |
-    | `sepwav_stacking_lr__extra_trees` | `sepwav_stacking_lr` | `extra_trees` |
-    | `sepwav_stacking_lr__gradient_boosting` | `sepwav_stacking_lr` | `gradient_boosting` |
-    | `sepwav_stacking_lr__knn` | `sepwav_stacking_lr` | `knn` |
-    | `sepwav_stacking_lr__logistic_regression` | `sepwav_stacking_lr` | `logistic_regression` |
-    | `sepwav_stacking_lr__random_forest` | `sepwav_stacking_lr` | `random_forest` |
-    | `sepwav_stacking_lr__svm` | `sepwav_stacking_lr` | `svm` |
-    | `sepwav_voting__decision_tree` | `sepwav_voting` | `decision_tree` |
-    | `sepwav_voting__extra_trees` | `sepwav_voting` | `extra_trees` |
-    | `sepwav_voting__gradient_boosting` | `sepwav_voting` | `gradient_boosting` |
-    | `sepwav_voting__knn` | `sepwav_voting` | `knn` |
-    | `sepwav_voting__logistic_regression` | `sepwav_voting` | `logistic_regression` |
-    | `sepwav_voting__random_forest` | `sepwav_voting` | `random_forest` |
-    | `sepwav_voting__svm` | `sepwav_voting` | `svm` |
-
-    Abbreviations used in estimator keys:
-        - `dt`: Decision Tree
-        - `lr`: Logistic Regression
-        - `svm`: Support Vector Machine
-        - `knn`: K-Nearest Neighbours
+    - [Longitudinal Machine Learning API reference](https://longitudinal-depression-toolkit.github.io/ldt-toolkit/api/longitudinal-machine-learning/)
 
     Supported techniques:
 
@@ -177,6 +113,7 @@ class BenchmarkLongitudinalML(MachineLearningTool):
 
         Args:
             **kwargs (Any): Configuration keys:
+
                 - `technique` (str): `list_estimators`, `list_metrics`, or
                   `run_benchmark`.
                 - `params` (Mapping[str, Any] | None): Optional parameter object.
