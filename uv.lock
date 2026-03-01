@@ -1361,6 +1361,7 @@ dev = [
     { name = "mkdocs" },
     { name = "mkdocs-abs-rel-plugin" },
     { name = "mkdocs-autorefs" },
+    { name = "mkdocs-copy-to-llm" },
     { name = "mkdocs-coverage" },
     { name = "mkdocs-document-dates" },
     { name = "mkdocs-gen-files" },
@@ -1409,6 +1410,7 @@ dev = [
     { name = "mkdocs", specifier = ">=1.6" },
     { name = "mkdocs-abs-rel-plugin", specifier = ">=0.2.4" },
     { name = "mkdocs-autorefs", specifier = ">=1.4" },
+    { name = "mkdocs-copy-to-llm", specifier = ">=0.2.9" },
     { name = "mkdocs-coverage", specifier = ">=1.0" },
     { name = "mkdocs-document-dates", specifier = ">=3.1.5" },
     { name = "mkdocs-gen-files", specifier = ">=0.5" },
@@ -1728,6 +1730,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/52/c0/f641843de3f612a6b48253f39244165acff36657a91cc903633d456ae1ac/mkdocs_autorefs-1.4.4.tar.gz", hash = "sha256:d54a284f27a7346b9c38f1f852177940c222da508e66edc816a0fa55fc6da197", size = 56588, upload-time = "2026-02-10T15:23:55.105Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/28/de/a3e710469772c6a89595fc52816da05c1e164b4c866a89e3cb82fb1b67c5/mkdocs_autorefs-1.4.4-py3-none-any.whl", hash = "sha256:834ef5408d827071ad1bc69e0f39704fa34c7fc05bc8e1c72b227dfdc5c76089", size = 25530, upload-time = "2026-02-10T15:23:53.817Z" },
+]
+
+[[package]]
+name = "mkdocs-copy-to-llm"
+version = "0.2.9"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "mkdocs" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3a/74/0a9c754c0c03fef34b66a10a7daf5272db925332a77aa77c4c222da6cb32/mkdocs_copy_to_llm-0.2.9.tar.gz", hash = "sha256:0bb7ef29fcce4889a14037c0017dc5e233d8d0d94e5c2e3f36ca1843fd34d3a9", size = 34937, upload-time = "2026-02-27T04:54:50.508Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bb/b5/1718c66db1e142077e778899c21a14f63ecdf99eb4e5c0933ac0cbafb2ba/mkdocs_copy_to_llm-0.2.9-py3-none-any.whl", hash = "sha256:7fb67446a2dab9cee1e3851d6a49089b9682364ff9f5e70e90fab0487747b200", size = 23171, upload-time = "2026-02-27T04:54:49.253Z" },
 ]
 
 [[package]]
