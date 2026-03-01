@@ -2,7 +2,7 @@ site_name: LDT-Toolkit
 repo_name: Longitudinal-Depression-Toolkit/ldt-toolkit
 repo_url: https://github.com/Longitudinal-Depression-Toolkit/ldt-toolkit
 edit_uri: blob/main/docs/
-site_url: https://github.com/Longitudinal-Depression-Toolkit/ldt-toolkit
+site_url: !ENV [READTHEDOCS_CANONICAL_URL, "https://ldt-toolkit.readthedocs.io/"]
 site_author: Simon Provost
 copyright: Maintained by Simon Provost
 site_description: >

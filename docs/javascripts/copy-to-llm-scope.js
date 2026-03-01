@@ -31,7 +31,36 @@
     return node ? node.content.trim() : "";
   }
 
+  function stripReadTheDocsPrefix(path) {
+    const rtdData = window.READTHEDOCS_DATA;
+    if (rtdData && typeof rtdData === "object") {
+      const language = typeof rtdData.language === "string"
+        ? rtdData.language.replace(/^\/+|\/+$/g, "")
+        : "";
+      const version = typeof rtdData.version === "string"
+        ? rtdData.version.replace(/^\/+|\/+$/g, "")
+        : "";
+      if (language && version) {
+        const prefix = `/${language}/${version}`;
+        if (path === prefix) return "/";
+        if (path.startsWith(`${prefix}/`)) {
+          return path.slice(prefix.length) || "/";
+        }
+      }
+    }
+
+    const host = window.location.hostname.toLowerCase();
+    const isReadTheDocsHost = host === "readthedocs.io" || host.endsWith(".readthedocs.io");
+    if (!isReadTheDocsHost) return path;
+
+    const segments = path.replace(/^\/+|\/+$/g, "").split("/");
+    if (segments.length < 3) return path;
+    if (!/^[a-z]{2}(?:-[a-z]{2})?$/i.test(segments[0])) return path;
+    return `/${segments.slice(2).join("/")}`;
+  }
+
   function stripBasePath(path) {
+    const pathWithoutReadTheDocsPrefix = stripReadTheDocsPrefix(path);
     const configuredBase = getMetaContent("mkdocs-copy-to-llm-base-path");
     const prefixes = [];
 
@@ -47,13 +76,13 @@
       const base = candidate.startsWith("/") ? candidate : `/${candidate}`;
       const normalizedBase = base.replace(/\/+$/, "");
       if (!normalizedBase || normalizedBase === "/") continue;
-      if (path === normalizedBase) return "/";
-      if (path.startsWith(`${normalizedBase}/`)) {
-        return path.slice(normalizedBase.length) || "/";
+      if (pathWithoutReadTheDocsPrefix === normalizedBase) return "/";
+      if (pathWithoutReadTheDocsPrefix.startsWith(`${normalizedBase}/`)) {
+        return pathWithoutReadTheDocsPrefix.slice(normalizedBase.length) || "/";
       }
     }
 
-    return path;
+    return pathWithoutReadTheDocsPrefix;
   }
 
   function getRawRepoBase() {
