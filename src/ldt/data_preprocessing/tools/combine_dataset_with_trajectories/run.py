@@ -32,6 +32,11 @@ class CombineDatasetWithTrajectoriesResult:
 class CombineDatasetWithTrajectories(DataPreprocessingTool):
     """Merge a source dataset with trajectory assignments.
 
+    Typical use case:
+    start from your original dataset, build a new trajectories dataset with
+    `BuildTrajectories`, then merge both so each original row gets trajectory
+    labels.
+
     Runtime parameters:
         - `input_original_data_path`: Source feature dataset CSV path.
         - `input_trajectories_data_path`: Trajectory assignment CSV path.
@@ -75,6 +80,7 @@ class CombineDatasetWithTrajectories(DataPreprocessingTool):
 
         Args:
             **kwargs (Any): Configuration keys:
+
                 - `input_original_data_path` (str | Path): Source dataset CSV.
                 - `input_trajectories_data_path` (str | Path): Trajectory CSV.
                 - `output_path` (str | Path): Output merged CSV.

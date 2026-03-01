@@ -64,6 +64,7 @@ class TabularConverterTool(DataPreparationTool):
 
         Args:
             **kwargs (Any): Conversion runtime keys:
+
                 - `run_mode` (str): `single` or `folder`.
                 - `input_path` (str | Path): Required in `single` mode.
                 - `output_path` (str | Path | None): Optional in `single` mode.

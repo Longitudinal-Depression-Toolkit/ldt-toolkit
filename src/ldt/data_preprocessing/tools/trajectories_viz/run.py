@@ -34,22 +34,22 @@ class TrajectoriesVizResult:
 class TrajectoriesViz(DataPreprocessingTool):
     """Generate interactive visualisations for trajectory assignments.
 
-    Each visualisation technique is implemented in its own module under
-    `tools/trajectories_viz/techniques`.
-
-    Supported techniques:
-        - `mean_profiles`
-        - `class_spaghetti`
-        - `trajectory_sizes`
-
     Runtime parameters:
-        - `technique`: One of the supported technique keys. (See above.)
+        - `technique`: One of the supported technique keys. See table below.
         - `input_path`: Input CSV path.
         - `output_html`: Output HTML path.
         - `title`: Figure title.
         - `open_browser`: Whether to open the output in the default browser.
         - additional technique-specific keys are passed to the selected
           technique runner through `params`.
+
+    Supported techniques:
+
+    | Technique key | Description |
+    | --- | --- |
+    | `mean_profiles` | Plots class-level mean longitudinal profiles across waves. |
+    | `class_spaghetti` | Shows individual trajectories grouped by trajectory class. |
+    | `trajectory_sizes` | Displays class-size distribution across trajectory groups. |
     """
 
     metadata = ComponentMetadata(
@@ -72,7 +72,8 @@ class TrajectoriesViz(DataPreprocessingTool):
 
         Args:
             **kwargs (Any): Configuration keys:
-                - `technique` (str): Visualisation technique key. Which are: `mean_profiles`, `class_spaghetti`, `trajectory_sizes`.
+
+                - `technique` (str): Visualisation technique key. See class-level supported-techniques table.
                 - `input_path` (str | Path): Input CSV path.
                 - `output_html` (str | Path): Output HTML path.
                 - `title` (str): Chart title.

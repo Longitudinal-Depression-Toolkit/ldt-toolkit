@@ -30,6 +30,12 @@ class MissingImputation(DataPreprocessingTool):
           `mice_imputation`).
         - any additional key-value pairs are forwarded to the selected imputer.
 
+    Available `technique` keys:
+
+    | Technique key | Description |
+    | --- | --- |
+    | `mice_imputation` | Runs Multiple Imputation by Chained Equations (MICE): iteratively imputes missing values using conditional models over other variables. |
+
     Examples:
         ```python
         from ldt.data_preprocessing import MissingImputation
@@ -68,6 +74,7 @@ class MissingImputation(DataPreprocessingTool):
 
         Args:
             **kwargs (Any): Configuration keys:
+
                 - `input_path` (str | Path): Input CSV path.
                 - `output_path` (str | Path): Output CSV path.
                 - `technique` (str | None): Imputer key.

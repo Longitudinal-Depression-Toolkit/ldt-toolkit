@@ -45,17 +45,9 @@ _BENCHMARK_NAME = "benchmark_standard_ml"
 class BenchmarkStandardML(MachineLearningTool):
     """Benchmark standard machine-learning estimators on one dataset.
 
-    Available estimator families:
+    Estimator references:
 
-    | Estimator key | What it does |
-    | --- | --- |
-    | `decision_tree` | Rule-based tree classifier. |
-    | `extra_trees` | Highly randomised tree ensemble. |
-    | `gradient_boosting` | Sequential boosted-tree classifier. |
-    | `knn` | Nearest-neighbour classifier. |
-    | `logistic_regression` | Linear probabilistic classifier. |
-    | `random_forest` | Bagged tree ensemble. |
-    | `svm` | Margin-based kernel classifier. |
+    - [Standard Machine Learning API reference](https://longitudinal-depression-toolkit.github.io/ldt-toolkit/api/standard-machine-learning/)
 
     Supported techniques:
 
@@ -100,6 +92,7 @@ class BenchmarkStandardML(MachineLearningTool):
 
         Args:
             **kwargs (Any): Configuration keys:
+
                 - `technique` (str): `list_estimators`, `list_metrics`, or
                   `run_benchmark`.
                 - `params` (Mapping[str, Any] | None): Optional parameter object.

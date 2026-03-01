@@ -12,7 +12,10 @@ from ._tabular_converter import TabularConverterTool
 
 @beartype
 class CsvToStata(TabularConverterTool):
-    """Convert CSV files (`.csv`) to Stata (`.dta`)."""
+    """Convert CSV files (`.csv`) to Stata (`.dta`).
+
+    Exposes `prepare(run_mode=..., ...)` for single-file and folder conversion.
+    """
 
     metadata = ComponentMetadata(
         name="csv_to_stata",

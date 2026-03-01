@@ -48,15 +48,15 @@ class StandardMachineLearning(MachineLearningTool):
 
     Available estimators:
 
-    | Estimator key | Family summary |
-    | --- | --- |
-    | `decision_tree` | Non-linear rule-based tree classifier. |
-    | `extra_trees` | Highly randomised tree ensemble. |
-    | `gradient_boosting` | Sequential boosted-tree ensemble. |
-    | `knn` | Instance-based nearest-neighbour classifier. |
-    | `logistic_regression` | Linear probabilistic classifier. |
-    | `random_forest` | Bagged decision-tree ensemble. |
-    | `svm` | Margin-based classifier with kernels. |
+    | Estimator key | Family summary | Official reference |
+    | --- | --- | --- |
+    | `decision_tree` | Non-linear rule-based tree classifier. | [scikit-learn `DecisionTreeClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html) |
+    | `extra_trees` | Highly randomised tree ensemble. | [scikit-learn `ExtraTreesClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html) |
+    | `gradient_boosting` | Sequential boosted-tree ensemble. | [scikit-learn `GradientBoostingClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html) |
+    | `knn` | Instance-based nearest-neighbour classifier. | [scikit-learn `KNeighborsClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html) |
+    | `logistic_regression` | Linear probabilistic classifier. | [scikit-learn `LogisticRegression`](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) |
+    | `random_forest` | Bagged decision-tree ensemble. | [scikit-learn `RandomForestClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) |
+    | `svm` | Margin-based classifier with kernels. | [scikit-learn `SVC`](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) |
 
     Supported techniques:
 
@@ -104,6 +104,7 @@ class StandardMachineLearning(MachineLearningTool):
 
         Args:
             **kwargs (Any): Configuration keys:
+
                 - `technique` (str): `list_estimators`, `list_metrics`, or
                   `run_experiment`.
                 - `params` (Mapping[str, Any] | None): Optional parameter object.

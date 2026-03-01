@@ -49,13 +49,21 @@ class LongitudinalMachineLearning(MachineLearningTool):
 
     Available estimator families:
 
-    | Family key | What it does |
+    | Family key | What it does | Official reference |
+    | --- | --- | --- |
+    | `aggrfunc_*` | Aggregates repeated waves (mean/median) before classification. | [API: data transformation](https://scikit-longitudinal.readthedocs.io/latest/API/#data-transformation) |
+    | `merwav_time_minus_*` | Merges waves with relative-time encoding. | [API: data transformation](https://scikit-longitudinal.readthedocs.io/latest/API/#data-transformation) |
+    | `sepwav_stacking_*` | Fits per-wave learners and stacks them with a meta-learner. | [API: `LongitudinalStackingClassifier`](https://scikit-longitudinal.readthedocs.io/latest/API/estimators/ensemble/longitudinal_stacking/) |
+    | `sepwav_voting_*` | Fits per-wave learners and combines by voting. | [API: `LongitudinalVotingClassifier`](https://scikit-longitudinal.readthedocs.io/latest/API/estimators/ensemble/longitudinal_voting/) |
+    | `merwav_time_plus_*` | Uses native longitudinal estimators with explicit temporal semantics. | [API: `MerWavTimePlus`](https://scikit-longitudinal.readthedocs.io/latest/API/data_preparation/merwav_time_plus/) |
+
+    Data-transformation references:
+
+    | Transformation technique | scikit-longitudinal API reference |
     | --- | --- |
-    | `aggrfunc_*` | Aggregates repeated waves (mean/median) before classification. |
-    | `merwav_time_minus_*` | Merges waves with relative-time encoding. |
-    | `sepwav_stacking_*` | Fits per-wave learners and stacks them with a meta-learner. |
-    | `sepwav_voting_*` | Fits per-wave learners and combines by voting. |
-    | `merwav_time_plus_*` | Uses native longitudinal estimators with explicit temporal semantics. |
+    | `aggrfunc_mean` / `aggrfunc_median` | [API: data transformation](https://scikit-longitudinal.readthedocs.io/latest/API/#data-transformation) |
+    | `merwav_time_minus` | [API: data transformation](https://scikit-longitudinal.readthedocs.io/latest/API/#data-transformation) |
+    | `merwav_time_plus` | [API: `MerWavTimePlus`](https://scikit-longitudinal.readthedocs.io/latest/API/data_preparation/merwav_time_plus/) |
 
     Available longitudinal estimator keys:
 
@@ -109,7 +117,18 @@ class LongitudinalMachineLearning(MachineLearningTool):
     | `sepwav_voting__random_forest` | `sepwav_voting` | `random_forest` |
     | `sepwav_voting__svm` | `sepwav_voting` | `svm` |
 
+    `merwav_time_plus` estimator references:
+
+    | Estimator key | scikit-longitudinal API reference |
+    | --- | --- |
+    | `merwav_time_plus__lexico_decision_tree` | [LexicoDecisionTreeClassifier](https://scikit-longitudinal.readthedocs.io/latest/API/estimators/lexicographical/lexico_decision_tree/) |
+    | `merwav_time_plus__lexico_deep_forest` | [LexicoDeepForestClassifier](https://scikit-longitudinal.readthedocs.io/latest/API/estimators/lexicographical/lexico_deep_forest/) |
+    | `merwav_time_plus__lexico_gradient_boosting` | [LexicoGradientBoostingClassifier](https://scikit-longitudinal.readthedocs.io/latest/API/estimators/lexicographical/lexico_gradient_boosting/) |
+    | `merwav_time_plus__lexico_random_forest` | [LexicoRandomForestClassifier](https://scikit-longitudinal.readthedocs.io/latest/API/estimators/lexicographical/lexico_random_forest/) |
+    | `merwav_time_plus__nested_trees` | [NestedTreesClassifier](https://scikit-longitudinal.readthedocs.io/latest/API/estimators/ensemble/nested_trees/) |
+
     Abbreviations used in estimator keys:
+
         - `dt`: Decision Tree
         - `lr`: Logistic Regression
         - `svm`: Support Vector Machine
@@ -171,6 +190,7 @@ class LongitudinalMachineLearning(MachineLearningTool):
 
         Args:
             **kwargs (Any): Configuration keys:
+
                 - `technique` (str): `list_estimators`, `list_metrics`, or
                   `run_experiment`.
                 - `params` (Mapping[str, Any] | None): Optional parameter object.

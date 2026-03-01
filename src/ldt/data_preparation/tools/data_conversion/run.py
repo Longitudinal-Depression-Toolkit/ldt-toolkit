@@ -36,6 +36,7 @@ def run_data_conversion(*, technique: str, params: Mapping[str, Any]) -> dict[st
             example `csv_to_parquet` or `stata_to_csv`.
         params (Mapping[str, Any]): Wrapper parameters, where supported keys
             are:
+
             - `run_mode` (`single` or `folder`)
             - `input_path`, `output_path` for `single`
             - `input_folder`, `output_folder` for `folder`

@@ -12,7 +12,10 @@ from ._tabular_converter import TabularConverterTool
 
 @beartype
 class StataToParquet(TabularConverterTool):
-    """Convert Stata files (`.dta`) to Parquet (`.parquet`)."""
+    """Convert Stata files (`.dta`) to Parquet (`.parquet`).
+
+    Exposes `prepare(run_mode=..., ...)` for single-file and folder conversion.
+    """
 
     metadata = ComponentMetadata(
         name="stata_to_parquet",

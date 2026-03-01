@@ -38,11 +38,14 @@ class SHAPAnalysis(MachineLearningTool):
     | `decision_function` | Continuous decision scores for classification. |
     | `predict` | Label predictions when probability/score APIs are unavailable. |
 
-    Supported techniques:
+    Execution mode:
 
-    | Technique | What it does |
+    | Mode key | What it does |
     | --- | --- |
     | `run_analysis` | Loads a saved model, computes SHAP values, and writes explainability artefacts. |
+
+    In Python, you can call `fit_predict(...)` or `fit(...)` then `predict(...)`
+    without passing `technique`; it defaults to `run_analysis`.
 
     Output artefacts written by the analysis:
 
@@ -59,7 +62,6 @@ class SHAPAnalysis(MachineLearningTool):
 
         tool = SHAPAnalysis()
         result = tool.fit_predict(
-            technique="run_analysis",
             model_path="./outputs/standard_ml/random_forest/random_forest_20260101_120000_model.pkl",
             input_path="./data/millennium.csv",
             target_column="depression_status",
@@ -89,7 +91,9 @@ class SHAPAnalysis(MachineLearningTool):
 
         Args:
             **kwargs (Any): Configuration keys:
-                - `technique` (str): Must be `run_analysis`.
+
+                - `technique` (str | None): Optional mode key. Defaults to
+                  `run_analysis`.
                 - `params` (Mapping[str, Any] | None): Optional parameter object.
                 - for `run_analysis`, expected keys include:
                   `model_path` (saved `.pkl` model path), `input_path`,
@@ -103,7 +107,7 @@ class SHAPAnalysis(MachineLearningTool):
             SHAPAnalysis: The fitted tool instance.
         """
 
-        technique_raw = kwargs.get("technique", self._technique)
+        technique_raw = kwargs.get("technique", self._technique or "run_analysis")
         if not isinstance(technique_raw, str) or not technique_raw.strip():
             raise InputValidationError("Missing required string parameter: technique")
 
@@ -132,8 +136,8 @@ class SHAPAnalysis(MachineLearningTool):
         Args:
             **kwargs (Any): Optional keys identical to `fit(...)`. If provided,
                 they override the existing fitted configuration. Expected keys:
-                `technique` and optional `params`, or direct shorthand keys for
-                `run_analysis`:
+                optional `technique` and optional `params`, or direct shorthand
+                keys for `run_analysis`:
                 `model_path` (saved `.pkl` model path), `input_path`,
                 `target_column`,
                 `feature_columns`, `max_rows_to_explain`,
