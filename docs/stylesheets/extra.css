@@ -253,9 +253,41 @@
     font-weight: 700 !important;
 }
 
+.md-sidebar--primary .md-nav--primary > .md-nav__list,
+.md-sidebar--secondary .md-nav--secondary > .md-nav__list {
+    padding-top: 0.5rem;
+    padding-bottom: 0.35rem;
+}
+
 .md-typeset .pub-heading {
     font-size: 1.35em;
     font-weight: 700;
+}
+
+.md-typeset .jump-install-link {
+    display: inline-block;
+    margin-top: -0.35rem;
+    margin-bottom: 0.2rem;
+    color: var(--md-accent-fg-color, #dea2c2) !important;
+    font-style: italic;
+    font-size: 0.92rem;
+    font-weight: 500;
+    text-decoration: none;
+    opacity: 0.88;
+    transition: opacity 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.md-typeset .jump-install-link:hover,
+.md-typeset .jump-install-link:focus {
+    opacity: 1;
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.13em;
+    text-decoration-color: var(--md-accent-fg-color, #dea2c2);
+}
+
+.md-typeset .nutshell-heading {
+    margin-top: 0.45rem;
 }
 
 .tutorial-step {
