@@ -14,7 +14,7 @@
 
     ---
 
-    Placeholder Figma workspace and brand direction for LDT-Toolkit.
+    Figma workspace and brand direction for LDT-Toolkit.
 
     [:octicons-arrow-right-24: Open branding](BRANDING.md)
 

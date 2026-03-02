@@ -1,3 +1,8 @@
+---
+hide:
+  - toc
+---
+
 # Branding and UX
 
 LDT-Toolkit is a free and open-source project that values consistency in both visual identity and user experience. This document presents the branding and UX designs that guide the project's development and presentation.
