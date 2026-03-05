@@ -122,6 +122,8 @@ extra_css:
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/@mux/mux-player
   - javascripts/image-zoom.js
+  - javascripts/diagram-zoom.js
+  - javascripts/mcs-visualization.js
   - javascripts/copy-to-llm-scope.js
   - javascripts/search-shortcut.js
   - javascripts/mathjax.js
