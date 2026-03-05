@@ -1,0 +1,10 @@
+# Stage 0: pre-filter rows for supervised training.
+
+target_rows:
+  # Final downstream class target.
+  target_column: EMOTION_w7
+
+  # If true, keep only rows where target is observed (non-missing).
+  # Note: this check is sentinel-aware using stage-2 `sentinel_detection.sentinel_codes`
+  # (e.g., -1 in EMOTION_w7 is treated as missing here).
+  require_target_non_missing: true

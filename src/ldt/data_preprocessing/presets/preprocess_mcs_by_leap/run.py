@@ -1,43 +1,77 @@
 from __future__ import annotations
 
+import io
 from collections.abc import Mapping
 from typing import Any
 
 from beartype import beartype
+from rich.console import Console
 
+from ldt.utils.errors import InputValidationError
+
+from . import pipeline as preset_pipeline
 from .tool import PreprocessMCSByLEAP
 
 
-@beartype
-def preprocess_mcs_by_leap_profile() -> dict[str, str]:
-    """Return static profile metadata for the incoming preset."""
+def preprocess_mcs_by_leap_profile() -> dict[str, Any]:
+    """CLI wrapper: return defaults and stage config paths."""
 
-    return {
-        "preset": "preprocess_mcs_by_leap",
-        "status": "incoming",
-        "message": (
-            "This preset will preprocess prepared longitudinal datasets into an "
-            "ML-ready dataset that is cleaned enough for modelling and experimentation."
-        ),
-    }
+    return PreprocessMCSByLEAP.profile()
 
 
-@beartype
 def run_preprocess_mcs_by_leap(*, params: Mapping[str, Any]) -> dict[str, Any]:
-    """Run the incoming preset wrapper for the Go CLI bridge.
+    """Execute preprocess MCS by LEAP for the Go CLI bridge."""
 
-    !!! warning
+    try:
+        tool = PreprocessMCSByLEAP()
+        config = tool.build_config(**dict(params))
+        result = _run_pipeline_silently(config=config)
 
-        This `run_*` function is primarily for the Go CLI bridge and should not be
-        treated as the Python library API. In Python scripts or notebooks, import
-        and call `PreprocessMCSByLEAP` directly from `ldt.data_preprocessing`.
+        return {
+            "preset": "preprocess_mcs_by_leap",
+            "input_path": str(config.input_path.resolve()),
+            "output_path": (
+                str(result.output_path.resolve()) if result.output_path else None
+            ),
+            "audit_output_dir": (
+                str(result.audit_output_dir.resolve())
+                if result.audit_output_dir is not None
+                else None
+            ),
+            "save_final_output": config.save_final_output,
+            "save_audit_tables": config.save_audit_tables,
+            "shape": {
+                "rows": int(result.output_data.shape[0]),
+                "columns": int(result.output_data.shape[1]),
+            },
+            "stage_0_summary": result.stage_0_summary,
+            "stage_1_summary": result.stage_1_summary,
+            "stage_2_summary": result.stage_2_summary,
+            "stage_3_summary": result.stage_3_summary,
+            "stage_4_summary": result.stage_4_summary,
+            "stage_5_summary": result.stage_5_summary,
+            "audit_files": [
+                {"name": name, "path": str(path.resolve())}
+                for name, path in result.audit_paths
+            ],
+        }
+    except (TypeError, ValueError) as exc:
+        raise InputValidationError(str(exc)) from exc
 
-    Args:
-        params (Mapping[str, Any]): Placeholder payload for future preset
-            parameters.
 
-    Returns:
-        dict[str, Any]: Placeholder result payload from the incoming preset.
-    """
+@beartype
+def _run_pipeline_silently(
+    *,
+    config: preset_pipeline.PreprocessMCSByLEAPPipelineConfig,
+) -> preset_pipeline.PipelineRunResult:
+    """Run pipeline while suppressing rich output for JSON bridge."""
 
-    return PreprocessMCSByLEAP().fit_preprocess(**dict(params))
+    muted_stream = io.StringIO()
+    muted_console = Console(file=muted_stream, force_terminal=False, color_system=None)
+
+    original_console = preset_pipeline._CONSOLE
+    preset_pipeline._CONSOLE = muted_console
+    try:
+        return preset_pipeline.run_preprocess_mcs_by_leap_pipeline(config=config)
+    finally:
+        preset_pipeline._CONSOLE = original_console

@@ -971,5 +971,16 @@
         ]
       }
     ]
+  },
+  "presets_reproducibility": {
+    "items": [
+      {
+        "id": "preprocess_mcs_by_leap",
+        "name": "Preprocess MCS by LEAP",
+        "description": "Run the staged, config-driven preprocessing preset for the prepared MCS wide dataset, with transparent per-stage audit outputs.",
+        "available": true,
+        "status": "runnable"
+      }
+    ]
   }
 }

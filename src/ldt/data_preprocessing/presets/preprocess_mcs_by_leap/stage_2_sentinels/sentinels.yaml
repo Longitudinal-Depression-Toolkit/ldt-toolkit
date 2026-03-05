@@ -1,0 +1,75 @@
+# Stage 2: sentinel validation, final sentinel map, and sentinel => NaN replacement.
+
+sentinel_detection:
+  # Sentinel codes to detect in prepared wide columns.
+  sentinel_codes:
+    - -9
+    - -8
+    - -7
+    - -6
+    - -5
+    - -4
+    - -3
+    - -2
+    - -1
+    - 96
+    - 97
+    - 98
+    - 99
+    - 996
+    - 997
+    - 998
+    - 999
+
+  # If true, replace matched sentinel values in data with NaN.
+  apply_nan_replacement: true
+
+  # If no missing-like codes are detected via label terms, allow fallback to observed
+  # sentinel values found in data (intersected with `sentinel_codes` above).
+  fallback_to_observed_when_no_label_match: true
+
+# Optional root-level manual overrides.
+# Keys are root features (e.g., ADOEDE00), values are sentinel codes to force.
+# These overrides are used when label-term detection is missing/insufficient.
+root_overrides:
+  # ADOEDE00 is harmonised from OECD-equivalised income sources across waves.
+  # Keep only explicit OECD missing sentinels to avoid dropping valid numeric income values.
+  ADOEDE00: [-2, -1]
+  # ADACAQ00 (highest academic qualification) keeps 95 (overseas qualification),
+  # but treats 96 ("None of these") as missing per project policy.
+  ADACAQ00: [96]
+  ADROOW00: [-9, -8, -1, 11, 12, 13, 98, 99]
+  APALDR00: [-9, -8, -1, 6, 8]
+  APDEAN00: [-9, -8, -1, 3, 4, 5]
+  APDIST9: [-9, -6, -5, -4, -3, -2]
+  APFCIN00: [-9, -8, -1, 10, 11, 12]
+  APGEHE00: [-9, -8, -1, 6, 7, 8]
+  APWALI00: [-9, -8, -2, -1, 11]
+
+dictionary_validation:
+  enabled: true
+
+  # Label text fragments interpreted as missing/sentinel categories.
+  # This stage scans observed values and extracts numeric codes from values whose
+  # labels/text contain one of these terms.
+  missing_label_terms:
+    - don't know
+    - dont know
+    - do not know
+    - refusal
+    - refused
+    - not applicable
+    - not app
+    - not appl
+    - inapplicable
+    - not asked
+    - not answered
+    - not answer
+    - missing
+    - no answer
+    - do not wish to answer
+    - don't wish to answer
+    - not available
+    - invalid
+    - unable to answer
+    - can't say

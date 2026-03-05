@@ -1,0 +1,20 @@
+# Stage 4: finalisation policy (post-target-row filtering diagnostics/pruning).
+
+# Final downstream class target (excluded from predictor correlation checks).
+target_column: EMOTION_w7
+
+correlation_pruning:
+  # If true, drop one feature per high-correlation pair using deterministic tie-break:
+  # lower missingness wins; if equal missingness, lexicographically smaller name wins.
+  apply: false
+
+  # Correlation method used for pair detection.
+  method: spearman
+
+  # Flag pairs with absolute correlation >= threshold.
+  abs_threshold: 0.98
+
+  # Excluded from correlation checks.
+  exclude_columns:
+    - CHID
+    - EMOTION_w7

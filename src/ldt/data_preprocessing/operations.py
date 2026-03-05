@@ -12,6 +12,7 @@ from .catalog import (
     list_build_trajectories_techniques,
     list_clean_dataset_techniques,
     list_combine_dataset_with_trajectories_techniques,
+    list_data_preprocessing_presets,
     list_harmonise_categories_techniques,
     list_missing_imputation_techniques,
     list_pivot_long_to_wide_techniques,
@@ -24,6 +25,22 @@ from .catalog import (
 
 def register_operations(registry: OperationRegistry) -> None:
     """Register data-preprocessing operation handlers on a registry."""
+
+    registry.register(
+        "data_preprocessing.presets.catalog",
+        lambda _: {"presets": list_data_preprocessing_presets()},
+        description="List data-preprocessing reproducibility presets.",
+    )
+    registry.register(
+        "data_preprocessing.presets.preprocess_mcs_by_leap.profile",
+        _op_preprocess_mcs_profile,
+        description="Return defaults and stage config paths for Preprocess MCS by LEAP.",
+    )
+    registry.register(
+        "data_preprocessing.presets.preprocess_mcs_by_leap.run",
+        _op_preprocess_mcs_run,
+        description="Run Preprocess MCS by LEAP preset pipeline from Go bridge params.",
+    )
 
     registry.register(
         "data_preprocessing.remove_columns",
@@ -203,6 +220,21 @@ def _op_remove_columns(params: Mapping[str, Any]) -> dict[str, Any]:
         "ldt.data_preprocessing.tools.remove_columns.run",
         "run_remove_columns",
     )(technique="remove_columns", params=dict(params))
+
+
+def _op_preprocess_mcs_profile(_: Mapping[str, Any]) -> dict[str, Any]:
+    return _resolve_runner(
+        "ldt.data_preprocessing.presets.preprocess_mcs_by_leap.run",
+        "preprocess_mcs_by_leap_profile",
+    )()
+
+
+def _op_preprocess_mcs_run(params: Mapping[str, Any]) -> dict[str, Any]:
+    raw_params = _as_object(params, "params")
+    return _resolve_runner(
+        "ldt.data_preprocessing.presets.preprocess_mcs_by_leap.run",
+        "run_preprocess_mcs_by_leap",
+    )(params=raw_params)
 
 
 def _run_tool_operation_by_path(

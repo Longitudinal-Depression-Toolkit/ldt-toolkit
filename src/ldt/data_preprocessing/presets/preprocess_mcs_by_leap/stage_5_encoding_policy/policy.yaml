@@ -1,0 +1,124 @@
+# Stage 5: explicit encoding policy.
+# This stage is the single source of truth for binary/ordinal/nominal/continuous treatment.
+# No heuristic min/max-unique inference is used.
+
+# Final downstream class target (kept unchanged).
+target_column: EMOTION_w7
+
+# Identifier columns preserved without encoding changes.
+identifier_columns_keep:
+  - CHID
+
+strict_policy:
+  # If true, fail when a predictor root has no entry in `root_policies`.
+  fail_on_unconfigured_predictor: true
+
+post_encoding_cleanup:
+  # If true, drop predictor columns that are constant after encoding
+  # (nunique over non-missing values <= 1).
+  drop_constant_predictors: true
+
+nominal_one_hot:
+  # If true, remove source nominal column after expansion.
+  drop_source_columns: true
+  # If true, rows with source NaN stay NaN in generated one-hot columns.
+  keep_missing_as_nan: true
+  # If true, roots flagged `non_longitudinal: true` are renamed with the
+  # non-long template after one-hot expansion.
+  swap_non_longitudinal_name: true
+  # If true, infer non-longitudinal derived one-hot columns after encoding:
+  # when a one-hot family ({root}__v{code}) survives on exactly one wave
+  # after constant-column cleanup, rename that survivor with the non-long
+  # template. This is inferred dynamically (no hardcoded feature names).
+  infer_single_wave_as_non_longitudinal: true
+  # Naming convention for generated one-hot columns from longitudinal roots.
+  # Example: ADROOW00_w3 + category 5 -> ADROOW00__v5_w3
+  output_name_template_longitudinal: "{root}__v{code}_w{wave}"
+  # Naming convention for generated one-hot columns from non-longitudinal roots.
+  # Example: non_long__w1__ADC06E00 + category 5 -> non_long__w1__ADC06E00__v5
+  output_name_template_non_longitudinal: "non_long__w{wave}__{root}__v{code}"
+
+root_policies:
+  # Binary 0/1
+  AHCSEX00:
+    encoding: binary_to_01
+    # Male=0, Female=1
+    value_map: {1: 0, 2: 1}
+
+  APDEAN00:
+    encoding: binary_to_01
+    # Diagnosed/Yes=1, No=0
+    value_map: {1: 1, 2: 0}
+
+  APILPR00:
+    encoding: binary_to_01
+    # Illness/problem during pregnancy: Yes=1, No=0
+    value_map: {1: 1, 2: 0}
+
+  APLOSA00:
+    encoding: binary_to_01
+    # Felt low/sad: Yes=1, No=0
+    value_map: {1: 1, 2: 0}
+
+  # Continuous numeric keep
+  ADOEDE00:
+    encoding: continuous_numeric_keep
+
+  APDIST9:
+    encoding: continuous_numeric_keep
+
+  # Ordinal
+  ACACCA00:
+    encoding: ordinal
+    # Count-like ordered magnitude, keep numeric values as-is.
+    mode: identity
+
+  ACADMA00:
+    encoding: ordinal
+    mode: identity
+
+  ACADMO00:
+    encoding: ordinal
+    mode: identity
+
+  ADACAQ00:
+    encoding: ordinal
+    # Ordered qualification ranking.
+    mode: rank
+    ordered_values: [1, 2, 3, 4, 5, 95]
+
+  APALDR00:
+    encoding: ordinal
+    mode: identity
+
+  APDROF00:
+    encoding: ordinal
+    mode: identity
+
+  APGEHE00:
+    encoding: ordinal
+    mode: identity
+
+  APWALI00:
+    encoding: ordinal
+    mode: identity
+
+  # Nominal one-hot
+  ADC06E00:
+    encoding: nominal_one_hot
+    # Use non-longitudinal naming template for this root.
+    non_longitudinal: true
+    one_hot_values: [1, 2, 3, 4, 5, 6]
+
+  ADD05C00:
+    encoding: nominal_one_hot
+    one_hot_values: [1, 2, 3, 4, 5]
+
+  ADROOW00:
+    encoding: nominal_one_hot
+    one_hot_values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 95]
+
+  APFCIN00:
+    encoding: nominal_one_hot
+    # Substantive legal marital/civil status categories only.
+    one_hot_values: [1, 2, 3, 4, 5, 6, 7, 8, 9]

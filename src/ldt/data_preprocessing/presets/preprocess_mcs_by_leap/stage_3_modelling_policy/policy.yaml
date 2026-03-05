@@ -1,0 +1,16 @@
+# Stage 3: modelling leakage policy only.
+# Encoding decisions are handled exclusively in Stage 5.
+
+leakage:
+  # Final class target used downstream.
+  target_column: EMOTION_w7
+
+  # Explicit columns to remove from predictors for prospective setup.
+  # Here: remove historical EMOTION waves, keep EMOTION_w7 target.
+  remove_columns:
+    - EMOTION_w1
+    - EMOTION_w2
+    - EMOTION_w3
+    - EMOTION_w4
+    - EMOTION_w5
+    - EMOTION_w6
