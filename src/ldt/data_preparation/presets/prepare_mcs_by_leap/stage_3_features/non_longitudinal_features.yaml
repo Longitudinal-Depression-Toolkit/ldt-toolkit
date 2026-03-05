@@ -10,8 +10,6 @@ waves:
       scope: parent_interview
     - source: APLOSA00
       scope: parent_interview
-    - source: APDIST9
-      scope: composite
   W2: []
   W3: []
   W4: []
