@@ -11,10 +11,18 @@ from ldt.utils.templates.tools.machine_learning import MachineLearningTool
 
 @beartype
 class ModelMCSByLEAP(MachineLearningTool):
-    """Placeholder API class for the incoming LEAP machine-learning preset.
+    """Python API placeholder for the incoming Model MCS by LEAP preset.
 
-    This preset is reserved for a full LEAP-oriented machine-learning pipeline
-    that will model prepared and preprocessed MCS datasets.
+    Reserved for downstream modelling on prepared/preprocessed MCS artefacts.
+    The preset is not implemented yet.
+
+    Examples:
+        ```python
+        from ldt.machine_learning import ModelMCSByLEAP
+
+        model = ModelMCSByLEAP().fit()
+        # model.predict(...) currently raises InputValidationError
+        ```
     """
 
     metadata = ComponentMetadata(
@@ -28,11 +36,10 @@ class ModelMCSByLEAP(MachineLearningTool):
 
     @beartype
     def fit(self, **kwargs: Any) -> ModelMCSByLEAP:
-        """Accept and store preset configuration once implemented.
+        """Accept placeholder kwargs and return `self` (no-op).
 
         Args:
-            **kwargs (Any): Placeholder for future preset configuration keys.
-                The concrete key schema is not yet finalised.
+            **kwargs: Reserved for future model preset configuration keys.
 
         Returns:
             ModelMCSByLEAP: The preset instance.
@@ -43,14 +50,16 @@ class ModelMCSByLEAP(MachineLearningTool):
 
     @beartype
     def predict(self, **kwargs: Any) -> dict[str, Any]:
-        """Run the preset once implementation is available.
+        """Raise `InputValidationError` until the preset is implemented.
 
         Args:
-            **kwargs (Any): Placeholder for future runtime keys. No keys are
-                currently accepted because this preset is not implemented yet.
+            **kwargs: Reserved for future runtime/prediction parameters.
 
         Returns:
-            dict[str, Any]: Reserved return type for the future preset payload.
+            dict[str, Any]: Reserved output payload type for future versions.
+
+        Raises:
+            InputValidationError: Always, until the preset is implemented.
         """
 
         _ = kwargs
