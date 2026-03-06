@@ -13,7 +13,7 @@ from ldt.utils.metadata import ComponentMetadata, resolve_component_metadata
 from ldt.utils.templates.tools.data_preprocessing import DataPreprocessingTool
 
 from .discovery import discover_missing_imputers
-from .imputers import MICEImputationResult, MissingImputer
+from .imputers import MissingImputationResult, MissingImputer
 
 
 @beartype
@@ -21,20 +21,24 @@ class MissingImputation(DataPreprocessingTool):
     """Dispatch missing-data imputation to concrete imputer implementations.
 
     This stage tool is deliberately thin and delegates method-specific logic to
-    classes in `tools/missing_imputation/imputers`.
+    classes in `tools/missing_imputation/imputers`, where each primitive lives
+    in its own module file.
 
     Runtime parameters:
         - `input_path`: Input CSV path.
         - `output_path`: Output CSV path.
-        - `technique` or `imputer`: Imputation key (currently
-          `mice_imputation`).
+        - `technique` or `imputer`: Required imputation key.
         - any additional key-value pairs are forwarded to the selected imputer.
 
     Available `technique` keys:
 
     | Technique key | Description |
     | --- | --- |
+    | `constant_imputation` | Fills missing cells with one scalar constant, or dtype-aware defaults when `fill_value` is omitted. |
+    | `mean_imputation` | Fills missing numeric values with each column mean. |
+    | `median_imputation` | Fills missing numeric values with each column median. |
     | `mice_imputation` | Runs Multiple Imputation by Chained Equations (MICE): iteratively imputes missing values using conditional models over other variables. |
+    | `most_frequent_imputation` | Fills missing values with each column's most frequent non-missing value. |
 
     Examples:
         ```python
@@ -42,9 +46,15 @@ class MissingImputation(DataPreprocessingTool):
 
         tool = MissingImputation()
         result = tool.fit_preprocess(
-            technique="mice_imputation",
+            technique="median_imputation",
             input_path="./data/raw.csv",
             output_path="./outputs/imputed.csv",
+        )
+
+        mice_result = tool.fit_preprocess(
+            technique="mice_imputation",
+            input_path="./data/raw.csv",
+            output_path="./outputs/imputed_mice.csv",
             iterations=5,
             num_datasets=1,
             dataset_index=0,
@@ -77,7 +87,10 @@ class MissingImputation(DataPreprocessingTool):
 
                 - `input_path` (str | Path): Input CSV path.
                 - `output_path` (str | Path): Output CSV path.
-                - `technique` (str | None): Imputer key.
+                - `technique` (str): Imputer key such as
+                  `mean_imputation`, `median_imputation`,
+                  `most_frequent_imputation`, `constant_imputation`, or
+                  `mice_imputation`.
                 - `imputer` (str | None): Alias for `technique`.
                 - any additional keys are forwarded unchanged to the selected
                   imputer `fit(...)`.
@@ -91,11 +104,14 @@ class MissingImputation(DataPreprocessingTool):
         _validate_csv_path(input_path)
         _validate_output_csv_path(output_path, input_path=input_path)
 
-        technique = _normalise_key(
-            _as_optional_string(kwargs.get("technique"))
-            or _as_optional_string(kwargs.get("imputer"))
-            or "mice_imputation"
+        selected_imputer = _as_optional_string(kwargs.get("technique")) or (
+            _as_optional_string(kwargs.get("imputer"))
         )
+        if selected_imputer is None:
+            raise InputValidationError(
+                "Missing required imputation selector: provide `technique` or `imputer`."
+            )
+        technique = _normalise_key(selected_imputer)
 
         imputers = discover_missing_imputers()
         imputer_cls = _resolve_imputer_class(imputers, technique)
@@ -121,7 +137,7 @@ class MissingImputation(DataPreprocessingTool):
         return self
 
     @beartype
-    def preprocess(self, **kwargs: Any) -> MICEImputationResult:
+    def preprocess(self, **kwargs: Any) -> MissingImputationResult:
         """Run the configured imputer and return a typed imputation result.
 
         Args:
@@ -129,7 +145,7 @@ class MissingImputation(DataPreprocessingTool):
                 If provided, they override any existing fitted configuration.
 
         Returns:
-            MICEImputationResult: Typed imputation summary returned by the
+            MissingImputationResult: Typed imputation summary returned by the
             current imputer implementation.
         """
 
@@ -151,7 +167,7 @@ class MissingImputation(DataPreprocessingTool):
             **self._imputer_kwargs,
         )
 
-        if not isinstance(result, MICEImputationResult):
+        if not isinstance(result, MissingImputationResult):
             raise InputValidationError(
                 "Unsupported imputation result payload returned by imputer."
             )

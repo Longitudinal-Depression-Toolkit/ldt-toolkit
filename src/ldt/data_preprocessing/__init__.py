@@ -62,6 +62,10 @@ _LAZY_EXPORTS: dict[str, tuple[str, str]] = {
         "ldt.data_preprocessing.tools.harmonise_categories.run",
         "HarmoniseCategoriesResult",
     ),
+    "ConstantImputer": (
+        "ldt.data_preprocessing.tools.missing_imputation.imputers",
+        "ConstantImputer",
+    ),
     "MICEImputationResult": (
         "ldt.data_preprocessing.tools.missing_imputation.imputers",
         "MICEImputationResult",
@@ -70,13 +74,29 @@ _LAZY_EXPORTS: dict[str, tuple[str, str]] = {
         "ldt.data_preprocessing.tools.missing_imputation.imputers",
         "MICEImputer",
     ),
+    "MeanImputer": (
+        "ldt.data_preprocessing.tools.missing_imputation.imputers",
+        "MeanImputer",
+    ),
+    "MedianImputer": (
+        "ldt.data_preprocessing.tools.missing_imputation.imputers",
+        "MedianImputer",
+    ),
     "MissingImputation": (
         "ldt.data_preprocessing.tools.missing_imputation.run",
         "MissingImputation",
     ),
+    "MissingImputationResult": (
+        "ldt.data_preprocessing.tools.missing_imputation.imputers",
+        "MissingImputationResult",
+    ),
     "MissingImputer": (
         "ldt.data_preprocessing.tools.missing_imputation.imputers",
         "MissingImputer",
+    ),
+    "MostFrequentImputer": (
+        "ldt.data_preprocessing.tools.missing_imputation.imputers",
+        "MostFrequentImputer",
     ),
     "PivotLongToWide": (
         "ldt.data_preprocessing.tools.pivot_long_to_wide.run",
@@ -150,6 +170,10 @@ _LAZY_EXPORTS: dict[str, tuple[str, str]] = {
         "ldt.data_preprocessing.tools.missing_imputation.discovery",
         "discover_missing_imputers",
     ),
+    "SimpleImputationResult": (
+        "ldt.data_preprocessing.tools.missing_imputation.imputers",
+        "SimpleImputationResult",
+    ),
 }
 
 __all__ = [
@@ -160,13 +184,18 @@ __all__ = [
     "CleanDatasetResult",
     "CombineDatasetWithTrajectories",
     "CombineDatasetWithTrajectoriesResult",
+    "ConstantImputer",
     "DataPreprocessingTool",
     "HarmoniseCategories",
     "HarmoniseCategoriesResult",
     "MICEImputationResult",
     "MICEImputer",
+    "MeanImputer",
+    "MedianImputer",
     "MissingImputation",
+    "MissingImputationResult",
     "MissingImputer",
+    "MostFrequentImputer",
     "PivotLongToWide",
     "PivotLongToWideResult",
     "PreprocessMCSByLEAP",
@@ -176,6 +205,7 @@ __all__ = [
     "RenameFeatureResult",
     "ShowTable",
     "ShowTableResult",
+    "SimpleImputationResult",
     "ToolParameterDefinition",
     "TrajectoriesViz",
     "TrajectoriesVizResult",

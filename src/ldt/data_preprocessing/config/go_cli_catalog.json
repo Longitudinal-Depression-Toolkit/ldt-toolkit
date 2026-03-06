@@ -309,6 +309,94 @@
     "title": "Missing Imputation",
     "techniques": [
       {
+        "id": "mean_imputation",
+        "name": "Mean imputation",
+        "description": "Fill missing numeric values with each column mean.",
+        "parameters": [
+          {
+            "key": "input_path",
+            "label": "Input CSV path",
+            "type": "path",
+            "required": true
+          },
+          {
+            "key": "output_path",
+            "label": "Output imputed CSV path",
+            "type": "path",
+            "required": true,
+            "default": "imputed_dataset.csv"
+          }
+        ]
+      },
+      {
+        "id": "median_imputation",
+        "name": "Median imputation",
+        "description": "Fill missing numeric values with each column median.",
+        "parameters": [
+          {
+            "key": "input_path",
+            "label": "Input CSV path",
+            "type": "path",
+            "required": true
+          },
+          {
+            "key": "output_path",
+            "label": "Output imputed CSV path",
+            "type": "path",
+            "required": true,
+            "default": "imputed_dataset.csv"
+          }
+        ]
+      },
+      {
+        "id": "most_frequent_imputation",
+        "name": "Most frequent imputation",
+        "description": "Fill missing values with each column's most frequent value.",
+        "parameters": [
+          {
+            "key": "input_path",
+            "label": "Input CSV path",
+            "type": "path",
+            "required": true
+          },
+          {
+            "key": "output_path",
+            "label": "Output imputed CSV path",
+            "type": "path",
+            "required": true,
+            "default": "imputed_dataset.csv"
+          }
+        ]
+      },
+      {
+        "id": "constant_imputation",
+        "name": "Constant imputation",
+        "description": "Fill missing values with one constant scalar.",
+        "parameters": [
+          {
+            "key": "input_path",
+            "label": "Input CSV path",
+            "type": "path",
+            "required": true
+          },
+          {
+            "key": "output_path",
+            "label": "Output imputed CSV path",
+            "type": "path",
+            "required": true,
+            "default": "imputed_dataset.csv"
+          },
+          {
+            "key": "fill_value",
+            "label": "Fill value (optional scalar JSON literal)",
+            "type": "json",
+            "required": false,
+            "default": null,
+            "hint": "Examples: 0, 1.5, true, or \"missing\". When omitted, numeric columns use 0 and other columns use \"missing\"."
+          }
+        ]
+      },
+      {
         "id": "mice_imputation",
         "name": "MICE imputation",
         "description": "Impute with miceforest MICE.",

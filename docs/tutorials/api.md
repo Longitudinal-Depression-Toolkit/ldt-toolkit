@@ -135,10 +135,9 @@ long_df.to_csv(raw_long, index=False)
 
 CleanDataset().fit_preprocess(input_path=raw_long, output_path=clean_long)
 MissingImputation().fit_preprocess(
-    technique="mice_imputation",
+    technique="median_imputation",
     input_path=clean_long,
     output_path=imputed_long,
-    random_state=42,
 )
 BuildTrajectories().fit_preprocess(
     mode="from_scratch",

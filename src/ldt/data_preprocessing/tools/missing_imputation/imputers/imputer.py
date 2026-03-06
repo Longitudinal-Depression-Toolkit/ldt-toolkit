@@ -13,7 +13,8 @@ class MissingImputer:
     """Base interface for concrete missing-data imputers.
 
     Concrete imputers should document all supported `**kwargs` keys in both
-    `fit(...)` and `impute(...)`.
+    `fit(...)` and `impute(...)`. Discoverable imputers live in the
+    `tools/missing_imputation/imputers` package with one module per primitive.
     """
 
     metadata = ComponentMetadata(
