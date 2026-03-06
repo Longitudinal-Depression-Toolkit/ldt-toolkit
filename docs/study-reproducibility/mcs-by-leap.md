@@ -10,7 +10,7 @@ Follow the flow in order: `Prepare -> Preprocess -> Model`.
 
 - `Prepare` ingests raw wave `.dta` cohorts and creates canonical long/wide dataset(s).
 - `Preprocess` applies cleaning, harmonise, standardise, and other policy to the `wide` dataset to be ML-ready.
-- `Model` entrypoint exists, but the LEAP modelling preset is currently marked as incoming.
+- `Model`: Work in Progress
 
 </div>
 

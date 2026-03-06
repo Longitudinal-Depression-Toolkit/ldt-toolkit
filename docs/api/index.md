@@ -1,6 +1,10 @@
 # API Reference
 
+<div class="mcs-hero mcs-hero--lead" markdown>
+
 Welcome to the API reference. Explore data preparation, preprocessing, and ML-related task-based tools to quickly identify available classes and the parameters each tool expects.
+
+</div>
 
 <div class="grid cards core" markdown>
 

@@ -1,20 +1,33 @@
+---
+hide:
+  - navigation
+---
+
 # Study Reproducibility
 
-Study reproducibility in LDT-Toolkit is designed to make paper-to-code translation explicit, inspectable, and reusable.  
-Instead of scattering scripts across notebooks and ad-hoc folders, each study bundle is structured into three clear stages with one main API class per stage: data preparation, data preprocessing, and machine learning.
+<div class="mcs-hero" markdown>
+
+**Study reproducibility in `LDT-Toolkit`** is designed to make *paper-to-code translation* explicit, inspectable, and reusable.
+
+Instead of scattering scripts across notebooks and ad-hoc folders, each study bundle is structured into **three clear stages** with one main API class per stage: `data preparation`, `data preprocessing`, and `machine learning`.
+
+</div>
 
 ## Available Study Reproducibility Presets
 
-<div class="grid cards core" markdown>
-
--   :material-database-search:{ .lg .middle } __MCS by LEAP__
-
-    ---
-
-    Millennium Cohort Study (MCS) reproducibility bundle with stage-level main classes.
-
-    [:octicons-arrow-right-24: Open preset](./mcs-by-leap.md){ .md-button .md-button--primary }
-
+<div class="mcs-stage-card-grid mcs-stage-card-grid--single">
+  <a class="mcs-stage-card mcs-stage-card--link" href="./mcs-by-leap/">
+    <span class="mcs-stage-card__eyebrow">Work in Progress Preset</span>
+    <span class="mcs-stage-card__title">MCS by LEAP</span>
+    <span class="mcs-stage-card__desc">Millennium Cohort Study (MCS) reproducibility bundle with a practical walkthrough and stage-level main classes.</span>
+    <span class="mcs-stage-card__flow" aria-label="Preset workflow">
+      <code>Prepare</code>
+      <span aria-hidden="true">-></span>
+      <code>Preprocess</code>
+      <span aria-hidden="true">-></span>
+      <code>Model</code>
+    </span>
+  </a>
 </div>
 
 ## Request A Study Reproducibility

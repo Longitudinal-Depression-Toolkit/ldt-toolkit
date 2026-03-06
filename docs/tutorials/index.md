@@ -1,11 +1,15 @@
 # Tutorials Overview
 
+<div class="mcs-hero" markdown>
+
 This section shows two ways to use `LDT-Toolkit`:
 
 - **CLI tutorials**: recommended no-code path through the full interactive experience.
 - **API tutorials**: advanced path for Jupyter notebooks and Python scripts.
 
 If you are new to the toolkit, start with the CLI flow first, then move to API usage when you need lower-level control.
+
+</div>
 
 <div class="grid cards" markdown>
 

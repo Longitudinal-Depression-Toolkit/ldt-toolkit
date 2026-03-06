@@ -9,12 +9,16 @@ hide:
 
 ## LDT-Toolkit, in a Nutshell { .nutshell-heading }
 
+<div class="mcs-hero" markdown>
+
 The `Longitudinal Depression Trajectories Toolkit (LDT-Toolkit)` is designed for social, medical, and clinical researchers working with repeated-measure data who need a stepping-stone path from raw cohort files to downstream modelling.
 
 The initiative delivers two interconnected components:
 
 - `ldt-toolkit` (this repository): the Python engine, with tools and reproducible workflows for longitudinal data preparation, preprocessing, and modelling.
 - `ldt` (Go CLI): the no-code terminal interface that orchestrates the full toolkit experience end-to-end.
+
+</div>
 
 ### Playground Tools
 
