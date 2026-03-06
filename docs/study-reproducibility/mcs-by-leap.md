@@ -2,7 +2,7 @@
 
 <div class="mcs-hero" markdown>
 
-Millennium Cohort Study (MCS) reproducibility study by LEAP, designed to move from raw wave files to an ML-ready longitudinal exploration with decomposed (1) preparation, (2) preprocessing and (3) modelling stages.
+Millennium Cohort Study (MCS) reproducibility study by [LEAP](https://life-epi-psych.github.io), designed to move from raw wave files to an ML-ready longitudinal exploration with decomposed (1) preparation, (2) preprocessing and (3) modelling stages.
 
 **This page is the practical guide for this preset.**
 
@@ -57,7 +57,7 @@ flowchart LR
 flowchart LR
     P0["Target row policy"] --> P1["Structural cleanup"]
     P1 --> P2["Sentinel map + replacement"]
-    P2 --> P3["Leakage policy"]
+    P2 --> P3["Modelling policy"]
     P3 --> P4["Finalisation diagnostics"]
     P4 --> P5["Encoding policy"]
     P5 --> O["ML-ready wide output"]
@@ -78,8 +78,6 @@ flowchart LR
 
     Use this stage to ingest selected raw waves and produce canonical outputs.
 
-    Target lineage created in this stage: raw wave emotion columns -> `EMOTION` root -> wide target/history columns (`EMOTION_w<wave>`).
-
     ```bash
     ldt
     # Navigate: Data Preparation -> Presets / Reproducibility -> Prepare MCS by LEAP
@@ -89,13 +87,13 @@ flowchart LR
 
     | Wave | Path example |
     |---|---|
-    | W1 | `/path/to/MCS/W1/UKDA-4683-stata/stata` |
-    | W2 | `/path/to/MCS/W2/UKDA-5350-stata/stata` |
-    | W3 | `/path/to/MCS/W3/UKDA-5795-stata/stata` |
-    | W4 | `/path/to/MCS/W4/UKDA-6411-stata/stata` |
-    | W5 | `/path/to/MCS/W5/UKDA-7464-stata/stata` |
-    | W6 | `/path/to/MCS/W6/UKDA-8156-stata/stata` |
-    | W7 | `/path/to/MCS/W7/UKDA-8682-stata/stata` |
+    | W1 | `/path/to/MCS/W1/UKDA-4683-stata/stata/stata13` |
+    | W2 | `/path/to/MCS/W2/UKDA-5350-stata/stata/stata13` |
+    | W3 | `/path/to/MCS/W3/UKDA-5795-stata/stata/stata13` |
+    | W4 | `/path/to/MCS/W4/UKDA-6411-stata/stata/stata13` |
+    | W5 | `/path/to/MCS/W5/UKDA-7464-stata/stata/stata13` |
+    | W6 | `/path/to/MCS/W6/UKDA-8156-stata/stata/stata13` |
+    | W7 | `/path/to/MCS/W7/UKDA-8682-stata/stata/stata13` |
 
     Recommended runtime choices:
 
@@ -120,13 +118,13 @@ flowchart LR
     prepare = PrepareMCSByLEAP().fit_prepare(
         waves="ALL",
         wave_inputs={
-            "W1": "/path/to/W1/stata",
-            "W2": "/path/to/W2/stata",
-            "W3": "/path/to/W3/stata",
-            "W4": "/path/to/W4/stata",
-            "W5": "/path/to/W5/stata",
-            "W6": "/path/to/W6/stata",
-            "W7": "/path/to/W7/stata",
+            "W1": "/path/to/W1/stata/stata13",
+            "W2": "/path/to/W2/stata/stata13",
+            "W3": "/path/to/W3/stata/stata13",
+            "W4": "/path/to/W4/stata/stata13",
+            "W5": "/path/to/W5/stata/stata13",
+            "W6": "/path/to/W6/stata/stata13",
+            "W7": "/path/to/W7/stata/stata13",
         },
         output_format="wide",
         save_final_output=True,
@@ -187,7 +185,98 @@ flowchart LR
 
     `Work in progress...`
 
+=== "Run Them All In One Go (API only)"
+
+    This example runs the currently available presets end to end from the repository root: `Prepare MCS by LEAP` followed by `Preprocess MCS by LEAP`.
+    `Model MCS by LEAP` is not included yet because that preset is still incoming.
+
+    ```python
+    from pathlib import Path
+
+    from ldt.data_preparation import PrepareMCSByLEAP
+    from ldt.data_preprocessing import PreprocessMCSByLEAP
+
+
+    project_root = Path(".")
+    mcs_root = project_root / "data" / "MCS"  # Change this to wherever your raw MCS extract is stored.
+    processed_root = project_root / "data" / "processed" / "MCS"
+    preprocess_preset_root = (
+        project_root
+        / "src"
+        / "ldt"
+        / "data_preprocessing"
+        / "presets"
+        / "preprocess_mcs_by_leap"
+    )
+
+    prepare_result = PrepareMCSByLEAP().fit_prepare(
+        waves="ALL",
+        wave_inputs={
+            "W1": str(mcs_root / "W1" / "UKDA-4683-stata" / "stata" / "stata13"),  # Change to your own W1 raw Stata folder if different.
+            "W2": str(mcs_root / "W2" / "UKDA-5350-stata" / "stata" / "stata13"),  # Change to your own W2 raw Stata folder if different.
+            "W3": str(mcs_root / "W3" / "UKDA-5795-stata" / "stata" / "stata13"),  # Change to your own W3 raw Stata folder if different.
+            "W4": str(mcs_root / "W4" / "UKDA-6411-stata" / "stata" / "stata13"),  # Change to your own W4 raw Stata folder if different.
+            "W5": str(mcs_root / "W5" / "UKDA-7464-stata" / "stata" / "stata13"),  # Change to your own W5 raw Stata folder if different.
+            "W6": str(mcs_root / "W6" / "UKDA-8156-stata" / "stata" / "stata13"),  # Change to your own W6 raw Stata folder if different.
+            "W7": str(mcs_root / "W7" / "UKDA-8682-stata" / "stata" / "stata13"),  # Change to your own W7 raw Stata folder if different.
+        },
+        output_format="long_and_wide",
+        wide_suffix_prefix="_w",
+        show_summary_logs=True,
+        save_wave_outputs=True,
+        wave_output_dir=str(processed_root / "wave_outputs"),
+        save_final_output=True,
+        long_output_path=str(processed_root / "mcs_longitudinal_long.csv"),
+        wide_output_path=str(processed_root / "mcs_longitudinal_wide.csv"),
+        parallel=True,
+        max_workers=2,
+    )
+
+    wide_input_path = prepare_result.wide_output_path
+    if wide_input_path is None:
+        raise RuntimeError(
+            "PrepareMCSByLEAP did not emit a wide output. "
+            "Use output_format='wide' or 'long_and_wide'."
+        )
+
+    preprocess_result = PreprocessMCSByLEAP().fit_preprocess(
+        input_path=str(wide_input_path),
+        output_path=str(processed_root / "mcs_longitudinal_wide_preprocessed.csv"),
+        save_final_output=True,
+        save_audit_tables=True,
+        audit_output_dir=str(processed_root / "preprocess_logs"),
+        show_summary_logs=True,
+        stage_0_config_path=str(
+            preprocess_preset_root / "stage_0_target_rows" / "policy.yaml"
+        ),
+        stage_1_config_path=str(
+            preprocess_preset_root / "stage_1_structural" / "rules.yaml"
+        ),
+        stage_2_config_path=str(
+            preprocess_preset_root / "stage_2_sentinels" / "sentinels.yaml"
+        ),
+        stage_3_config_path=str(
+            preprocess_preset_root / "stage_3_modelling_policy" / "policy.yaml"
+        ),
+        stage_4_config_path=str(
+            preprocess_preset_root / "stage_4_finalisation" / "policy.yaml"
+        ),
+        stage_5_config_path=str(
+            preprocess_preset_root / "stage_5_encoding_policy" / "policy.yaml"
+        ),
+    )
+
+    print("Prepare long output:", prepare_result.long_output_path)
+    print("Prepare wide output:", prepare_result.wide_output_path)
+    print("Per-wave outputs:", prepare_result.wave_output_paths)
+    print("Preprocess output:", preprocess_result.output_path)
+    print("Preprocess audit dir:", preprocess_result.audit_output_dir)
+    print("Preprocessed shape:", preprocess_result.output_data.shape)
+    ```
+
 ## Stage-by-Stage Configuration
+
+The sections below show, stage by stage, which configuration file controls the default behaviour of each preset step. Use them to understand where a stage gets its rules from and which file to edit when you want to change only one part of the workflow rather than the whole preset.
 
 === "PrepareMCSByLEAP (Config)"
 
@@ -221,9 +310,12 @@ flowchart LR
 
     ??? abstract "Stage 2 - Subject construction"
 
-        - Builds child-level anchor rows and stable join keys.
-        - Merges child/family/parent/link roles into a subject-aligned dataset.
-        - Preserves reproducible identifiers used downstream by feature mapping and output formatting.
+        - Standardises the core identifiers used across raw files into stable keys: family `MCSID`, child `CNUM`, and parent `PNUM`.
+        - Creates the child-level anchor by taking the union of all observed `(MCSID, CNUM)` pairs found in child-role datasets and child-parent link datasets for that wave.
+        - Deduplicates and sorts that union so each remaining row represents exactly one child within one family for one wave before any features are attached.
+        - Merges child-role datasets onto that anchor with one-to-one validation, then merges family-role datasets many-to-one on `MCSID` so shared household variables are copied onto each anchored child row.
+        - Resolves parent data separately through the `(MCSID, CNUM, PNUM)` link tables, pivots parent records into stable child-level slots such as `p1__...` and `p2__...`, and merges those slots back onto the same child anchor.
+        - Builds `CHID` only after those merges, using the stable child key pair as `MCSID_CNUM`, then adds `wave` and validates that the final output is still unique on `(MCSID, CNUM)` with no row explosion.
         - Main config: `stage_2_subjects/subject_keys.yaml`.
 
     ??? abstract "Stage 3 - Feature preparation"
@@ -251,14 +343,12 @@ flowchart LR
 
 === "PreprocessMCSByLEAP (Config)"
 
-    Stage-by-stage default policy:
-
     | Stage | What happens by default | Config file |
     |---|---|---|
     | 0. Target rows | Keeps rows where `EMOTION_w7` is observed, using sentinel-aware missingness | `stage_0_target_rows/policy.yaml` |
     | 1. Structural | Applies ID/target-history policy and drops unusable predictors by missingness/constant checks | `stage_1_structural/rules.yaml` |
     | 2. Sentinels | Builds final sentinel-to-NaN map per root/column and applies replacements | `stage_2_sentinels/sentinels.yaml` |
-    | 3. Leakage | Removes configured leakage features while preserving final target | `stage_3_modelling_policy/policy.yaml` |
+    | 3. Modelling policy | Applies the configured predictor-removal policy while preserving the final target | `stage_3_modelling_policy/policy.yaml` |
     | 4. Finalisation | Profiles predictor missingness and computes high-correlation pairs (dry-run by default) | `stage_4_finalisation/policy.yaml` |
     | 5. Encoding | Applies strict root-level binary/ordinal/continuous/nominal policy and cleanup | `stage_5_encoding_policy/policy.yaml` |
 
@@ -297,10 +387,10 @@ flowchart LR
           - `stage2_sentinel_final_map_compact.csv`
           - `stage2_sentinel_replacement_summary.csv`
 
-    ??? abstract "Stage 3 - Leakage"
+    ??? abstract "Stage 3 - Modelling policy"
 
-        - Applies leakage policy only (encoding is intentionally deferred to Stage 5).
-        - Removes configured leakage columns if present.
+        - Applies the stage 3 modelling policy only (encoding is intentionally deferred to Stage 5).
+        - Removes configured predictor columns that are not allowed into modelling if present.
         - Keeps the final target (`EMOTION_w7`) for downstream modelling.
         - Core audit outputs:
           - `stage3_leakage_policy.csv`
