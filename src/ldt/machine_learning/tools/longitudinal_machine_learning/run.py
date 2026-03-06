@@ -47,6 +47,23 @@ from ldt.utils.templates.tools.machine_learning import MachineLearningTool
 class LongitudinalMachineLearning(MachineLearningTool):
     """Run longitudinal machine-learning workflows for temporal tabular data.
 
+    Longitudinal machine learning estimators are essentially capable to deal with the longitudinal predictors of a
+    longitudinal dataset. Either by (1) transforming it into a more flattened akin to standard tabular datasets,
+    and apply standard machine learning estimators, or by (2) using longitudinal-data aware machine learning estimators.
+
+    For (1), you have access to many transformation from aggregation of temporal structure to treat each
+    wave of information as a separate dataset for which a base model is fitted prior to gather all predictions for
+    the final classification. While, for (2), you have access to native longitudinal estimators that are designed to
+    explicitly leverage the temporal structure of the data.
+
+    !!! info "MerwavTimeMinus"
+
+        `MerWavTimeMinus`, or Merge Waves and Discard Time Indices, is the same as throwing your wide longitudinal
+        dataset into a standard machine learning estimator. It transforms nothing but is kept for API completeness.
+
+        All other transformation strategies do transform by some means the longitudinal structure of your data.
+
+
     Available estimator families:
 
     | Family key | What it does | Official reference |
