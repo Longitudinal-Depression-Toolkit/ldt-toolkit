@@ -1,32 +1,26 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 import miceforest as mf
-import pandas as pd
 from beartype import beartype
 
 from ldt.utils.errors import InputValidationError
 from ldt.utils.metadata import ComponentMetadata
 
+from .common import (
+    as_bool,
+    as_int,
+    as_optional_int,
+    count_missing_values,
+    load_csv,
+    validate_input_csv_path,
+    validate_output_csv_path,
+    write_csv,
+)
 from .imputer import MissingImputer
-
-
-@beartype
-@dataclass(frozen=True)
-class MICEImputationResult:
-    """Structured result for MICE missing-data imputation."""
-
-    output_path: Path
-    row_count: int
-    column_count: int
-    missing_before: int
-    missing_after: int
-    iterations: int
-    num_datasets: int
-    dataset_index: int
+from .results import MICEImputationResult
 
 
 @beartype
@@ -72,24 +66,27 @@ class MICEImputer(MissingImputer):
             MICEImputer: The fitted imputer instance.
         """
 
-        _validate_csv_path(input_path)
-        _validate_output_csv_path(output_path, input_path=input_path)
+        validate_input_csv_path(input_path)
+        validate_output_csv_path(output_path, input_path=input_path)
 
-        iterations = _as_int(kwargs.get("iterations", 5), field_name="iterations")
-        num_datasets = _as_int(
+        iterations = as_int(kwargs.get("iterations", 5), field_name="iterations")
+        num_datasets = as_int(
             kwargs.get("num_datasets", 1),
             field_name="num_datasets",
         )
-        dataset_index = _as_int(
+        dataset_index = as_int(
             kwargs.get("dataset_index", 0),
             field_name="dataset_index",
         )
-        mean_match_candidates = _as_int(
+        mean_match_candidates = as_int(
             kwargs.get("mean_match_candidates", 5),
             field_name="mean_match_candidates",
         )
-        random_state = _as_optional_int(kwargs.get("random_state"))
-        cast_object_to_category = _as_bool(
+        random_state = as_optional_int(
+            kwargs.get("random_state"),
+            field_name="random_state",
+        )
+        cast_object_to_category = as_bool(
             kwargs.get("cast_object_to_category", True),
             field_name="cast_object_to_category",
         )
@@ -148,8 +145,8 @@ class MICEImputer(MissingImputer):
         random_state = self._config["random_state"]
         cast_object_to_category = bool(self._config["cast_object_to_category"])
 
-        data = pd.read_csv(input_path)
-        missing_before = int(data.isna().sum().sum())
+        data = load_csv(input_path)
+        missing_before = count_missing_values(data)
 
         if cast_object_to_category:
             object_columns = data.select_dtypes(include=["object", "string"]).columns
@@ -157,10 +154,9 @@ class MICEImputer(MissingImputer):
                 data[column] = data[column].astype("category")
 
         if missing_before == 0:
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            data.to_csv(output_path, index=False)
+            resolved_output = write_csv(data, output_path=output_path)
             return MICEImputationResult(
-                output_path=output_path.resolve(),
+                output_path=resolved_output,
                 row_count=len(data),
                 column_count=int(data.shape[1]),
                 missing_before=0,
@@ -183,78 +179,14 @@ class MICEImputer(MissingImputer):
         except (TypeError, ValueError, RuntimeError) as exc:
             raise InputValidationError(f"MICE imputation failed: {exc}") from exc
 
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        imputed.to_csv(output_path, index=False)
-
+        resolved_output = write_csv(imputed, output_path=output_path)
         return MICEImputationResult(
-            output_path=output_path.resolve(),
+            output_path=resolved_output,
             row_count=len(imputed),
             column_count=int(imputed.shape[1]),
             missing_before=missing_before,
-            missing_after=int(imputed.isna().sum().sum()),
+            missing_after=count_missing_values(imputed),
             iterations=iterations,
             num_datasets=num_datasets,
             dataset_index=dataset_index,
         )
-
-
-@beartype
-def _as_int(value: Any, *, field_name: str) -> int:
-    if isinstance(value, bool):
-        raise InputValidationError(f"`{field_name}` must be an integer value.")
-    if isinstance(value, int):
-        return value
-    if isinstance(value, float):
-        if value.is_integer():
-            return int(value)
-        raise InputValidationError(f"`{field_name}` must be an integer value.")
-    if isinstance(value, str) and value.strip():
-        try:
-            return int(value.strip())
-        except ValueError as exc:
-            raise InputValidationError(
-                f"`{field_name}` must be an integer value."
-            ) from exc
-    raise InputValidationError(f"`{field_name}` must be an integer value.")
-
-
-@beartype
-def _as_optional_int(value: Any) -> int | None:
-    if value is None:
-        return None
-    if isinstance(value, str) and not value.strip():
-        return None
-    return _as_int(value, field_name="random_state")
-
-
-@beartype
-def _as_bool(value: Any, *, field_name: str) -> bool:
-    if isinstance(value, bool):
-        return value
-    if isinstance(value, int | float) and not isinstance(value, bool):
-        return bool(value)
-    if isinstance(value, str):
-        token = value.strip().lower()
-        if token in {"1", "true", "yes", "y", "on"}:
-            return True
-        if token in {"0", "false", "no", "n", "off"}:
-            return False
-    raise InputValidationError(f"`{field_name}` must be a boolean value.")
-
-
-@beartype
-def _validate_csv_path(path: Path) -> None:
-    if not path.exists():
-        raise InputValidationError(f"CSV path does not exist: {path}")
-    if not path.is_file():
-        raise InputValidationError(f"CSV path is not a file: {path}")
-    if path.suffix.lower() != ".csv":
-        raise InputValidationError("CSV path must point to a .csv file.")
-
-
-@beartype
-def _validate_output_csv_path(path: Path, *, input_path: Path) -> None:
-    if path.suffix.lower() != ".csv":
-        raise InputValidationError("Output path must point to a .csv file.")
-    if path.resolve() == input_path.resolve():
-        raise InputValidationError("Output path must be different from input path.")

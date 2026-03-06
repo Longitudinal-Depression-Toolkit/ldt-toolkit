@@ -15,89 +15,38 @@ from . import pipeline as preset_pipeline
 
 @beartype
 class PrepareMCSByLEAP(DataPreparationTool):
-    """Library API entrypoint for the full 5-stage Prepare-MCS-by-LEAP workflow.
+    """Python API for the Prepare MCS by LEAP preset.
 
-    This preset allows a full preparation run from raw Stata datasets into per-wave
-    outputs or merged longitudinal outputs (wide and long), with features of interest
-    extracted for LEAP depression youth trajectory analysis.
+    Transforms selected raw MCS wave directories into canonical longitudinal
+    outputs (`long`, `wide`, or `long_and_wide`) used by
+    `PreprocessMCSByLEAP`.
 
-    The preprocessing counterpart (`preprocess_mcs_by_leap`) is intended to take these
-    prepared longitudinal outputs and produce an ML-ready dataset that is cleaned enough
-    for modelling and benchmarking workflows.
-
-    This class is the Python-facing API surface for this preset and provides a stable
-    contract through `fit(...)`, `prepare(...)`, `fit_prepare(...)`, and `build_config(...)`.
-
-    !!! info "Pipeline stages"
-
-        - `stage_1_wave_paths` (wave input validation): validates expected `.dta`
-          files for each selected wave from `stage_1_wave_paths/datasets.yaml`.
-
-        - `stage_2_subjects` (subject conceptualisation): standardises identifiers,
-          builds child anchors from child/link keys, merges role-specific datasets,
-          and constructs one row per child per wave with
-          `CHID = <family_key>_<child_key>`.
-
-        - `stage_3_features` (feature preparation): resolves longitudinal/non-
-          longitudinal mappings from YAML configs, handles ambiguous source matches,
-          and tracks unresolved mappings.
-
-        - `stage_4_composites` (composite feature construction): applies configured
-          composite operations (`sum`, `mean`, `median`, `min`, `max`, `coalesce`)
-          from `composites.yaml`.
-
-        - `stage_5_output_format` (final output formatting): produces long, wide, or
-          long+wide outputs with canonical longitudinal feature names and wave
-          suffixing controlled by `wide_suffix_prefix`.
-
-    !!! info "Child-level subject construction details (stage 2)"
-
-        - Child anchor rows are built from the union of child/link key coverage.
-
-        - Parent rows are linked through configured parent/link keys, then
-          pivoted into stable parent slots (`p1__...`, `p2__...`, ...).
-
-        - Final uniqueness is enforced on configured child keys and guarded
-          against row explosion after merges.
-
-        - Key semantics are controlled by `stage_2_subjects/subject_keys.yaml`.
-
-    !!! info "Configuration files"
-
-        - `defaults.yaml`: runtime defaults (parallelism, logging, output paths).
-
-        - `stage_1_wave_paths/datasets.yaml`: wave dataset manifests and roles.
-
-        - `stage_2_subjects/subject_keys.yaml`: child/parent/link key schema.
-
-        - `stage_3_features/longitudinal_features.yaml`: canonical mappings.
-
-        - `stage_3_features/non_longitudinal_features.yaml`: covariate selection.
-
-        - `stage_4_composites/composites.yaml`: composite feature recipes.
-
-    !!! warning
-
-        Stage configuration loaders use `functools.cache`. If YAML files are edited
-        during an active Python process, restart the interpreter to guarantee fresh
-        configuration loading.
+    Pipeline overview:
+    1. validate wave manifests
+    2. construct subject-level wave tables
+    3. map configured features to canonical roots
+    4. build configured composite features
+    5. format/save final long and/or wide artefacts
 
     Examples:
         ```python
         from ldt.data_preparation import PrepareMCSByLEAP
 
-        tool = PrepareMCSByLEAP()
-        result = tool.fit_prepare(
-            waves="W1,W2",
+        result = PrepareMCSByLEAP().fit_prepare(
+            waves="ALL",
             wave_inputs={
-                "W1": "/path/to/w1/raw",
-                "W2": "/path/to/w2/raw",
+                "W1": "/path/to/W1/stata",
+                "W2": "/path/to/W2/stata",
+                "W3": "/path/to/W3/stata",
+                "W4": "/path/to/W4/stata",
+                "W5": "/path/to/W5/stata",
+                "W6": "/path/to/W6/stata",
+                "W7": "/path/to/W7/stata",
             },
-            output_format="long_and_wide",
+            output_format="wide",
             save_final_output=True,
-            long_output_path="./prepared_long.csv",
-            wide_output_path="./prepared_wide.csv",
         )
+        print(result.wide_output_path)
         ```
     """
 
@@ -137,44 +86,24 @@ class PrepareMCSByLEAP(DataPreparationTool):
 
     @beartype
     def fit(self, **kwargs: Any) -> PrepareMCSByLEAP:
-        """Resolve and store one pipeline configuration.
+        """Store a validated pipeline config for a later `prepare(...)` call.
 
         Args:
-            **kwargs (Any): Preparation configuration keys used to build a
-                `PrepareMCSByLEAPPipelineConfig`. Supported keys:
+            **kwargs: Same configuration keys accepted by `build_config(...)`.
+                Expected keys:
 
-                - `waves` (str | Sequence[str]): Wave selection, for example
-                  `"ALL"` or `"W1,W2"`.
-
-                - `wave_inputs` (Mapping[str, str | Path] | Sequence[...]):
-                  Raw input directory per selected wave.
-
-                - `output_format` (str): `long`, `wide`, or `long_and_wide`.
-
-                - `wide_suffix_prefix` (str | None): Prefix used for wide
-                  output column suffixes.
-
-                - `show_summary_logs` (bool): Whether to print per-stage
-                  summary logs.
-
-                - `save_wave_outputs` (bool): Whether to persist per-wave
-                  intermediate outputs.
-
-                - `wave_output_dir` (str | Path | None): Folder for per-wave
-                  outputs when saving is enabled.
-
-                - `save_final_output` (bool): Whether to persist final merged
-                  outputs.
-
-                - `long_output_path` (str | Path | None): Final long CSV path.
-
-                - `wide_output_path` (str | Path | None): Final wide CSV path.
-
-                - `parallel` (bool): Whether to parallelise wave processing
-                  where possible.
-
-                - `max_workers` (int | None): Optional worker cap when
-                  `parallel=True`.
+                - `waves`: wave selection.
+                - `wave_inputs`: raw path mapping per selected wave.
+                - `output_format`: `long`, `wide`, or `long_and_wide`.
+                - `wide_suffix_prefix`: wide suffix prefix.
+                - `show_summary_logs`: summary logging toggle.
+                - `save_wave_outputs`: per-wave output save toggle.
+                - `wave_output_dir`: output directory for per-wave CSVs.
+                - `save_final_output`: final merged output save toggle.
+                - `long_output_path`: final long CSV path.
+                - `wide_output_path`: final wide CSV path.
+                - `parallel`: multi-wave parallel execution toggle.
+                - `max_workers`: optional worker cap for parallel execution.
 
         Returns:
             PrepareMCSByLEAP: The fitted preset instance.
@@ -185,20 +114,23 @@ class PrepareMCSByLEAP(DataPreparationTool):
 
     @beartype
     def prepare(self, **kwargs: Any) -> preset_pipeline.PipelineRunResult:
-        """Execute the preset pipeline.
+        """Execute the preparation pipeline.
+
+        Config resolution order:
+        1. `config` passed in `kwargs`
+        2. other `kwargs` converted via `build_config(...)`
+        3. config previously stored by `fit(...)`
 
         Args:
-            **kwargs (Any): Either:
-
-                - `config` (`PrepareMCSByLEAPPipelineConfig`), or
-
-                - the same configuration keys accepted by `fit(...)`.
-                If kwargs are omitted, the method reuses the configuration
-                previously stored by `fit(...)`.
+            **kwargs: Optional `config` plus any config override keys accepted
+                by `build_config(...)`.
+                `config` should be a `PrepareMCSByLEAPPipelineConfig` instance.
 
         Returns:
-            preset_pipeline.PipelineRunResult: Typed result payload containing
-            per-wave outputs, merged outputs, and run summary metadata.
+            preset_pipeline.PipelineRunResult: Full pipeline run payload.
+
+        Raises:
+            InputValidationError: If no valid config is provided.
         """
 
         config = kwargs.get("config")
@@ -222,39 +154,26 @@ class PrepareMCSByLEAP(DataPreparationTool):
         self,
         **kwargs: Any,
     ) -> preset_pipeline.PrepareMCSByLEAPPipelineConfig:
-        """Build one typed pipeline configuration from free-form kwargs.
+        """Build a validated `PrepareMCSByLEAPPipelineConfig` from kwargs.
 
         Args:
-            **kwargs (Any): Configuration keys:
-
-                - `waves` (str | Sequence[str]): Wave selector.
-
-                - `wave_inputs` (Mapping[str, str | Path] | Sequence[...]):
-                  Raw input root per wave.
-
-                - `output_format` (str): `long`, `wide`, or `long_and_wide`.
-
-                - `wide_suffix_prefix` (str | None): Prefix before wave suffix.
-
-                - `show_summary_logs` (bool): Toggle summary logging.
-
-                - `save_wave_outputs` (bool): Toggle per-wave file writing.
-
-                - `wave_output_dir` (str | Path | None): Per-wave output folder.
-
-                - `save_final_output` (bool): Toggle final output writing.
-
-                - `long_output_path` (str | Path | None): Long output path.
-
-                - `wide_output_path` (str | Path | None): Wide output path.
-
-                - `parallel` (bool): Toggle parallel wave execution.
-
-                - `max_workers` (int | None): Parallel worker cap.
+            **kwargs: Runtime overrides. Expected keys:
+                
+                - `waves`: selects waves (`ALL` or `W1,W2,...`).
+                - `wave_inputs`: maps each selected wave to a raw directory.
+                - `output_format`: chooses `long`, `wide`, or `long_and_wide`.
+                - `wide_suffix_prefix`: prefix before wide wave suffix token.
+                - `save_wave_outputs`: enables per-wave output persistence.
+                - `wave_output_dir`: target directory for per-wave outputs.
+                - `save_final_output`: enables final merged output write.
+                - `long_output_path`: destination for final long output.
+                - `wide_output_path`: destination for final wide output.
+                - `show_summary_logs`: toggles terminal summary logs.
+                - `parallel`: enables multi-wave parallel execution.
+                - `max_workers`: optional worker cap when parallel is enabled.
 
         Returns:
-            preset_pipeline.PrepareMCSByLEAPPipelineConfig: Fully validated
-            configuration object used by the pipeline runner.
+            preset_pipeline.PrepareMCSByLEAPPipelineConfig: Validated config.
         """
 
         profile = self.profile()

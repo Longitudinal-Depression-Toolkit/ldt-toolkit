@@ -170,19 +170,86 @@
             "hint": "Comma-separated list or `auto` for all except target."
           },
           {
+            "key": "feature_groups_mode",
+            "label": "Feature group mode",
+            "type": "enum",
+            "required": true,
+            "default": "manual",
+            "options": [
+              {
+                "label": "Manual",
+                "value": "manual"
+              },
+              {
+                "label": "Preset",
+                "value": "preset"
+              },
+              {
+                "label": "Infer from suffix",
+                "value": "suffix"
+              }
+            ]
+          },
+          {
             "key": "feature_groups",
             "label": "Feature groups",
             "type": "string",
             "required": true,
-            "hint": "Semicolon-separated groups; each group comma-separated."
+            "hint": "Nested list like `[[0,1,2],[3,4,5]]` or semicolon-separated groups like `a,b,c;d,e,f`.",
+            "when": {
+              "field": "feature_groups_mode",
+              "equals": "manual"
+            }
+          },
+          {
+            "key": "feature_groups_preset",
+            "label": "Feature group preset",
+            "type": "string",
+            "required": true,
+            "hint": "scikit-longitudinal preset name, e.g. `elsa`.",
+            "when": {
+              "field": "feature_groups_mode",
+              "equals": "preset"
+            }
+          },
+          {
+            "key": "feature_groups_suffix",
+            "label": "Feature group suffix",
+            "type": "string",
+            "required": true,
+            "hint": "Literal suffix before the wave number, e.g. `_w` for `mood_w1`, `mood_w2`.",
+            "when": {
+              "field": "feature_groups_mode",
+              "equals": "suffix"
+            }
+          },
+          {
+            "key": "non_longitudinal_mode",
+            "label": "Non-longitudinal feature mode",
+            "type": "enum",
+            "required": true,
+            "default": "auto",
+            "options": [
+              {
+                "label": "Auto",
+                "value": "auto"
+              },
+              {
+                "label": "Manual",
+                "value": "manual"
+              }
+            ]
           },
           {
             "key": "non_longitudinal_features",
             "label": "Non-longitudinal features",
             "type": "string",
-            "required": true,
-            "default": "auto",
-            "hint": "Comma-separated, `none`, or `auto`."
+            "required": false,
+            "hint": "JSON like `[6]` or CSV names/indices. Use `none` or leave blank for no manual extras.",
+            "when": {
+              "field": "non_longitudinal_mode",
+              "equals": "manual"
+            }
           },
           {
             "key": "estimator_key",
@@ -407,17 +474,86 @@
             "default": "auto"
           },
           {
+            "key": "feature_groups_mode",
+            "label": "Feature group mode",
+            "type": "enum",
+            "required": true,
+            "default": "manual",
+            "options": [
+              {
+                "label": "Manual",
+                "value": "manual"
+              },
+              {
+                "label": "Preset",
+                "value": "preset"
+              },
+              {
+                "label": "Infer from suffix",
+                "value": "suffix"
+              }
+            ]
+          },
+          {
             "key": "feature_groups",
             "label": "Feature groups",
             "type": "string",
-            "required": true
+            "required": true,
+            "hint": "Nested list like `[[0,1,2],[3,4,5]]` or semicolon-separated groups like `a,b,c;d,e,f`.",
+            "when": {
+              "field": "feature_groups_mode",
+              "equals": "manual"
+            }
+          },
+          {
+            "key": "feature_groups_preset",
+            "label": "Feature group preset",
+            "type": "string",
+            "required": true,
+            "hint": "scikit-longitudinal preset name, e.g. `elsa`.",
+            "when": {
+              "field": "feature_groups_mode",
+              "equals": "preset"
+            }
+          },
+          {
+            "key": "feature_groups_suffix",
+            "label": "Feature group suffix",
+            "type": "string",
+            "required": true,
+            "hint": "Literal suffix before the wave number, e.g. `_w` for `mood_w1`, `mood_w2`.",
+            "when": {
+              "field": "feature_groups_mode",
+              "equals": "suffix"
+            }
+          },
+          {
+            "key": "non_longitudinal_mode",
+            "label": "Non-longitudinal feature mode",
+            "type": "enum",
+            "required": true,
+            "default": "auto",
+            "options": [
+              {
+                "label": "Auto",
+                "value": "auto"
+              },
+              {
+                "label": "Manual",
+                "value": "manual"
+              }
+            ]
           },
           {
             "key": "non_longitudinal_features",
             "label": "Non-longitudinal features",
             "type": "string",
-            "required": true,
-            "default": "auto"
+            "required": false,
+            "hint": "JSON like `[6]` or CSV names/indices. Use `none` or leave blank for no manual extras.",
+            "when": {
+              "field": "non_longitudinal_mode",
+              "equals": "manual"
+            }
           },
           {
             "key": "excluded_estimators",
@@ -548,17 +684,86 @@
             "default": "auto"
           },
           {
+            "key": "feature_groups_mode",
+            "label": "Feature group mode",
+            "type": "enum",
+            "required": true,
+            "default": "manual",
+            "options": [
+              {
+                "label": "Manual",
+                "value": "manual"
+              },
+              {
+                "label": "Preset",
+                "value": "preset"
+              },
+              {
+                "label": "Infer from suffix",
+                "value": "suffix"
+              }
+            ]
+          },
+          {
             "key": "feature_groups",
             "label": "Feature groups",
             "type": "string",
-            "required": true
+            "required": true,
+            "hint": "Nested list like `[[0,1,2],[3,4,5]]` or semicolon-separated groups like `a,b,c;d,e,f`.",
+            "when": {
+              "field": "feature_groups_mode",
+              "equals": "manual"
+            }
+          },
+          {
+            "key": "feature_groups_preset",
+            "label": "Feature group preset",
+            "type": "string",
+            "required": true,
+            "hint": "scikit-longitudinal preset name, e.g. `elsa`.",
+            "when": {
+              "field": "feature_groups_mode",
+              "equals": "preset"
+            }
+          },
+          {
+            "key": "feature_groups_suffix",
+            "label": "Feature group suffix",
+            "type": "string",
+            "required": true,
+            "hint": "Literal suffix before the wave number, e.g. `_w` for `mood_w1`, `mood_w2`.",
+            "when": {
+              "field": "feature_groups_mode",
+              "equals": "suffix"
+            }
+          },
+          {
+            "key": "non_longitudinal_mode",
+            "label": "Non-longitudinal feature mode",
+            "type": "enum",
+            "required": true,
+            "default": "auto",
+            "options": [
+              {
+                "label": "Auto",
+                "value": "auto"
+              },
+              {
+                "label": "Manual",
+                "value": "manual"
+              }
+            ]
           },
           {
             "key": "non_longitudinal_features",
             "label": "Non-longitudinal features",
             "type": "string",
-            "required": true,
-            "default": "auto"
+            "required": false,
+            "hint": "JSON like `[6]` or CSV names/indices. Use `none` or leave blank for no manual extras.",
+            "when": {
+              "field": "non_longitudinal_mode",
+              "equals": "manual"
+            }
           },
           {
             "key": "excluded_estimators",

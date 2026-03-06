@@ -227,6 +227,11 @@
     opacity: 1;
 }
 
+/* Keep Material's built-in code copy button and hide plugin duplicate. */
+.md-typeset .copy-to-llm-code {
+    display: none !important;
+}
+
 [data-md-color-scheme="slate"] .md-sidebar--primary,
 [data-md-color-scheme="slate"] .md-nav--primary,
 [data-md-color-scheme="slate"] .md-sidebar--primary .md-nav,
@@ -427,5 +432,248 @@
 }
 
 body.image-zoom-open {
+    overflow: hidden;
+}
+
+.md-typeset .mcs-hero {
+    margin: 0.85rem 0 1.3rem;
+    padding: 1rem 1.05rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(222, 162, 194, 0.35);
+    background:
+        linear-gradient(120deg, rgba(222, 162, 194, 0.11), rgba(37, 33, 33, 0.16)),
+        rgba(255, 255, 255, 0.01);
+}
+
+[data-md-color-scheme="scikit_light"] .md-typeset .mcs-hero {
+    border-color: rgba(37, 33, 33, 0.2);
+    background:
+        linear-gradient(120deg, rgba(222, 162, 194, 0.2), rgba(255, 246, 235, 0.8)),
+        #fffdf8;
+}
+
+.md-typeset .mcs-hero p:last-child,
+.md-typeset .mcs-hero ul:last-child {
+    margin-bottom: 0;
+}
+
+.md-typeset .mcs-flow-cards {
+    margin-top: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.md-typeset .mcs-flow-cards > ul > li {
+    border: 1px solid rgba(222, 162, 194, 0.24);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+
+[data-md-color-scheme="scikit_light"] .md-typeset .mcs-flow-cards > ul > li {
+    border-color: rgba(37, 33, 33, 0.14);
+    box-shadow: 0 10px 26px rgba(37, 33, 33, 0.09);
+}
+
+.md-typeset .mcs-stage-viz {
+    margin-top: 0.75rem;
+    margin-bottom: 1.2rem;
+}
+
+.md-typeset .mcs-stage-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem;
+}
+
+.md-typeset .mcs-stage-card {
+    appearance: none;
+    border: 1px solid rgba(222, 162, 194, 0.28);
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.01);
+    color: inherit;
+    padding: 0.9rem 0.95rem;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.md-typeset .mcs-stage-card:hover,
+.md-typeset .mcs-stage-card:focus-visible {
+    transform: translateY(-1px);
+    border-color: rgba(222, 162, 194, 0.72);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+    outline: none;
+}
+
+.md-typeset .mcs-stage-card.is-active {
+    border-color: rgba(222, 162, 194, 0.95);
+    box-shadow: 0 14px 30px rgba(222, 162, 194, 0.22);
+}
+
+.md-typeset .mcs-stage-card__title {
+    font-weight: 700;
+    font-size: 0.99rem;
+    line-height: 1.35;
+}
+
+.md-typeset .mcs-stage-card__desc {
+    opacity: 0.93;
+    font-size: 0.86rem;
+    line-height: 1.42;
+}
+
+.md-typeset .mcs-stage-card code {
+    width: fit-content;
+}
+
+.md-typeset .mcs-stage-hint {
+    margin-top: 0.85rem;
+    margin-bottom: 0.95rem;
+}
+
+.md-typeset .mcs-stage-panel {
+    margin-top: 1rem;
+}
+
+.md-typeset .mcs-stage-diagram {
+    min-height: 200px;
+}
+
+.md-typeset .mcs-stage-diagram svg {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+.md-typeset .mcs-stage-diagram-error {
+    margin: 0;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid rgba(255, 125, 125, 0.4);
+    border-radius: 0.5rem;
+    background: rgba(255, 125, 125, 0.08);
+    color: #ffd7d7;
+    white-space: pre-wrap;
+}
+
+[data-md-color-scheme="scikit_light"] .md-typeset .mcs-stage-diagram-error {
+    border-color: rgba(165, 40, 40, 0.28);
+    background: rgba(165, 40, 40, 0.06);
+    color: #6f1616;
+}
+
+@media (max-width: 900px) {
+    .md-typeset .mcs-stage-card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+[data-md-color-scheme="scikit_light"] .md-typeset .mcs-stage-card {
+    border-color: rgba(37, 33, 33, 0.14);
+    background: #fffdf8;
+    box-shadow: 0 10px 24px rgba(37, 33, 33, 0.09);
+}
+
+[data-md-color-scheme="scikit_light"] .md-typeset .mcs-stage-card:hover,
+[data-md-color-scheme="scikit_light"] .md-typeset .mcs-stage-card:focus-visible {
+    border-color: rgba(222, 162, 194, 0.92);
+    box-shadow: 0 14px 30px rgba(37, 33, 33, 0.14);
+}
+
+[data-md-color-scheme="scikit_light"] .md-typeset .mcs-stage-card.is-active {
+    border-color: rgba(222, 162, 194, 1);
+    box-shadow: 0 16px 34px rgba(222, 162, 194, 0.28);
+}
+
+.md-typeset .mermaid svg {
+    cursor: zoom-in;
+    transition: filter 0.18s ease, transform 0.18s ease;
+}
+
+.md-typeset .mermaid svg:hover,
+.md-typeset .mermaid svg:focus {
+    filter: brightness(1.06);
+}
+
+.md-typeset .mermaid svg:focus-visible {
+    outline: 2px solid rgba(222, 162, 194, 0.85);
+    outline-offset: 4px;
+}
+
+.mermaid-zoom-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10020;
+    padding: 1rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.mermaid-zoom-overlay.is-open {
+    display: flex;
+}
+
+.mermaid-zoom-panel {
+    position: relative;
+    width: min(96vw, 1600px);
+    height: min(94vh, 980px);
+    background: rgba(20, 20, 20, 0.98);
+    border: 1px solid rgba(222, 162, 194, 0.34);
+    border-radius: 12px;
+    box-shadow: 0 24px 68px rgba(0, 0, 0, 0.5);
+    overflow: auto;
+    padding: 2.25rem 0.85rem 0.85rem;
+}
+
+[data-md-color-scheme="scikit_light"] .mermaid-zoom-panel {
+    background: #fffdf9;
+    border-color: rgba(37, 33, 33, 0.2);
+    box-shadow: 0 24px 68px rgba(37, 33, 33, 0.23);
+}
+
+.mermaid-zoom-close {
+    position: absolute;
+    top: 0.45rem;
+    right: 0.6rem;
+    border: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #fff6eb;
+    background: rgba(222, 162, 194, 0.24);
+}
+
+[data-md-color-scheme="scikit_light"] .mermaid-zoom-close {
+    color: #252121;
+    background: rgba(222, 162, 194, 0.45);
+}
+
+.mermaid-zoom-content {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-zoom-content svg {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: calc(94vh - 5rem);
+}
+
+body.mermaid-zoom-open {
     overflow: hidden;
 }

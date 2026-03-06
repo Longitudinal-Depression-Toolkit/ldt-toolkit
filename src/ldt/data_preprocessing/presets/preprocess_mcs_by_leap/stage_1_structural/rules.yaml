@@ -1,0 +1,49 @@
+# Stage 1: structural cleanup and obvious removals.
+# Scope: deterministic drops and profiling before any modelling transformations.
+
+baseline_only_roots_over_time:
+  # Root variables that are conceptually baseline-only (W1), but can still appear as
+  # *_w2..*_w7 columns in wide data due to upstream pivoting.
+  # If those over-time columns are effectively missing, they are dropped.
+  roots:
+    - ADC06E00
+    - AHCSEX00
+    - APDROF00
+    - APILPR00
+    - APLOSA00
+  wave_start: 2
+  wave_end: 7
+  require_all_effectively_missing: true
+
+id_policy:
+  # CHID is the modelling identifier to keep.
+  keep_identifier_columns:
+    - CHID
+  # MCSID/CNUM are secondary identifiers we explicitly remove.
+  remove_identifier_columns:
+    - MCSID
+    - CNUM
+
+target_policy:
+  # Final downstream class target.
+  target_column: EMOTION_w7
+  # History of the same target to remove from predictors.
+  remove_history_columns:
+    - EMOTION_w1
+    - EMOTION_w2
+    - EMOTION_w3
+    - EMOTION_w4
+    - EMOTION_w5
+    - EMOTION_w6
+
+missingness:
+  # Columns with effective_missing_rate > threshold are flagged in the audit table only.
+  # Use `drop_partial_missing_over_threshold: true` if you want to drop them.
+  partial_missing_threshold: 0.60
+  drop_partial_missing_over_threshold: True
+
+  # Drop columns that are 100% effectively missing after sentinel-aware profiling.
+  drop_all_effectively_missing: true
+
+  # Drop columns with only one valid unique value (constant after missing handling).
+  drop_single_unique_valid: true

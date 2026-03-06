@@ -1,8 +1,8 @@
 waves:
   W1:
     features:
-      - canonical: ADHINC00
-        source: ADHINC00
+      - canonical: ADOEDE00
+        source: ADOEDE00
         scope: family_derived
       - canonical: ADROOW00
         source: ADROOW00
@@ -40,29 +40,10 @@ waves:
       - canonical: APWALI00
         source: APWALI00
         scope: parent_interview
-      - canonical: ADC06E00
-        source: ADC06E00
-        scope: cm_derived
-      - canonical: AHCSEX00
-        source: AHCSEX00
-        scope: hhgrid
-      - canonical: APILPR00
-        source: APILPR00
-        scope: parent_interview
-      - canonical: APDROF00
-        source: APDROF00
-        scope: parent_interview
-      - canonical: APLOSA00
-        source: APLOSA00
-        scope: parent_interview
-      - canonical: APDIST9
-        source: APDIST9
-        scope: composite
-
   W2:
     features:
-      - canonical: ADHINC00
-        source: BDHINC00
+      - canonical: ADOEDE00
+        source: BDOEDE00
         scope: family_derived
       - canonical: ADROOW00
         source: BDROOW00
@@ -100,14 +81,14 @@ waves:
       - canonical: APWALI00
         source: BPWALI00
         scope: parent_interview
-      - canonical: BEMOTION
+      - canonical: EMOTION
         source: BEMOTION
         scope: cm_derived
 
   W3:
     features:
-      - canonical: ADHINC00
-        source: ADHINC00
+      - canonical: ADOEDE00
+        source: CDOEDE00
         scope: family_derived
       - canonical: ADROOW00
         source: CDROOW00
@@ -142,14 +123,14 @@ waves:
       - canonical: APWALI00
         source: CPWALI00
         scope: parent_interview
-      - canonical: BEMOTION
+      - canonical: EMOTION
         source: CEMOTION
         scope: cm_derived
 
   W4:
     features:
-      - canonical: ADHINC00
-        source: ADHINC00
+      - canonical: ADOEDE00
+        source: DDOEDE00
         scope: family_derived
       - canonical: ADROOW00
         source: DPROOW00
@@ -184,13 +165,13 @@ waves:
       - canonical: APWALI00
         source: DPWALI00
         scope: parent_interview
-      - canonical: BEMOTION
+      - canonical: EMOTION
         source: DDEMOTION
         scope: cm_derived
 
   W5:
     features:
-      - canonical: ADHINC00
+      - canonical: ADOEDE00
         source: EOEDE000
         scope: family_derived
       - canonical: ADROOW00
@@ -223,13 +204,13 @@ waves:
       - canonical: APWALI00
         source: EPWALI00
         scope: parent_interview
-      - canonical: BEMOTION
+      - canonical: EMOTION
         source: EEMOTION
         scope: cm_derived
 
   W6:
     features:
-      - canonical: ADHINC00
+      - canonical: ADOEDE00
         source: FOEDE000
         scope: family_derived
       - canonical: ADROOW00
@@ -262,7 +243,7 @@ waves:
       - canonical: APWALI00
         source: FPSATN00
         scope: parent_interview
-      - canonical: BEMOTION
+      - canonical: EMOTION
         source: FEMOTION
         scope: cm_derived
 
@@ -286,6 +267,6 @@ waves:
       - canonical: APDEAN00
         source: GPDEAN00
         scope: parent_interview
-      - canonical: BEMOTION
+      - canonical: EMOTION
         source: GEMOTION
         scope: cm_derived

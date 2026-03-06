@@ -1,0 +1,15 @@
+general:
+  show_summary_logs: true
+  save_audit_tables: true
+
+output:
+  default_output_csv: data/processed/MCS/mcs_longitudinal_wide_preprocessed.csv
+  default_audit_output_dir: data/processed/MCS/preprocess_logs
+
+stage_configs:
+  stage_0_target_rows: stage_0_target_rows/policy.yaml
+  stage_1_structural: stage_1_structural/rules.yaml
+  stage_2_sentinels: stage_2_sentinels/sentinels.yaml
+  stage_3_modelling_policy: stage_3_modelling_policy/policy.yaml
+  stage_4_finalisation: stage_4_finalisation/policy.yaml
+  stage_5_encoding_policy: stage_5_encoding_policy/policy.yaml

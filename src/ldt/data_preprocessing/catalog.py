@@ -141,6 +141,21 @@ def list_trajectories_viz_techniques() -> list[dict[str, Any]]:
     return list_tool_techniques("trajectories_viz")
 
 
+def list_data_preprocessing_presets() -> list[dict[str, Any]]:
+    """Return data-preprocessing reproducibility presets metadata.
+
+    Returns:
+        list[dict[str, Any]]: List of parsed values.
+    """
+
+    catalog = load_data_preprocessing_catalog()
+    return section_dict_items(
+        catalog,
+        section_key="presets_reproducibility",
+        list_key="items",
+    )
+
+
 def list_tool_techniques(section_key: str) -> list[dict[str, Any]]:
     """Return techniques for one data-preprocessing catalog section.
 

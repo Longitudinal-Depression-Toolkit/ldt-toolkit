@@ -12,7 +12,7 @@ from ldt import data_preparation, data_preprocessing, machine_learning
 # or import tools directly
 from ldt.data_preparation import TrendPatterns
 from ldt.data_preprocessing import BuildTrajectories
-from ldt.machine_learning import StandardMachineLearning
+from ldt.machine_learning import LongitudinalMachineLearning, StandardMachineLearning
 ```
 
 ## B) Getting Started Example 1 - Generate Synthetic Data (Multi-Technique)
@@ -135,10 +135,9 @@ long_df.to_csv(raw_long, index=False)
 
 CleanDataset().fit_preprocess(input_path=raw_long, output_path=clean_long)
 MissingImputation().fit_preprocess(
-    technique="mice_imputation",
+    technique="median_imputation",
     input_path=clean_long,
     output_path=imputed_long,
-    random_state=42,
 )
 BuildTrajectories().fit_preprocess(
     mode="from_scratch",
@@ -182,3 +181,37 @@ ml_result = StandardMachineLearning().fit_predict(
 )
 print(ml_result["mean_score"], ml_result["report_path"])
 ```
+
+## E) Getting Started Example 4 - Longitudinal ML with Suffix-Inferred Feature Groups
+
+API references: [`LongitudinalMachineLearning`](../api/longitudinal-machine-learning.md)
+
+```python
+from pathlib import Path
+
+from ldt.machine_learning import LongitudinalMachineLearning
+
+root = Path("/path/to/your/project")
+wide_dataset = root / "data/model_ready_longitudinal.csv"
+
+result = LongitudinalMachineLearning().fit_predict(
+    technique="run_experiment",
+    input_path=wide_dataset,
+    target_column="depression_status",
+    feature_columns="mood_w1,mood_w2,mood_w3,sleep_w1,sleep_w2,sleep_w3,sex",
+    feature_groups_mode="suffix",
+    feature_groups_suffix="_w",
+    non_longitudinal_mode="auto",
+    estimator_key="merwav_time_plus__lexico_random_forest",
+    metric_keys="accuracy,f1_macro",
+    cv_folds=5,
+    validation_split="none",
+    random_seed=42,
+)
+print(result["mean_score"], result["report_path"])
+```
+
+Manual and preset alternatives also work:
+
+- Manual groups: `feature_groups_mode="manual", feature_groups="[[0,1,2],[3,4,5]]"` or `feature_groups="mood_w1,mood_w2,mood_w3;sleep_w1,sleep_w2,sleep_w3"`
+- scikit-longitudinal preset: `feature_groups_mode="preset", feature_groups_preset="elsa"`

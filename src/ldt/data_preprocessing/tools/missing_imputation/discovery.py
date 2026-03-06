@@ -19,6 +19,8 @@ def discover_missing_imputers() -> dict[str, type[MissingImputer]]:
     for module_info in pkgutil.iter_modules(package.__path__):
         module = importlib.import_module(f"{package.__name__}.{module_info.name}")
         for _, obj in inspect.getmembers(module, inspect.isclass):
+            if obj.__module__ != module.__name__:
+                continue
             if issubclass(obj, MissingImputer) and obj is not MissingImputer:
                 label = resolve_component_metadata(obj).name
                 imputers[label] = obj
