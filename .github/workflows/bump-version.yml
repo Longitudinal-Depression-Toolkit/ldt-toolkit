@@ -17,13 +17,30 @@ jobs:
   bump:
     runs-on: ubuntu-latest
     permissions:
-      actions: write
-      contents: write
+      contents: read
     steps:
+      - name: Ensure workflow runs from main
+        run: |
+          if [ "${GITHUB_REF_NAME}" != "main" ]; then
+            echo "::error::Run this workflow from the main branch."
+            exit 1
+          fi
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID || secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ldt-toolkit
+
       - name: Checkout the code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: main
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -66,17 +83,13 @@ jobs:
         env:
           BUMP_TYPE: ${{ inputs.bump-type }}
 
-      - name: Push commit and tags
-        run: git push origin HEAD --follow-tags
-
-      - name: Trigger Publish to PyPI workflow
+      - name: Push commit to main
         if: steps.bump.outputs.bumped == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh workflow run publish-pypi.yml \
-            --ref main \
-            -f release-version="${{ steps.bump.outputs.current-version }}"
+        run: git push origin HEAD:main
+
+      - name: Push release tag
+        if: steps.bump.outputs.bumped == 'true'
+        run: git push origin "v${{ steps.bump.outputs.current-version }}"
 
       - name: Check
         if: steps.bump.outputs.bumped == 'true'
