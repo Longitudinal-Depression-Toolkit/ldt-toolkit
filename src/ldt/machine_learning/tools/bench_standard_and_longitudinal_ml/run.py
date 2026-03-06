@@ -78,6 +78,11 @@ class BenchStandardAndLongitudinalML(MachineLearningTool):
     | `list_metrics` | Returns supported scoring metrics. |
     | `run_benchmark` | Trains/evaluates included estimators and writes unified rankings. |
 
+    Longitudinal feature vectors use the same explicit input modes as
+    `LongitudinalMachineLearning`: `feature_groups_mode` can be `manual`,
+    `preset`, or `suffix`, and `non_longitudinal_mode` can be `auto` or
+    `manual`.
+
     Examples:
         ```python
         from ldt.machine_learning import BenchStandardAndLongitudinalML
@@ -88,8 +93,9 @@ class BenchStandardAndLongitudinalML(MachineLearningTool):
             input_path="./dataset.csv",
             target_column="depression_status",
             feature_columns="mood_w1,mood_w2,mood_w3,sleep_w1,sleep_w2,sleep_w3,sex",
-            feature_groups="[[0,1,2],[3,4,5]]",
-            non_longitudinal_features="[6]",
+            feature_groups_mode="suffix",
+            feature_groups_suffix="_w",
+            non_longitudinal_mode="auto",
             excluded_estimators="",
             metric_keys="accuracy,f1_macro",
             cv_folds=5,
@@ -123,7 +129,9 @@ class BenchStandardAndLongitudinalML(MachineLearningTool):
                 - `params` (Mapping[str, Any] | None): Optional parameter object.
                 - for `run_benchmark`, expected keys include:
                   `input_path`, `target_column`, `feature_columns`,
-                  `feature_groups`, `non_longitudinal_features`,
+                  `feature_groups`, `feature_groups_mode`,
+                  `feature_groups_preset`, `feature_groups_suffix`,
+                  `non_longitudinal_features`, `non_longitudinal_mode`,
                   `excluded_estimators`, `metric_keys`, `cv_folds`,
                   `validation_split`, `random_seed`, `output_root_dir`,
                   `silent_training_output`, `generate_notebook`,
@@ -171,7 +179,9 @@ class BenchStandardAndLongitudinalML(MachineLearningTool):
                 `technique` and optional `params`, or direct shorthand keys for
                 `run_benchmark`:
                 `input_path`, `target_column`, `feature_columns`,
-                `feature_groups`, `non_longitudinal_features`,
+                `feature_groups`, `feature_groups_mode`,
+                `feature_groups_preset`, `feature_groups_suffix`,
+                `non_longitudinal_features`, `non_longitudinal_mode`,
                 `excluded_estimators`, `metric_keys`, `cv_folds`,
                 `validation_split`, `random_seed`, `output_root_dir`,
                 `silent_training_output`, `generate_notebook`,
@@ -238,7 +248,9 @@ def run_bench_standard_and_longitudinal_ml_tool(
         params (Mapping[str, Any]): Technique parameters. For `run_benchmark`,
             expected keys include:
             `input_path`, `target_column`, `feature_columns`, `feature_groups`,
-            `non_longitudinal_features`, `excluded_estimators`, `metric_keys`,
+            `feature_groups_mode`, `feature_groups_preset`,
+            `feature_groups_suffix`, `non_longitudinal_features`,
+            `non_longitudinal_mode`, `excluded_estimators`, `metric_keys`,
             `cv_folds`, `validation_split`, `random_seed`; optional keys:
             `output_root_dir`, `silent_training_output`, `generate_notebook`,
             `notebook_output_path`, `include_pipeline_profiler_at_end`, and
@@ -354,8 +366,12 @@ def _run_bench_standard_and_longitudinal_ml_tool(
 
     feature_vectors = LongitudinalFeatureInputPrompter.resolve_feature_vectors(
         feature_columns=feature_columns,
-        feature_groups_raw=as_required_string(resolved, "feature_groups"),
-        non_longitudinal_raw=as_required_string(resolved, "non_longitudinal_features"),
+        feature_groups_raw=resolved.get("feature_groups"),
+        non_longitudinal_raw=resolved.get("non_longitudinal_features"),
+        feature_groups_mode=as_optional_string(resolved, "feature_groups_mode"),
+        feature_groups_preset=as_optional_string(resolved, "feature_groups_preset"),
+        feature_groups_suffix=as_optional_string(resolved, "feature_groups_suffix"),
+        non_longitudinal_mode=as_optional_string(resolved, "non_longitudinal_mode"),
     )
 
     modelling_data = dataset[[*feature_columns, target_column]].dropna(

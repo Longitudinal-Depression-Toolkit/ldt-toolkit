@@ -142,6 +142,21 @@ class LongitudinalMachineLearning(MachineLearningTool):
     | `list_metrics` | Returns supported scoring metrics. |
     | `run_experiment` | Trains/evaluates one selected longitudinal estimator. |
 
+    Feature-group inputs:
+
+    | Mode | Parameters | Example |
+    | --- | --- | --- |
+    | Manual | `feature_groups_mode="manual"`, `feature_groups` | `[[0, 1, 2], [3, 4, 5]]` or `mood_w1,mood_w2,mood_w3;sleep_w1,sleep_w2,sleep_w3` |
+    | Preset | `feature_groups_mode="preset"`, `feature_groups_preset` | `elsa` |
+    | Suffix inference | `feature_groups_mode="suffix"`, `feature_groups_suffix` | `_w` for columns like `mood_w1`, `mood_w2` |
+
+    Non-longitudinal inputs:
+
+    - `non_longitudinal_mode="auto"` selects every feature not already used in `feature_groups`.
+    - `non_longitudinal_mode="manual"` lets you pass `non_longitudinal_features`
+      as JSON or CSV names/indices.
+    - Both mode fields are explicit inputs for this API.
+
     Examples:
         ```python
         from ldt.machine_learning import LongitudinalMachineLearning
@@ -152,8 +167,9 @@ class LongitudinalMachineLearning(MachineLearningTool):
             input_path="./data/millennium_longitudinal.csv",
             target_column="depression_status",
             feature_columns="mood_w1,mood_w2,mood_w3,sleep_w1,sleep_w2,sleep_w3,sex",
-            feature_groups="[[0,1,2],[3,4,5]]",
-            non_longitudinal_features="[6]",
+            feature_groups_mode="suffix",
+            feature_groups_suffix="_w",
+            non_longitudinal_mode="auto",
             estimator_key="merwav_time_plus__lexico_random_forest",
             metric_keys="accuracy,f1_macro",
             cv_folds=5,
@@ -196,7 +212,9 @@ class LongitudinalMachineLearning(MachineLearningTool):
                 - `params` (Mapping[str, Any] | None): Optional parameter object.
                 - for `run_experiment`, expected keys include:
                   `input_path`, `target_column`, `feature_columns`,
-                  `feature_groups`, `non_longitudinal_features`,
+                  `feature_groups`, `feature_groups_mode`,
+                  `feature_groups_preset`, `feature_groups_suffix`,
+                  `non_longitudinal_features`, `non_longitudinal_mode`,
                   `estimator_key`, `metric_keys`, `cv_folds`,
                   `validation_split`, `random_seed`, `output_dir`, and
                   `silent_training_output`.
@@ -241,7 +259,9 @@ class LongitudinalMachineLearning(MachineLearningTool):
                 `technique` and optional `params`, or direct shorthand keys for
                 `run_experiment`:
                 `input_path`, `target_column`, `feature_columns`,
-                `feature_groups`, `non_longitudinal_features`,
+                `feature_groups`, `feature_groups_mode`,
+                `feature_groups_preset`, `feature_groups_suffix`,
+                `non_longitudinal_features`, `non_longitudinal_mode`,
                 `estimator_key`, `metric_keys`, `cv_folds`,
                 `validation_split`, `random_seed`, `output_dir`,
                 and `silent_training_output`.
@@ -305,7 +325,9 @@ def run_longitudinal_machine_learning_tool(
         params (Mapping[str, Any]): Technique parameters. For `run_experiment`,
             expected keys include:
             `input_path`, `target_column`, `feature_columns`, `feature_groups`,
-            `non_longitudinal_features`, `estimator_key`, `metric_keys`,
+            `feature_groups_mode`, `feature_groups_preset`,
+            `feature_groups_suffix`, `non_longitudinal_features`,
+            `non_longitudinal_mode`, `estimator_key`, `metric_keys`,
             `cv_folds`, `validation_split`, `random_seed`; optional keys:
             `output_dir` and `silent_training_output`.
 
@@ -408,8 +430,12 @@ def _run_longitudinal_machine_learning_tool(
 
     feature_vectors = LongitudinalFeatureInputPrompter.resolve_feature_vectors(
         feature_columns=feature_columns,
-        feature_groups_raw=as_required_string(resolved, "feature_groups"),
-        non_longitudinal_raw=as_required_string(resolved, "non_longitudinal_features"),
+        feature_groups_raw=resolved.get("feature_groups"),
+        non_longitudinal_raw=resolved.get("non_longitudinal_features"),
+        feature_groups_mode=as_optional_string(resolved, "feature_groups_mode"),
+        feature_groups_preset=as_optional_string(resolved, "feature_groups_preset"),
+        feature_groups_suffix=as_optional_string(resolved, "feature_groups_suffix"),
+        non_longitudinal_mode=as_optional_string(resolved, "non_longitudinal_mode"),
     )
 
     modelling_data = dataset[[*feature_columns, target_column]].dropna(

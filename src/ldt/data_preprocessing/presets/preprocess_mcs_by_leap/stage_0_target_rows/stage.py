@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from functools import cache
 from pathlib import Path
@@ -12,6 +13,7 @@ from ldt.utils.errors import InputValidationError
 
 _STAGE_DIR = Path(__file__).resolve().parent
 _DEFAULT_CONFIG = _STAGE_DIR / "policy.yaml"
+_WAVE_TARGET_RE = re.compile(r"^(?P<root>.+)_w(?P<wave>\d+)$")
 
 
 @beartype
@@ -77,7 +79,10 @@ def apply_stage_0(
 
     if config.target_column not in data.columns:
         raise InputValidationError(
-            f"Stage 0 target column not found: {config.target_column}"
+            _missing_target_error_message(
+                expected_target=config.target_column,
+                columns=tuple(str(column) for column in data.columns),
+            )
         )
 
     input_rows = int(data.shape[0])
@@ -154,3 +159,56 @@ def _load_yaml(path: Path) -> dict[str, object]:
     if not isinstance(raw, dict):
         raise InputValidationError("Stage-0 config root must be a mapping.")
     return raw
+
+
+@beartype
+def _missing_target_error_message(
+    *,
+    expected_target: str,
+    columns: tuple[str, ...],
+) -> str:
+    message = f"Stage 0 target column not found: {expected_target}"
+    match = _WAVE_TARGET_RE.fullmatch(expected_target.strip())
+    if match is None:
+        return message
+
+    expected_root = match.group("root")
+    expected_wave = match.group("wave")
+    alias_candidates = [
+        column
+        for column in columns
+        if _is_historical_target_alias(
+            column=column,
+            expected_root=expected_root,
+            expected_wave=expected_wave,
+        )
+    ]
+    if not alias_candidates:
+        return message
+
+    aliases = ", ".join(sorted(alias_candidates))
+    return (
+        f"{message}. Found historical-looking target alias columns instead: {aliases}. "
+        "This prepared wide artefact appears stale. Regenerate it with the current "
+        "Prepare MCS by LEAP preset so the canonical target is emitted as "
+        f"`{expected_target}`."
+    )
+
+
+@beartype
+def _is_historical_target_alias(
+    *,
+    column: str,
+    expected_root: str,
+    expected_wave: str,
+) -> bool:
+    match = _WAVE_TARGET_RE.fullmatch(column.strip())
+    if match is None:
+        return False
+    actual_root = match.group("root")
+    actual_wave = match.group("wave")
+    return (
+        actual_wave == expected_wave
+        and actual_root != expected_root
+        and actual_root.endswith(expected_root)
+    )
