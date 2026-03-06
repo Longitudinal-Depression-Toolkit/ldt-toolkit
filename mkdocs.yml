@@ -126,6 +126,7 @@ extra_javascript:
   - javascripts/mcs-visualization.js
   - javascripts/copy-to-llm-scope.js
   - javascripts/search-shortcut.js
+  - javascripts/homepage.js
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 

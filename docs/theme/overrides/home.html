@@ -3,7 +3,7 @@
 {% block tabs %} {{ super() }}
 
 <style>
-    body {
+    body.homepage-page {
         overflow-x: hidden;
     }
 
@@ -135,40 +135,40 @@
         box-shadow: inset 0 -0.5em 0 #dea2c2;
     }
 
-    .homepage {
+    body.homepage-page {
         background: #fff6eb;
         --md-default-bg-color: hsl(33, 100%, 96%);
         --footer-wave-progress: 0;
         --footer-wave-offset-y: 0px;
     }
 
-    .md-typeset a {
+    body.homepage-page .md-typeset a {
         color: #252121;
     }
 
-    .md-content__inner {
+    body.homepage-page .md-content__inner {
         margin-bottom: 0;
         padding: 2.2rem 0;
     }
 
-    .md-content__inner:before {
+    body.homepage-page .md-content__inner:before {
         display: none;
     }
 
-    .md-header {
+    body.homepage-page .md-header {
         position: initial;
     }
 
-    .md-main__inner {
+    body.homepage-page .md-main__inner {
         margin: 0;
     }
 
-    .md-main__inner > .md-content,
-    .md-main__inner > .md-sidebar--secondary {
+    body.homepage-page .md-main__inner > .md-content,
+    body.homepage-page .md-main__inner > .md-sidebar--secondary {
         display: none;
     }
 
-    .md-content__inner h1:first-child {
+    body.homepage-page .md-content__inner h1:first-child {
         display: block;
     }
 
@@ -402,28 +402,28 @@
     }
 
     @media (max-width: 600px) {
-        .md-typeset .headerlink {
+        body.homepage-page .md-typeset .headerlink {
             display: none;
         }
     }
 
     @media screen and (min-width: 60em) {
-        .md-sidebar--secondary {
+        body.homepage-page .md-sidebar--secondary {
             display: none;
         }
     }
 
     @media screen and (min-width: 76.25em) {
-        .md-sidebar--primary {
+        body.homepage-page .md-sidebar--primary {
             display: none;
         }
     }
 
-    .md-button {
+    body.homepage-page .md-button {
         border-radius: 200px !important;
     }
 
-    .md-tabs__link {
+    body.homepage-page .md-tabs__link {
         color: #252121;
     }
 
@@ -440,7 +440,7 @@
     .tx-container,
     .podcast-section,
     .feature-grid,
-    .social-icons-container {
+    .social-icons-stack {
         position: relative;
         z-index: 3;
         transform: translate3d(0, calc(var(--footer-wave-offset-y, 0px) * -1), 0);
@@ -469,25 +469,25 @@
     }
 
     /* Keep rich hero layering by default, but keep search above all homepage layers when open. */
-    body > input[data-md-toggle="search"]:checked ~ .md-header {
+    body.homepage-page > input[data-md-toggle="search"]:checked ~ .md-header {
         position: relative !important;
         z-index: 1200 !important;
     }
 
-    body > input[data-md-toggle="search"]:checked ~ .md-header .md-search__inner,
-    body > input[data-md-toggle="search"]:checked ~ .md-header .md-search__overlay,
-    body > input[data-md-toggle="search"]:checked ~ .md-header .md-search__form {
+    body.homepage-page > input[data-md-toggle="search"]:checked ~ .md-header .md-search__inner,
+    body.homepage-page > input[data-md-toggle="search"]:checked ~ .md-header .md-search__overlay,
+    body.homepage-page > input[data-md-toggle="search"]:checked ~ .md-header .md-search__form {
         z-index: 1201 !important;
     }
 
-    body > input[data-md-toggle="search"]:checked ~ .md-header .md-search__output {
+    body.homepage-page > input[data-md-toggle="search"]:checked ~ .md-header .md-search__output {
         z-index: 1202 !important;
     }
 
     html[data-md-state~="search"] .tx-container,
     html[data-md-state~="search"] .podcast-section,
     html[data-md-state~="search"] .feature-grid,
-    html[data-md-state~="search"] .social-icons-container,
+    html[data-md-state~="search"] .social-icons-stack,
     html[data-md-state~="search"] .tx-landing__image,
     html[data-md-state~="search"] .tx-landing__media-shell,
     html[data-md-state~="search"] .tx-landing__media-wrap,
@@ -495,19 +495,19 @@
     body[data-md-state~="search"] .tx-container,
     body[data-md-state~="search"] .podcast-section,
     body[data-md-state~="search"] .feature-grid,
-    body[data-md-state~="search"] .social-icons-container,
+    body[data-md-state~="search"] .social-icons-stack,
     body[data-md-state~="search"] .tx-landing__image,
     body[data-md-state~="search"] .tx-landing__media-shell,
     body[data-md-state~="search"] .tx-landing__media-wrap,
     body[data-md-state~="search"] .tx-landing__media-shell.is-expanded .tx-landing__media-wrap,
-    body > input[data-md-toggle="search"]:checked ~ .md-container .tx-container,
-    body > input[data-md-toggle="search"]:checked ~ .md-container .podcast-section,
-    body > input[data-md-toggle="search"]:checked ~ .md-container .feature-grid,
-    body > input[data-md-toggle="search"]:checked ~ .md-container .social-icons-container,
-    body > input[data-md-toggle="search"]:checked ~ .md-container .tx-landing__image,
-    body > input[data-md-toggle="search"]:checked ~ .md-container .tx-landing__media-shell,
-    body > input[data-md-toggle="search"]:checked ~ .md-container .tx-landing__media-wrap,
-    body > input[data-md-toggle="search"]:checked ~ .md-container .tx-landing__media-shell.is-expanded .tx-landing__media-wrap {
+    body.homepage-page > input[data-md-toggle="search"]:checked ~ .md-container .tx-container,
+    body.homepage-page > input[data-md-toggle="search"]:checked ~ .md-container .podcast-section,
+    body.homepage-page > input[data-md-toggle="search"]:checked ~ .md-container .feature-grid,
+    body.homepage-page > input[data-md-toggle="search"]:checked ~ .md-container .social-icons-stack,
+    body.homepage-page > input[data-md-toggle="search"]:checked ~ .md-container .tx-landing__image,
+    body.homepage-page > input[data-md-toggle="search"]:checked ~ .md-container .tx-landing__media-shell,
+    body.homepage-page > input[data-md-toggle="search"]:checked ~ .md-container .tx-landing__media-wrap,
+    body.homepage-page > input[data-md-toggle="search"]:checked ~ .md-container .tx-landing__media-shell.is-expanded .tx-landing__media-wrap {
         z-index: 1 !important;
     }
 
@@ -664,7 +664,7 @@
         }
     }
 
-    .md-footer {
+    body.homepage-page .md-footer {
         display: none;
     }
 
@@ -675,14 +675,16 @@
         align-items: center;
         justify-content: center;
         padding: 0 2rem 3.25rem;
-        margin-top: 3.5rem;
+        margin-top: 0;
+        min-height: clamp(12rem, 24vw, 19rem);
         width: 100%;
         box-sizing: border-box;
     }
 
     @media (min-width: 640px) {
         .footer {
-            padding-bottom: 6rem;
+            min-height: clamp(13rem, 22vw, 20rem);
+            padding-bottom: clamp(5rem, 8vw, 7rem);
         }
     }
 
@@ -716,14 +718,24 @@
 
     @media (min-width: 600px) {
         .footer-beyond-overlay {
-            height: 300px;
+            height: 240px;
         }
     }
 
     @media (min-width: 1000px) {
         .footer-beyond-overlay {
-            height: 65vh;
+            height: 46vh;
         }
+    }
+
+    .social-icons-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: fit-content;
+        margin: clamp(1.25rem, 4vh, 2rem) auto clamp(4.5rem, 11vh, 7rem);
+        position: relative;
+        z-index: 4;
     }
 
     .social-icons-container {
@@ -731,7 +743,27 @@
         align-items: center;
         justify-content: center;
         gap: 0.75rem;
-        margin-bottom: clamp(2rem, 5.5vh, 4.5rem);
+        width: fit-content;
+        margin: 0 auto;
+    }
+
+    .social-scroll-hint {
+        margin: 0.65rem 0 0;
+        color: rgba(67, 20, 7, 0.38);
+        font-size: 0.74rem;
+        line-height: 1rem;
+        font-weight: 700;
+        letter-spacing: 0;
+        user-select: none;
+        white-space: nowrap;
+        opacity: 0.9;
+        transition: color 0.28s ease, opacity 0.28s ease;
+    }
+
+    .social-icons-stack:hover .social-scroll-hint,
+    .social-icons-stack:focus-within .social-scroll-hint {
+        color: rgba(191, 120, 159, 0.9);
+        opacity: 1;
     }
 
     .social-icon-link {
@@ -786,7 +818,7 @@
 
     .footer-text {
         position: absolute;
-        bottom: clamp(2rem, 6vh, 5rem);
+        bottom: clamp(1rem, 4vh, 3.75rem);
         left: 50%;
         margin-bottom: 0;
         transform: translateX(-50%) translateY(calc(var(--footer-wave-offset-y, 0px) * -1));
@@ -910,6 +942,11 @@
         margin: 0.5rem auto 3rem;
         max-width: 1100px;
         text-align: center;
+        --podcast-rose: #dea2c2;
+        --podcast-rose-strong: #bf789f;
+        --podcast-rose-soft: #f4e4ec;
+        --podcast-cream: #fffaf6;
+        --podcast-shadow: rgba(96, 52, 72, 0.08);
     }
 
     .podcast-heading {
@@ -923,7 +960,7 @@
     }
 
     .podcast-subtitle {
-        color: #5b5b5b;
+        color: rgba(76, 60, 67, 0.8);
         margin-bottom: 1.25rem;
         font-weight: 500;
     }
@@ -932,17 +969,24 @@
         display: flex;
         justify-content: center;
         align-items: stretch;
-        gap: 0.75rem;
+        gap: 0.65rem;
         flex-wrap: wrap;
     }
 
     .podcast-bubbles {
         display: flex;
-        gap: 0.75rem;
+        gap: 0.65rem;
         align-items: center;
         justify-content: center;
         flex-wrap: wrap;
-        width: 100%;
+        width: fit-content;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0.3rem;
+        border-radius: 999px;
+        background: transparent;
+        border: none;
+        box-shadow: none;
     }
 
     .podcast-item {
@@ -955,15 +999,12 @@
     .podcast-spotlight {
         display: none;
         align-items: center;
-        gap: 0.75rem;
-        padding: 0.6rem 1.15rem;
+        gap: 0.6rem;
+        padding: 0.35rem 0.5rem 0.35rem 0.35rem;
         border-radius: 999px;
-        background: radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.35)),
-        linear-gradient(135deg, rgba(255, 203, 210, 0.7), rgba(128, 161, 255, 0.65));
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.45);
-        backdrop-filter: blur(18px) saturate(150%);
-        -webkit-backdrop-filter: blur(18px) saturate(150%);
-        border: 1px solid rgba(255, 255, 255, 0.45);
+        background: linear-gradient(180deg, rgba(255, 252, 249, 0.98), rgba(250, 242, 246, 0.98));
+        box-shadow: 0 10px 22px var(--podcast-shadow);
+        border: 1px solid rgba(222, 162, 194, 0.32);
         position: relative;
         overflow: hidden;
         min-width: 360px;
@@ -971,22 +1012,31 @@
 
     .podcast-item.active .podcast-spotlight {
         display: inline-flex;
-        animation: slide-in 0.4s ease;
+        animation: slide-in 0.45s ease;
     }
 
     .podcast-spotlight::after {
         content: '';
         position: absolute;
-        inset: 4px;
+        inset: 2px;
         border-radius: inherit;
-        background: linear-gradient(120deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0));
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0));
         pointer-events: none;
-        mix-blend-mode: screen;
     }
 
     .podcast-flag {
-        font-size: 1.9rem;
-        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.65rem;
+        height: 2.65rem;
+        font-size: 1.45rem;
+        border-radius: 999px;
+        background: var(--podcast-cream);
+        border: 1px solid rgba(222, 162, 194, 0.28);
+        box-shadow: 0 4px 12px rgba(96, 52, 72, 0.05);
+        filter: none;
         flex-shrink: 0;
     }
 
@@ -994,15 +1044,23 @@
         display: flex;
         align-items: center;
         gap: 0.35rem;
+        padding: 0.15rem 0.2rem 0.15rem 0.05rem;
+        border-radius: 999px;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        position: relative;
+        z-index: 1;
     }
 
     .podcast-audio {
-        max-width: 260px;
-        min-width: 220px;
+        max-width: 266px;
+        min-width: 226px;
         height: 36px;
-        accent-color: #252121;
+        accent-color: var(--podcast-rose-strong);
         border-radius: 999px;
         background: transparent;
+        filter: saturate(0.96);
     }
 
     .podcast-audio::-webkit-media-controls-panel {
@@ -1014,32 +1072,46 @@
     }
 
     .podcast-bubble {
-        width: 64px;
-        height: 64px;
+        width: 54px;
+        height: 54px;
         border-radius: 50%;
-        border: none;
-        background: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)),
-        linear-gradient(135deg, rgba(255, 203, 210, 0.8), rgba(128, 161, 255, 0.75));
-        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-        backdrop-filter: blur(14px) saturate(150%);
-        -webkit-backdrop-filter: blur(14px) saturate(150%);
+        border: 1px solid rgba(222, 162, 194, 0.26);
+        background: linear-gradient(180deg, rgba(255, 253, 251, 0.98), rgba(246, 236, 241, 0.96));
+        box-shadow: 0 6px 16px rgba(96, 52, 72, 0.06);
         display: inline-flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, width 0.25s ease, height 0.25s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, width 0.25s ease, height 0.25s ease;
         opacity: 0.95;
         position: relative;
     }
 
+    .podcast-bubble::after {
+        content: '';
+        position: absolute;
+        inset: 4px;
+        border-radius: inherit;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        opacity: 1;
+        pointer-events: none;
+    }
+
+    .podcast-bubble:hover {
+        transform: translateY(-1px);
+        border-color: rgba(191, 120, 159, 0.42);
+        box-shadow: 0 10px 20px rgba(96, 52, 72, 0.08);
+    }
+
     .podcast-bubble .bubble-flag {
-        font-size: 1.5rem;
+        font-size: 1.28rem;
+        filter: none;
         pointer-events: none;
     }
 
     .podcast-item.active .podcast-bubble {
         transform: scale(0.85);
-        box-shadow: 0 18px 35px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        box-shadow: 0 18px 35px rgba(96, 52, 72, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.7);
         opacity: 0;
         width: 0;
         height: 0;
@@ -1047,7 +1119,7 @@
     }
 
     .podcast-bubble:focus-visible {
-        outline: 2px solid #252121;
+        outline: 2px solid var(--podcast-rose-strong);
         outline-offset: 3px;
     }
 
@@ -1075,6 +1147,11 @@
             align-items: center;
         }
 
+        .podcast-bubbles {
+            width: 100%;
+            padding: 0.8rem;
+        }
+
         .podcast-item {
             width: 100%;
             justify-content: center;
@@ -1082,17 +1159,29 @@
 
         .podcast-spotlight {
             justify-content: center;
+            width: min(100%, 390px);
+            min-width: 0;
         }
 
         .podcast-controls {
             justify-content: center;
+            width: 100%;
+        }
+
+        .podcast-audio {
+            width: 100%;
+            min-width: 0;
         }
     }
 
 </style>
-<script defer src="https://cdn.jsdelivr.net/npm/@mux/mux-player"></script>
+<script>
+    document.body.classList.add('homepage-page');
+    document.body.style.setProperty('--footer-wave-progress', '0');
+    document.body.style.setProperty('--footer-wave-offset-y', '0px');
+</script>
 
-<body class="homepage">
+<div class="homepage" data-homepage-root>
 
 <section class="tx-container">
     <div class="md-grid md-typeset">
@@ -1173,241 +1262,6 @@
         </div>
     </div>
 </section>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const docEl = document.documentElement;
-        const ua = navigator.userAgent || '';
-        const isSafari = /safari/i.test(ua) && !/chrome|chromium|android|crios|fxios|edgios/i.test(ua);
-        if (isSafari) {
-            docEl.classList.add('is-safari');
-        }
-
-        const heroShell = document.querySelector('.tx-landing__media-shell');
-        const heroPlayer = document.querySelector('.tx-landing__media');
-        let expandTimer = null;
-        const expandDelayMs = 5000;
-
-        if (heroShell) {
-            const positionExpandedHero = () => {
-                const wrap = heroShell.querySelector('.tx-landing__media-wrap');
-                if (!wrap) {
-                    return;
-                }
-
-                const rect = wrap.getBoundingClientRect();
-                const currentCenterX = rect.left + rect.width / 2;
-                const currentCenterY = rect.top + rect.height / 2;
-                const targetCenterX = window.innerWidth / 2;
-                const targetCenterY = window.innerHeight * 0.62;
-                const dx = targetCenterX - currentCenterX;
-                const dy = targetCenterY - currentCenterY;
-
-                heroShell.style.setProperty('--hero-expand-x', `${dx.toFixed(1)}px`);
-                heroShell.style.setProperty('--hero-expand-y', `${dy.toFixed(1)}px`);
-            };
-
-            const clearExpandTimer = () => {
-                if (expandTimer !== null) {
-                    window.clearTimeout(expandTimer);
-                    expandTimer = null;
-                }
-            };
-
-            const collapseHeroPreview = () => {
-                clearExpandTimer();
-                heroShell.classList.remove('is-expanded');
-            };
-
-            const clearPointerFocusFromHero = () => {
-                const activeElement = document.activeElement;
-                if (!activeElement) {
-                    return;
-                }
-                if (activeElement === heroPlayer || heroShell.contains(activeElement)) {
-                    if (typeof activeElement.blur === 'function') {
-                        activeElement.blur();
-                    }
-                }
-            };
-
-            const scheduleHeroExpansion = () => {
-                clearExpandTimer();
-                expandTimer = window.setTimeout(() => {
-                    positionExpandedHero();
-                    heroShell.classList.add('is-expanded');
-                    expandTimer = null;
-                }, expandDelayMs);
-            };
-
-            heroShell.addEventListener('pointerenter', scheduleHeroExpansion);
-            heroShell.addEventListener('pointerleave', () => {
-                collapseHeroPreview();
-                clearPointerFocusFromHero();
-            });
-            heroShell.addEventListener('focusin', scheduleHeroExpansion);
-            heroShell.addEventListener('focusout', collapseHeroPreview);
-            window.addEventListener('resize', () => {
-                if (heroShell.classList.contains('is-expanded')) {
-                    positionExpandedHero();
-                }
-            });
-        }
-
-        if (heroPlayer) {
-            heroPlayer.muted = false;
-            heroPlayer.defaultMuted = false;
-            heroPlayer.volume = 1;
-
-            if (typeof heroPlayer.play === 'function') {
-                const autoPlayPromise = heroPlayer.play();
-                if (autoPlayPromise && typeof autoPlayPromise.catch === 'function') {
-                    autoPlayPromise.catch(() => {
-                        heroPlayer.muted = true;
-                        heroPlayer.defaultMuted = true;
-                        const mutedFallbackPromise = heroPlayer.play();
-                        if (mutedFallbackPromise && typeof mutedFallbackPromise.catch === 'function') {
-                            mutedFallbackPromise.catch(() => {});
-                        }
-                    });
-                }
-            }
-
-            const enableHeroAudio = () => {
-                heroPlayer.muted = false;
-                heroPlayer.volume = 1;
-
-                if (typeof heroPlayer.play === 'function') {
-                    const playPromise = heroPlayer.play();
-                    if (playPromise && typeof playPromise.catch === 'function') {
-                        playPromise.catch(() => {});
-                    }
-                }
-            };
-
-            window.addEventListener('pointerdown', enableHeroAudio, { once: true, passive: true });
-            window.addEventListener('keydown', enableHeroAudio, { once: true });
-        }
-
-        const items = Array.from(document.querySelectorAll('.podcast-item'));
-        const bubbleTray = document.querySelector('.podcast-bubbles');
-
-        const resetOthers = (activeItem) => {
-            items.forEach(item => {
-                const audioEl = item.querySelector('.podcast-audio');
-                const isActive = item === activeItem;
-                item.classList.toggle('active', isActive);
-                if (!isActive && audioEl) {
-                    audioEl.pause();
-                    audioEl.currentTime = 0;
-                }
-            });
-        };
-
-        items.forEach((item, index) => {
-            const bubble = item.querySelector('.podcast-bubble');
-            const audioEl = item.querySelector('.podcast-audio');
-
-            if (!bubble.style.getPropertyValue('--delay')) {
-                bubble.style.setProperty('--delay', (index * 0.12).toFixed(2));
-            }
-
-            if (audioEl) {
-                audioEl.playbackRate = 1.25;
-                audioEl.addEventListener('play', () => audioEl.classList.add('playing'));
-                audioEl.addEventListener('pause', () => audioEl.classList.remove('playing'));
-            }
-
-            bubble.addEventListener('click', () => {
-                resetOthers(item);
-                if (audioEl) {
-                    audioEl.pause();
-                    audioEl.currentTime = 0;
-                }
-            });
-        });
-
-        if (items.length) {
-            resetOthers(items[0]);
-        }
-
-        if (bubbleTray) {
-            setTimeout(() => bubbleTray.classList.remove('intro'), 1200);
-        }
-
-        const footer = document.querySelector('.footer');
-        const footerBeyond = document.querySelector('[data-footer-beyond]');
-
-        if (footer && footerBeyond) {
-            const homepage = document.querySelector('.homepage');
-            const waveProgressTarget = homepage || docEl;
-            const waveRange = 560;
-            const maxWaveScale = 2.42;
-            const lerpFactor = 0.085;
-            let raf = null;
-            let currentScale = 0;
-            let targetScale = 0;
-
-            if (isSafari) {
-                footerBeyond.querySelectorAll('g[filter]').forEach((group) => {
-                    group.removeAttribute('filter');
-                });
-            }
-
-            const clamp01 = (value) => Math.min(1, Math.max(0, value));
-
-            const getTargetScale = () => {
-                const viewportBottom = window.scrollY + window.innerHeight;
-                const nearFooterDistance = viewportBottom - footer.offsetTop;
-                const nearFooterProgress = clamp01(nearFooterDistance / waveRange);
-                const nativeOverscroll = Math.max(0, viewportBottom - docEl.scrollHeight);
-                const overscrollProgress = clamp01(nativeOverscroll / waveRange);
-                return Math.max(nearFooterProgress, overscrollProgress) * maxWaveScale;
-            };
-
-            const applyWaveScale = (scale) => {
-                const overlayHeight = footerBeyond.getBoundingClientRect().height || window.innerHeight;
-                const waveOffsetPx = scale * overlayHeight;
-
-                footerBeyond.style.transform = `scaleY(${scale.toFixed(6)})`;
-                waveProgressTarget.style.setProperty('--footer-wave-progress', scale.toFixed(6));
-                waveProgressTarget.style.setProperty('--footer-wave-offset-y', `${waveOffsetPx.toFixed(2)}px`);
-            };
-
-            const animateFooterBeyond = () => {
-                const delta = targetScale - currentScale;
-                currentScale += delta * lerpFactor;
-
-                if (Math.abs(delta) < 0.0005) {
-                    currentScale = targetScale;
-                }
-
-                applyWaveScale(currentScale);
-
-                if (currentScale !== targetScale) {
-                    raf = window.requestAnimationFrame(animateFooterBeyond);
-                } else {
-                    raf = null;
-                }
-            };
-
-            const scheduleRender = () => {
-                targetScale = getTargetScale();
-
-                if (raf === null) {
-                    raf = window.requestAnimationFrame(animateFooterBeyond);
-                }
-            };
-
-            window.addEventListener('scroll', scheduleRender, { passive: true });
-            window.addEventListener('wheel', scheduleRender, { passive: true });
-            window.addEventListener('touchmove', scheduleRender, { passive: true });
-            window.addEventListener('resize', scheduleRender);
-            window.addEventListener('orientationchange', scheduleRender);
-            scheduleRender();
-        }
-    });
-</script>
 
 <div class="podcast-section">
   <h2 class="podcast-heading title-klack-style"><mark>LDT</mark> <span class="podcast-heading__plain">Podcast</span> <mark>Explained</mark></h2>
@@ -1557,45 +1411,48 @@
     </div>
 </div>
 
-<div class="social-icons-container">
-    <a class="social-icon-link" href="https://github.com/simonprovost" aria-label="GitHub">
-        <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                class="social-icon-bottom"
-        >
-            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-        </svg>
-    </a>
-    <a class="social-icon-link" href="https://scholar.google.com/citations?user=Lv_LddYAAAAJ&hl=en"
-       aria-label="Google Scholar">
-        <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                class="social-icon-bottom"
-        >
-            <path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/>
-        </svg>
-    </a>
-    <a class="social-icon-link" href="https://www.linkedin.com/in/simonprovostdev/" aria-label="LinkedIn">
-        <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                class="social-icon-bottom"
-        >
-            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-        </svg>
-    </a>
-    <a class="social-icon-link social-icon-link--uoe" href="https://life-epi-psych.github.io" aria-label="University of Edinburgh">
-        <img
-                src="public/resources/uoe-logo-centred-black.png"
-                alt="University of Edinburgh logo"
-                class="social-icon-bottom social-icon-bottom--image"
-        />
-    </a>
+<div class="social-icons-stack">
+    <div class="social-icons-container">
+        <a class="social-icon-link" href="https://github.com/simonprovost" aria-label="GitHub">
+            <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    class="social-icon-bottom"
+            >
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+        </a>
+        <a class="social-icon-link" href="https://scholar.google.com/citations?user=Lv_LddYAAAAJ&hl=en"
+           aria-label="Google Scholar">
+            <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    class="social-icon-bottom"
+            >
+                <path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/>
+            </svg>
+        </a>
+        <a class="social-icon-link" href="https://www.linkedin.com/in/simonprovostdev/" aria-label="LinkedIn">
+            <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    class="social-icon-bottom"
+            >
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+        </a>
+        <a class="social-icon-link social-icon-link--uoe" href="https://life-epi-psych.github.io" aria-label="University of Edinburgh">
+            <img
+                    src="public/resources/uoe-logo-centred-black.png"
+                    alt="University of Edinburgh logo"
+                    class="social-icon-bottom social-icon-bottom--image"
+            />
+        </a>
+    </div>
+    <p class="social-scroll-hint">psst... scroll a bit further!</p>
 </div>
 
 <footer class="footer" role="contentinfo">
@@ -2118,6 +1975,6 @@
 </footer>
 
 
-</body>
+</div>
 
 {% endblock %}
